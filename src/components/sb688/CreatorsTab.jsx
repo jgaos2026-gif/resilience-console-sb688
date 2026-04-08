@@ -1,5 +1,5 @@
 import React from "react";
-import { User, Brain, AlertTriangle } from "lucide-react";
+import { User, Brain, AlertTriangle, Layers, Lock, Zap } from "lucide-react";
 
 export default function CreatorsTab() {
   return (
@@ -51,6 +51,24 @@ export default function CreatorsTab() {
           "Build systems where elegance serves consequence. Where the interface tells the truth. Where recovery
           is not a hope — it is a mechanism. Where proof is not a promise — it is a test you can run."
         </p>
+      </div>
+
+      {/* Three pillars of the architecture */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[
+          { icon: Lock, color: "text-primary", bg: "bg-primary/10 border-primary/20", title: "Sovereign AI Guardian", desc: "HMAC-based cryptographic immune system for AI. Detects prompt injection, cognitive drift, and adversarial attacks using SHA3-256 golden directive signatures and a Merkle Stitch tree for granular neural integrity checks." },
+          { icon: Layers, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20", title: "Brick Stitch Architecture", desc: "Patented 1/2 Offset Spine+Ribs Geometry. Shifts infrastructure from reactive redundancy to inherent structural integrity. Withstands 38% node loss. 150% overhead vs 300% for triple mirroring." },
+          { icon: Zap, color: "text-teal-400", bg: "bg-teal-500/10 border-teal-500/20", title: "SB688 Resilience Engine", desc: "Universal resilience layer with trusted checkpoint recovery, approved route computation, isolation controls, and verifiable proof suite. Industry-adaptive across 8 sectors. All logic runs locally — no backend dependency." },
+        ].map((p, i) => {
+          const Icon = p.icon;
+          return (
+            <div key={i} className={`rounded-xl p-4 border ${p.bg} space-y-2`}>
+              <Icon className={`w-5 h-5 ${p.color}`} />
+              <h4 className="text-sm font-bold text-foreground">{p.title}</h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">{p.desc}</p>
+            </div>
+          );
+        })}
       </div>
 
       <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-5 space-y-2">

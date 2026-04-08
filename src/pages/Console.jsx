@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from "react";
 import { INDUSTRIES, createInitialState, loadScenario, simulateProblem, runRecovery, runProofSuite, factoryReset } from "@/lib/sb688Engine";
+// AI communications are handled via base44.integrations.Core.InvokeLLM — no external API keys needed.
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users } from "lucide-react";
+import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers } from "lucide-react";
 import KpiStrip from "@/components/sb688/KpiStrip";
 import ControlPanel from "@/components/sb688/ControlPanel";
 import ComponentList from "@/components/sb688/ComponentList";
@@ -15,6 +16,10 @@ import IndustryCards from "@/components/sb688/IndustryCards";
 import OverviewTab from "@/components/sb688/OverviewTab";
 import UserManualTab from "@/components/sb688/UserManualTab";
 import CreatorsTab from "@/components/sb688/CreatorsTab";
+import SovereignGuardian from "@/components/sb688/SovereignGuardian";
+import AIMissionAnalyst from "@/components/sb688/AIMissionAnalyst";
+import AIScenarioNarrator from "@/components/sb688/AIScenarioNarrator";
+import BrickStitchTab from "@/components/sb688/BrickStitchTab";
 
 const tabs = [
   { id: "overview", label: "Overview", icon: Eye },
@@ -22,6 +27,8 @@ const tabs = [
   { id: "manual", label: "User Manual", icon: BookOpen },
   { id: "industries", label: "Industries", icon: Building2 },
   { id: "graphs", label: "Graphs", icon: BarChart3 },
+  { id: "brickstitch", label: "Brick Stitch", icon: Layers },
+  { id: "ai", label: "AI Analyst", icon: Brain },
   { id: "creators", label: "Creators", icon: Users },
 ];
 
@@ -98,11 +105,15 @@ export default function Console() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <Badge variant="outline" className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary border-primary/30 font-semibold">
                 {industry.title}
               </Badge>
-              <Badge variant="outline" className="text-[10px] px-2 py-0.5 bg-secondary text-muted-foreground border-border">
+              <Badge variant="outline" className="text-[10px] px-2 py-0.5 bg-blue-500/10 text-blue-400 border-blue-500/20 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse inline-block" />
+                AI Active
+              </Badge>
+              <Badge variant="outline" className="text-[10px] px-2 py-0.5 bg-secondary text-muted-foreground border-border hidden sm:flex">
                 JGA Black + Gold Edition
               </Badge>
             </div>
@@ -157,10 +168,15 @@ export default function Console() {
               onClear={handleClear}
             />
 
+            {/* AI Scenario Narrator — auto-generates plain-English mission narrative after state changes */}
+            <AIScenarioNarrator state={state} />
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-1 space-y-6">
                 <ComponentList state={state} />
                 <RouteInspector state={state} />
+                {/* Sovereign AI Guardian — HMAC drift detection + Merkle Stitch */}
+                <SovereignGuardian state={state} />
               </div>
               <div className="lg:col-span-2 space-y-6">
                 <TopologyMap state={state} />
@@ -179,14 +195,52 @@ export default function Console() {
 
         {activeTab === "graphs" && <GraphsPanel state={state} />}
 
+        {activeTab === "brickstitch" && <BrickStitchTab />}
+
+        {activeTab === "ai" && (
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <div className="xl:col-span-2">
+              <AIMissionAnalyst state={state} />
+            </div>
+            <div className="xl:col-span-1 space-y-4">
+              <div className="bg-card border border-border rounded-xl p-5 space-y-3">
+                <h3 className="text-sm font-semibold text-primary">Live System Snapshot</h3>
+                <div className="space-y-2 text-xs">
+                  {[
+                    { label: "Industry", value: INDUSTRIES[state.industry].title },
+                    { label: "Operational State", value: state.operationalState },
+                    { label: "Resilience", value: `${state.resilienceScore}%` },
+                    { label: "Route Type", value: state.routeType },
+                    { label: "Trusted Record", value: `v${state.trustedRecordVersion}` },
+                    { label: "Proof Suite", value: state.proofRun ? `${state.proofResults.filter(p=>p.pass).length}/${state.proofResults.length}` : "Not run" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex justify-between py-1.5 border-b border-border/30 last:border-0">
+                      <span className="text-muted-foreground">{item.label}</span>
+                      <span className="text-foreground font-semibold">{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[10px] text-muted-foreground/60 leading-relaxed">The AI Analyst has full awareness of this state. Ask it anything about what is happening, what it means, or how to explain it to stakeholders.</p>
+              </div>
+              <SovereignGuardian state={state} />
+            </div>
+          </div>
+        )}
+
         {activeTab === "creators" && <CreatorsTab />}
       </main>
 
       {/* Footer */}
       <footer className="border-t border-border bg-card/40 mt-12">
-        <div className="max-w-[1400px] mx-auto px-4 py-4 flex items-center justify-between text-[10px] text-muted-foreground">
+        <div className="max-w-[1400px] mx-auto px-4 py-4 flex items-center justify-between gap-4 flex-wrap text-[10px] text-muted-foreground">
           <span>SB688 Universal Resilience Console — JGA Black + Gold Edition</span>
-          <span>StitchBrick © {new Date().getFullYear()}</span>
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+              AI Mission Analyst • Sovereign Guardian • Brick Stitch Engine
+            </span>
+            <span>StitchBrick / J.G.A. © {new Date().getFullYear()}</span>
+          </div>
         </div>
       </footer>
     </div>
