@@ -3,7 +3,7 @@ import { INDUSTRIES, createInitialState, loadScenario, simulateProblem, runRecov
 // AI communications are handled via base44.integrations.Core.InvokeLLM — no external API keys needed.
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered } from "lucide-react";
+import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered, LayoutDashboard } from "lucide-react";
 import KpiStrip from "@/components/sb688/KpiStrip";
 import ControlPanel from "@/components/sb688/ControlPanel";
 import ComponentList from "@/components/sb688/ComponentList";
@@ -22,6 +22,7 @@ import AIScenarioNarrator from "@/components/sb688/AIScenarioNarrator";
 import BrickStitchTab from "@/components/sb688/BrickStitchTab";
 import RecoveryArchitectureTab from "@/components/sb688/RecoveryArchitectureTab";
 import EventTimeline from "@/components/sb688/EventTimeline";
+import ResilienceDashboard from "@/components/sb688/ResilienceDashboard";
 
 const tabs = [
   { id: "overview", label: "Overview", icon: Eye },
@@ -32,6 +33,7 @@ const tabs = [
   { id: "brickstitch", label: "Brick Stitch", icon: Layers },
   { id: "recovery", label: "Recovery", icon: RotateCcw },
   { id: "timeline", label: "Timeline", icon: ListOrdered },
+  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "ai", label: "AI Analyst", icon: Brain },
   { id: "creators", label: "Creators", icon: Users },
 ];
@@ -217,6 +219,8 @@ export default function Console() {
             }}
           />
         )}
+
+        {activeTab === "dashboard" && <ResilienceDashboard state={state} />}
 
         {activeTab === "ai" && (
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
