@@ -1,11 +1,12 @@
 import React, { useState, useCallback, useMemo } from "react";
+import { generateResilienceReport } from "./ReportGenerator";
 import { base44 } from "@/api/base44Client";
 import { INDUSTRIES, SCENARIOS } from "@/lib/sb688Engine";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   ShieldCheck, Activity, Zap, AlertTriangle, CheckCircle2,
-  XCircle, Clock, Loader2, RefreshCw, GitBranch, Eye, Database
+  XCircle, Clock, Loader2, RefreshCw, GitBranch, Eye, Database, FileDown
 } from "lucide-react";
 
 // ── Derived metrics from state ───────────────────────────────────────────────
@@ -110,6 +111,15 @@ const SEVERITY = {
 export default function ResilienceDashboard({ state }) {
   const [auditResult, setAuditResult] = useState(null);
   const [auditing, setAuditing] = useState(false);
+  const [exporting, setExporting] = useState(false);
+
+  const handleExportPDF = useCallback(() => {
+    setExporting(true);
+    setTimeout(() => {
+      generateResilienceReport(state);
+      setExporting(false);
+    }, 100);
+  }, [state]);
 
   const m = useMemo(() => deriveMetrics(state), [state]);
   const industry = INDUSTRIES[state.industry];
@@ -158,14 +168,25 @@ Tone: direct, aerospace-grade, plain English.`;
           <h2 className="text-xl font-bold text-foreground">Resilience Dashboard</h2>
           <p className="text-xs text-muted-foreground mt-0.5">Live health aggregation — Bottleneck Monitor · Short-Circuit Breaker · Proof Suite</p>
         </div>
-        <Button
-          onClick={runHealthAudit}
-          disabled={auditing}
-          className="bg-primary text-primary-foreground hover:bg-primary/90 text-xs font-semibold"
-        >
-          {auditing ? <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5 mr-1.5" />}
-          Health Audit
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={handleExportPDF}
+            disabled={exporting}
+            variant="outline"
+            className="border-border text-foreground hover:bg-secondary text-xs font-semibold"
+          >
+            {exporting ? <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" /> : <FileDown className="w-3.5 h-3.5 mr-1.5" />}
+            Export PDF
+          </Button>
+          <Button
+            onClick={runHealthAudit}
+            disabled={auditing}
+            className="bg-primary text-primary-foreground hover:bg-primary/90 text-xs font-semibold"
+          >
+            {auditing ? <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5 mr-1.5" />}
+            Health Audit
+          </Button>
+        </div>
       </div>
 
       {/* Audit Result */}
