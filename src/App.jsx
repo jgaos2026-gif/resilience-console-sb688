@@ -6,6 +6,7 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Console from './pages/Console';
+import SB688Console from './pages/SB688Console';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -35,6 +36,7 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route path="/" element={<Console />} />
+      <Route path="/sb688" element={<SB688Console />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
