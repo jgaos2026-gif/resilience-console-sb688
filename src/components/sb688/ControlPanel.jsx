@@ -36,7 +36,7 @@ export default function ControlPanel({
         <div className="space-y-1.5">
           <label className="text-xs text-muted-foreground font-medium">Industry</label>
           <Select value={state.industry} onValueChange={onIndustryChange}>
-            <SelectTrigger className="bg-secondary border-border text-foreground">
+            <SelectTrigger className="bg-secondary border-border text-foreground w-full truncate">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

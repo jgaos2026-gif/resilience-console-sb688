@@ -3,7 +3,7 @@ import { INDUSTRIES, createInitialState, loadScenario, simulateProblem, runRecov
 // AI communications are handled via base44.integrations.Core.InvokeLLM — no external API keys needed.
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered, LayoutDashboard, FileCheck } from "lucide-react";
+import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered, LayoutDashboard, FileCheck, FlaskConical } from "lucide-react";
 import KpiStrip from "@/components/sb688/KpiStrip";
 import ControlPanel from "@/components/sb688/ControlPanel";
 import ComponentList from "@/components/sb688/ComponentList";
@@ -24,6 +24,7 @@ import RecoveryArchitectureTab from "@/components/sb688/RecoveryArchitectureTab"
 import EventTimeline from "@/components/sb688/EventTimeline";
 import ResilienceDashboard from "@/components/sb688/ResilienceDashboard";
 import GovernanceReportPanel from "@/components/sb688/GovernanceReportPanel";
+import PolicySandboxTab from "@/components/sb688/PolicySandboxTab";
 
 const tabs = [
   { id: "overview", label: "Overview", icon: Eye },
@@ -37,6 +38,7 @@ const tabs = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "ai", label: "AI Analyst", icon: Brain },
   { id: "governance", label: "Governance", icon: FileCheck },
+  { id: "policy", label: "Policy Sandbox", icon: FlaskConical },
   { id: "creators", label: "Creators", icon: Users },
 ];
 
@@ -131,18 +133,18 @@ export default function Console() {
 
       {/* Navigation */}
       <div className="border-b border-border bg-card/40">
-        <div className="max-w-[1400px] mx-auto px-4">
+        <div className="max-w-[1400px] mx-auto px-4 overflow-x-auto scrollbar-none">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="bg-transparent h-auto p-0 gap-0 rounded-none">
+            <TabsList className="bg-transparent h-auto p-0 gap-0 rounded-none flex w-max min-w-full">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 return (
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary text-muted-foreground hover:text-foreground px-4 py-2.5 text-xs font-medium transition-all"
+                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary text-muted-foreground hover:text-foreground px-3 py-2.5 text-xs font-medium transition-all whitespace-nowrap flex-shrink-0"
                   >
-                    <Icon className="w-3.5 h-3.5 mr-1.5" />
+                    <Icon className="w-3.5 h-3.5 mr-1" />
                     {tab.label}
                   </TabsTrigger>
                 );
@@ -255,6 +257,8 @@ export default function Console() {
         )}
 
         {activeTab === "governance" && <GovernanceReportPanel state={state} />}
+
+        {activeTab === "policy" && <PolicySandboxTab state={state} />}
 
         {activeTab === "creators" && <CreatorsTab />}
       </main>
