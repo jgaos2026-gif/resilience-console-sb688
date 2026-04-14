@@ -1,32 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import SovereignStitchPanel from "@/components/sb688/SovereignStitchPanel";
-
-// ── Sovereign Stitch (JS port of SB-688 Python) ───────────────────────────────
-function generateSeal(brickName, state) {
-  // Browser HMAC simulation using a seeded XOR hash (no crypto.subtle async needed)
-  const data = brickName + "|" + state;
-  let hash = 0x12345678;
-  for (let i = 0; i < data.length; i++) {
-    hash = ((hash << 5) ^ hash ^ data.charCodeAt(i)) >>> 0;
-  }
-  return hash.toString(16).padStart(8, "0") + "-sb688";
-}
-
-function createBricks() {
-  const defs = {
-    core:        { state: "HEALED" },
-    driver_net:  { state: "HEALED" },
-    vault_brick: { state: "HEALED" },
-    user_app:    { state: "HEALED" },
-    trap_q1:     { state: "ACTIVE" },
-  };
-  const out = {};
-  for (const [k, v] of Object.entries(defs)) {
-    out[k] = { state: v.state, seal: generateSeal(k, v.state) };
-  }
-  return out;
-}
-
 
 // ── Topology data ─────────────────────────────────────────────────────────────
 const NODES = [
