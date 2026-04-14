@@ -219,6 +219,46 @@ export const SCENARIOS = {
       "Model state checkpoint comparison initiated.",
     ],
   },
+  unauthorized_state: {
+    id: "unauthorized_state",
+    title: "Unauthorized State Transition",
+    description: "An unsigned or unauthorized state write was attempted against a protected module boundary. The trusted chain rejected the transition before it could commit.",
+    affectedComponents: [],
+    degradedComponents: ["fs"],
+    isolatedComponents: ["braidB"],
+    logEntries: [
+      "Unauthorized state transition detected. Signature verification failed.",
+      "Affected strand isolated. State write blocked before chain advancement.",
+      "Tamper rejection logged. Trusted ledger integrity maintained.",
+    ],
+  },
+  ghost_probe: {
+    id: "ghost_probe",
+    title: "Suspicious Probe via Ghost Node",
+    description: "A suspicious probing attempt was detected by a ghost node sensor. The decoy absorbed the probe without exposing trusted core modules. Telemetry surfaced for operator review.",
+    affectedComponents: [],
+    degradedComponents: ["braidA"],
+    isolatedComponents: [],
+    logEntries: [
+      "Ghost node telemetry: suspicious probe detected at mesh boundary.",
+      "Probe absorbed by ghost sensor. Core modules not exposed.",
+      "Anomalous access pattern logged. Operator audit flag raised.",
+    ],
+  },
+  compromised_runtime: {
+    id: "compromised_runtime",
+    title: "Compromised Runtime Quarantined",
+    description: "A component runtime was identified as compromised via state hash mismatch. The module was detached from the trusted mesh, moved to a disposable quarantine container, terminated, and rebuilt from a trusted checkpoint.",
+    affectedComponents: ["driver_net"],
+    degradedComponents: [],
+    isolatedComponents: ["driver_net"],
+    logEntries: [
+      "State hash mismatch detected on Exchange Network. Compromise suspected.",
+      "Module detached from trusted mesh. Moved to disposable quarantine sandbox.",
+      "Compromised runtime terminated. Rebuilding from trusted checkpoint.",
+      "Dependency revalidation initiated. Mesh re-knitting around quarantined module.",
+    ],
+  },
 };
 
 const COMPONENT_KEYS = ["core", "driver_net", "fs", "user_app", "braidA", "braidB"];

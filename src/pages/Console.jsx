@@ -3,7 +3,7 @@ import { INDUSTRIES, createInitialState, loadScenario, simulateProblem, runRecov
 // AI communications are handled via base44.integrations.Core.InvokeLLM — no external API keys needed.
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered, LayoutDashboard, FileCheck, FlaskConical } from "lucide-react";
+import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered, LayoutDashboard, FileCheck, FlaskConical, XOctagon, Radio, Award } from "lucide-react";
 import KpiStrip from "@/components/sb688/KpiStrip";
 import ControlPanel from "@/components/sb688/ControlPanel";
 import ComponentList from "@/components/sb688/ComponentList";
@@ -25,6 +25,11 @@ import EventTimeline from "@/components/sb688/EventTimeline";
 import ResilienceDashboard from "@/components/sb688/ResilienceDashboard";
 import GovernanceReportPanel from "@/components/sb688/GovernanceReportPanel";
 import PolicySandboxTab from "@/components/sb688/PolicySandboxTab";
+import SecurityPosturePanel from "@/components/sb688/SecurityPosturePanel";
+import GhostNodePanel from "@/components/sb688/GhostNodePanel";
+import QuarantinePanel from "@/components/sb688/QuarantinePanel";
+import VerifiableProofSnapshot from "@/components/sb688/VerifiableProofSnapshot";
+import BuilderAttributionPanel from "@/components/sb688/BuilderAttributionPanel";
 
 const tabs = [
   { id: "overview", label: "Overview", icon: Eye },
@@ -39,6 +44,11 @@ const tabs = [
   { id: "ai", label: "AI Analyst", icon: Brain },
   { id: "governance", label: "Governance", icon: FileCheck },
   { id: "policy", label: "Policy Sandbox", icon: FlaskConical },
+  { id: "security", label: "Security Posture", icon: Shield },
+  { id: "ghost", label: "Ghost Nodes", icon: Radio },
+  { id: "quarantine", label: "Quarantine", icon: XOctagon },
+  { id: "proof_snapshot", label: "Proof Snapshot", icon: FileCheck },
+  { id: "attribution", label: "Attribution", icon: Award },
   { id: "creators", label: "Creators", icon: Users },
 ];
 
@@ -260,19 +270,34 @@ export default function Console() {
 
         {activeTab === "policy" && <PolicySandboxTab state={state} />}
 
+        {activeTab === "security" && <SecurityPosturePanel />}
+
+        {activeTab === "ghost" && <GhostNodePanel state={state} />}
+
+        {activeTab === "quarantine" && <QuarantinePanel state={state} />}
+
+        {activeTab === "proof_snapshot" && <VerifiableProofSnapshot state={state} />}
+
+        {activeTab === "attribution" && <BuilderAttributionPanel />}
+
         {activeTab === "creators" && <CreatorsTab />}
       </main>
 
       {/* Footer */}
       <footer className="border-t border-border bg-card/40 mt-12">
-        <div className="max-w-[1400px] mx-auto px-4 py-4 flex items-center justify-between gap-4 flex-wrap text-[10px] text-muted-foreground">
-          <span>SB688 Universal Resilience Console — JGA Black + Gold Edition</span>
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-              AI Mission Analyst • Sovereign Guardian • Brick Stitch Engine
-            </span>
-            <span>StitchBrick / J.G.A. © {new Date().getFullYear()}</span>
+        <div className="max-w-[1400px] mx-auto px-4 py-4 space-y-2">
+          <div className="flex items-center justify-between gap-4 flex-wrap text-[10px] text-muted-foreground">
+            <span className="font-semibold text-foreground/60">SB688 Universal Resilience Console — National Resilience Council Platform</span>
+            <div className="flex items-center gap-4 flex-wrap">
+              <span className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                Ghost Node Sensors · Quarantine Containment · Trusted Restore · Verifiable Proof
+              </span>
+              <span className="text-muted-foreground/60">Architecture &amp; Direction: John Arenz — J.G.A. © {new Date().getFullYear()}</span>
+            </div>
+          </div>
+          <div className="text-[9px] text-muted-foreground/40 leading-relaxed">
+            Demonstrates defensive containment and recoverability. Does not claim perfect security. All simulation logic runs locally. Not a certified production system.
           </div>
         </div>
       </footer>
