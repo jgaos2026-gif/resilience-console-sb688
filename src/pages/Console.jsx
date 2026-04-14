@@ -3,7 +3,7 @@ import { INDUSTRIES, createInitialState, loadScenario, simulateProblem, runRecov
 // AI communications are handled via base44.integrations.Core.InvokeLLM — no external API keys needed.
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered, LayoutDashboard } from "lucide-react";
+import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered, LayoutDashboard, FileCheck } from "lucide-react";
 import KpiStrip from "@/components/sb688/KpiStrip";
 import ControlPanel from "@/components/sb688/ControlPanel";
 import ComponentList from "@/components/sb688/ComponentList";
@@ -23,6 +23,7 @@ import BrickStitchTab from "@/components/sb688/BrickStitchTab";
 import RecoveryArchitectureTab from "@/components/sb688/RecoveryArchitectureTab";
 import EventTimeline from "@/components/sb688/EventTimeline";
 import ResilienceDashboard from "@/components/sb688/ResilienceDashboard";
+import GovernanceReportPanel from "@/components/sb688/GovernanceReportPanel";
 
 const tabs = [
   { id: "overview", label: "Overview", icon: Eye },
@@ -35,6 +36,7 @@ const tabs = [
   { id: "timeline", label: "Timeline", icon: ListOrdered },
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "ai", label: "AI Analyst", icon: Brain },
+  { id: "governance", label: "Governance", icon: FileCheck },
   { id: "creators", label: "Creators", icon: Users },
 ];
 
@@ -251,6 +253,8 @@ export default function Console() {
             </div>
           </div>
         )}
+
+        {activeTab === "governance" && <GovernanceReportPanel state={state} />}
 
         {activeTab === "creators" && <CreatorsTab />}
       </main>
