@@ -3,7 +3,7 @@ import { INDUSTRIES, createInitialState, loadScenario, simulateProblem, runRecov
 // AI communications are handled via base44.integrations.Core.InvokeLLM — no external API keys needed.
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered, LayoutDashboard, FileCheck, FlaskConical, XOctagon, Radio, Award } from "lucide-react";
+import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered, LayoutDashboard, FileCheck, FlaskConical, XOctagon, Radio, Award, Play } from "lucide-react";
 import KpiStrip from "@/components/sb688/KpiStrip";
 import ControlPanel from "@/components/sb688/ControlPanel";
 import ComponentList from "@/components/sb688/ComponentList";
@@ -25,6 +25,7 @@ import EventTimeline from "@/components/sb688/EventTimeline";
 import ResilienceDashboard from "@/components/sb688/ResilienceDashboard";
 import GovernanceReportPanel from "@/components/sb688/GovernanceReportPanel";
 import PolicySandboxTab from "@/components/sb688/PolicySandboxTab";
+import LiveCapabilityDemo from "@/components/sb688/LiveCapabilityDemo";
 import SecurityPosturePanel from "@/components/sb688/SecurityPosturePanel";
 import GhostNodePanel from "@/components/sb688/GhostNodePanel";
 import QuarantinePanel from "@/components/sb688/QuarantinePanel";
@@ -33,6 +34,7 @@ import BuilderAttributionPanel from "@/components/sb688/BuilderAttributionPanel"
 
 const tabs = [
   { id: "overview", label: "Overview", icon: Eye },
+  { id: "demo", label: "Live Demo", icon: Play },
   { id: "workspace", label: "Workspace", icon: Wrench },
   { id: "manual", label: "User Manual", icon: BookOpen },
   { id: "industries", label: "Industries", icon: Building2 },
@@ -171,6 +173,8 @@ export default function Console() {
 
         {/* Tab Content */}
         {activeTab === "overview" && <OverviewTab />}
+
+        {activeTab === "demo" && <LiveCapabilityDemo />}
 
         {activeTab === "workspace" && (
           <div className="space-y-6">
