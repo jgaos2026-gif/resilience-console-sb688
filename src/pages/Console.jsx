@@ -3,7 +3,7 @@ import { INDUSTRIES, createInitialState, loadScenario, simulateProblem, runRecov
 // AI communications are handled via base44.integrations.Core.InvokeLLM — no external API keys needed.
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered, LayoutDashboard, FileCheck, FlaskConical, XOctagon, Radio, Award, Play } from "lucide-react";
+import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered, LayoutDashboard, FileCheck, FlaskConical, XOctagon, Radio, Award, Play, Link2, Check } from "lucide-react";
 import KpiStrip from "@/components/sb688/KpiStrip";
 import ControlPanel from "@/components/sb688/ControlPanel";
 import ComponentList from "@/components/sb688/ComponentList";
@@ -58,6 +58,14 @@ const tabs = [
 export default function Console() {
   const [state, setState] = useState(createInitialState);
   const [activeTab, setActiveTab] = useState("overview");
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyObserverLink = () => {
+    const url = `${window.location.origin}/observe`;
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const industry = INDUSTRIES[state.industry];
 
@@ -147,6 +155,15 @@ export default function Console() {
               <Badge variant="outline" className="text-[10px] px-2 py-0.5 hidden sm:flex" style={{ background: "rgba(201,168,76,0.06)", color: "rgba(201,168,76,0.6)", borderColor: "rgba(201,168,76,0.2)" }}>
                 ♛ JGA Black &amp; Gold
               </Badge>
+              <button
+                onClick={handleCopyObserverLink}
+                className="flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded border transition-all font-semibold"
+                style={{ background: "rgba(34,197,94,0.08)", color: copied ? "#22c55e" : "#86efac", borderColor: copied ? "rgba(34,197,94,0.5)" : "rgba(34,197,94,0.2)" }}
+                title="Copy public observer link"
+              >
+                {copied ? <Check className="w-3 h-3" /> : <Link2 className="w-3 h-3" />}
+                {copied ? "Copied!" : "Share Observer Link"}
+              </button>
             </div>
           </div>
         </div>
