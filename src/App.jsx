@@ -9,6 +9,7 @@ import Console from './pages/Console';
 import SB688Console from './pages/SB688Console';
 import JGALive from './pages/JGALive';
 import PublicObserver from './pages/PublicObserver';
+import JGAStory from './pages/JGAStory';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -41,6 +42,7 @@ const AuthenticatedApp = () => {
       <Route path="/sb688" element={<SB688Console />} />
       <Route path="/jga-live" element={<JGALive />} />
       <Route path="/observe" element={<PublicObserver />} />
+      <Route path="/jga-story" element={<JGAStory />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
