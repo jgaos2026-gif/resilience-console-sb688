@@ -336,9 +336,14 @@ export default function Console() {
             <div className="text-[9px] text-muted-foreground/40 leading-relaxed">
               Demonstrates defensive containment and recoverability. Does not claim perfect security. All simulation logic runs locally. Not a certified production system.
             </div>
-            <a href="/jga-live" className="text-[9px] text-primary/60 hover:text-primary transition border border-primary/20 hover:border-primary/40 rounded px-2 py-0.5">
-              JGA Live Rebuild →
-            </a>
+            <div className="flex items-center gap-2">
+              <a href="/observe" className="text-[9px] text-green-400/60 hover:text-green-400 transition border border-green-500/20 hover:border-green-500/40 rounded px-2 py-0.5">
+                👁 Public Observer →
+              </a>
+              <a href="/jga-live" className="text-[9px] text-primary/60 hover:text-primary transition border border-primary/20 hover:border-primary/40 rounded px-2 py-0.5">
+                JGA Live Rebuild →
+              </a>
+            </div>
           </div>
         </div>
       </footer>
