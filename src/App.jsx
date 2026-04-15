@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Console from './pages/Console';
 import SB688Console from './pages/SB688Console';
+import JGALive from './pages/JGALive';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -37,6 +38,7 @@ const AuthenticatedApp = () => {
     <Routes>
       <Route path="/" element={<Console />} />
       <Route path="/sb688" element={<SB688Console />} />
+      <Route path="/jga-live" element={<JGALive />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

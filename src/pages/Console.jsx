@@ -296,8 +296,13 @@ export default function Console() {
               <span className="text-muted-foreground/60">Architecture &amp; Direction: John Arenz — J.G.A. © {new Date().getFullYear()}</span>
             </div>
           </div>
-          <div className="text-[9px] text-muted-foreground/40 leading-relaxed">
-            Demonstrates defensive containment and recoverability. Does not claim perfect security. All simulation logic runs locally. Not a certified production system.
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div className="text-[9px] text-muted-foreground/40 leading-relaxed">
+              Demonstrates defensive containment and recoverability. Does not claim perfect security. All simulation logic runs locally. Not a certified production system.
+            </div>
+            <a href="/jga-live" className="text-[9px] text-primary/60 hover:text-primary transition border border-primary/20 hover:border-primary/40 rounded px-2 py-0.5">
+              JGA Live Rebuild →
+            </a>
           </div>
         </div>
       </footer>
