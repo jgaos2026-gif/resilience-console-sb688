@@ -84,7 +84,8 @@ module.exports = {
   			'accordion-up': 'accordion-up 0.2s ease-out'
   		},
   		fontFamily: {
-  			inter: ['var(--font-inter)']
+  			inter: ['var(--font-inter)'],
+  			cinzel: ['var(--font-cinzel)']
   		}
   	}
   },

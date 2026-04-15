@@ -1,6 +1,7 @@
 import React from "react";
 import { Shield, Zap, FileCheck, Globe, Clock, Lock, CheckCircle2, ArrowRight, Eye, XOctagon, Database, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import WarriorCrest, { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 
 const capabilities = [
   { icon: Zap, title: "Detects & Contains Fast", desc: "Continuous health monitoring identifies degradation before it cascades. Suspicious activity is surfaced by ghost-node sensors at mesh boundaries." },
@@ -38,12 +39,19 @@ export default function OverviewTab() {
   return (
     <div className="space-y-8">
       {/* Hero */}
-      <div className="text-center max-w-2xl mx-auto space-y-3">
-        <div className="flex items-center justify-center gap-2 flex-wrap">
-          <Badge className="text-[10px] bg-primary/10 text-primary border border-primary/30">National Resilience Council</Badge>
-          <Badge className="text-[10px] bg-secondary text-muted-foreground border border-border">SB688 Platform · JGA Architecture</Badge>
+      <div className="text-center max-w-2xl mx-auto space-y-4">
+        {/* Warrior crest */}
+        <div className="flex flex-col items-center gap-2">
+          <CrownIcon size={48} color="#C9A84C" />
+          <LionIcon size={56} color="#C9A84C" />
         </div>
-        <h2 className="text-2xl font-bold text-foreground">Universal Resilience Platform</h2>
+        {/* Gold divider */}
+        <div className="warrior-divider mx-auto w-48" />
+        <div className="flex items-center justify-center gap-2 flex-wrap">
+          <Badge className="text-[10px] bg-primary/10 text-primary border border-primary/30 font-cinzel tracking-wider">National Resilience Council</Badge>
+          <Badge className="text-[10px] bg-secondary text-muted-foreground border border-border">SB688 · JGA Architecture</Badge>
+        </div>
+        <h2 className="text-2xl font-bold font-cinzel" style={{ color: "#C9A84C", textShadow: "0 0 30px rgba(201,168,76,0.25)" }}>Universal Resilience Platform</h2>
         <p className="text-sm text-muted-foreground leading-relaxed">
           SB688 is a next-generation cross-sector resilience platform. It detects compromise fast, keeps operations moving, isolates suspicious runtimes into disposable containment, restores from trusted checkpoints, and proves recovery — across any industry.
           It does not claim perfect security. It demonstrates containment and recoverability.

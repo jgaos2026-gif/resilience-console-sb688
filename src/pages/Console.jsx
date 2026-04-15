@@ -24,6 +24,7 @@ import RecoveryArchitectureTab from "@/components/sb688/RecoveryArchitectureTab"
 import EventTimeline from "@/components/sb688/EventTimeline";
 import ResilienceDashboard from "@/components/sb688/ResilienceDashboard";
 import GovernanceReportPanel from "@/components/sb688/GovernanceReportPanel";
+import WarriorCrest, { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 import PolicySandboxTab from "@/components/sb688/PolicySandboxTab";
 import LiveCapabilityDemo from "@/components/sb688/LiveCapabilityDemo";
 import SecurityPosturePanel from "@/components/sb688/SecurityPosturePanel";
@@ -111,40 +112,50 @@ export default function Console() {
   return (
     <div className="min-h-screen bg-background text-foreground font-inter">
       {/* Header */}
-      <header className="border-b border-border bg-card/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-[1400px] mx-auto px-4 py-3">
+      <header className="border-b border-border sticky top-0 z-50" style={{ background: "linear-gradient(180deg, hsl(220,22%,5%) 0%, hsl(220,18%,7%) 100%)", boxShadow: "0 1px 0 rgba(201,168,76,0.18), 0 4px 24px rgba(0,0,0,0.6)" }}>
+        {/* Gold top rule */}
+        <div className="warrior-divider" />
+        <div className="max-w-[1400px] mx-auto px-4 py-2.5">
           <div className="flex items-center justify-between gap-4 flex-wrap">
+            {/* Crest + Title */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center">
-                <Shield className="w-4 h-4 text-primary" />
+              {/* Crown + Lion crest mark */}
+              <div className="flex flex-col items-center justify-center flex-shrink-0" style={{ width: 36 }}>
+                <CrownIcon size={22} color="#C9A84C" />
+                <LionIcon size={26} color="#C9A84C" />
               </div>
+              {/* Divider */}
+              <div className="w-px h-10 bg-gradient-to-b from-transparent via-primary/40 to-transparent flex-shrink-0" />
               <div>
-                <h1 className="text-sm font-bold text-foreground tracking-wide leading-tight">
-                  SB688 Universal Resilience Console
+                <h1 className="text-sm font-bold tracking-widest leading-tight font-cinzel" style={{ color: "#C9A84C", textShadow: "0 0 20px rgba(201,168,76,0.35)" }}>
+                  SB688 · NATIONAL RESILIENCE COUNCIL
                 </h1>
-                <p className="text-[10px] text-muted-foreground">
-                  Mission-grade resilience, trusted recovery, and universal industry adaptation
+                <p className="text-[9px] text-muted-foreground tracking-widest uppercase mt-0.5">
+                  Warrior-Grade Resilience · Trusted Recovery · Verifiable Proof · J.G.A.
                 </p>
               </div>
             </div>
+            {/* Right badges */}
             <div className="flex items-center gap-2 flex-wrap">
-              <Badge variant="outline" className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary border-primary/30 font-semibold">
+              <Badge variant="outline" className="text-[10px] px-2 py-0.5 font-semibold" style={{ background: "rgba(201,168,76,0.08)", color: "#C9A84C", borderColor: "rgba(201,168,76,0.3)" }}>
                 {industry.title}
               </Badge>
               <Badge variant="outline" className="text-[10px] px-2 py-0.5 bg-blue-500/10 text-blue-400 border-blue-500/20 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse inline-block" />
                 AI Active
               </Badge>
-              <Badge variant="outline" className="text-[10px] px-2 py-0.5 bg-secondary text-muted-foreground border-border hidden sm:flex">
-                JGA Black + Gold Edition
+              <Badge variant="outline" className="text-[10px] px-2 py-0.5 hidden sm:flex" style={{ background: "rgba(201,168,76,0.06)", color: "rgba(201,168,76,0.6)", borderColor: "rgba(201,168,76,0.2)" }}>
+                ♛ JGA Black &amp; Gold
               </Badge>
             </div>
           </div>
         </div>
+        {/* Gold bottom rule */}
+        <div className="warrior-divider" />
       </header>
 
       {/* Navigation */}
-      <div className="border-b border-border bg-card/40">
+      <div className="border-b border-border" style={{ background: "hsl(220,20%,5%)" }}>
         <div className="max-w-[1400px] mx-auto px-4 overflow-x-auto scrollbar-none">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="bg-transparent h-auto p-0 gap-0 rounded-none flex w-max min-w-full">
@@ -288,10 +299,14 @@ export default function Console() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card/40 mt-12">
+      <footer className="border-t border-border mt-12" style={{ background: "hsl(220,20%,4%)" }}>
+        <div className="warrior-divider" />
         <div className="max-w-[1400px] mx-auto px-4 py-4 space-y-2">
           <div className="flex items-center justify-between gap-4 flex-wrap text-[10px] text-muted-foreground">
-            <span className="font-semibold text-foreground/60">SB688 Universal Resilience Console — National Resilience Council Platform</span>
+            <div className="flex items-center gap-2">
+              <CrownIcon size={16} color="#C9A84C" />
+              <span className="font-cinzel font-semibold" style={{ color: "rgba(201,168,76,0.7)" }}>SB688 · National Resilience Council</span>
+            </div>
             <div className="flex items-center gap-4 flex-wrap">
               <span className="flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />

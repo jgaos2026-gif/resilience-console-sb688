@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Shield, Zap, CheckCircle2, Clock, AlertTriangle, Layers, Database, Lock, Globe, Play, RotateCcw, Eye, Radio } from "lucide-react";
+import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 
 // ── BRIC sequence definition ─────────────────────────────────────────────────
 const BRIC_SEQUENCE = [
@@ -290,12 +291,14 @@ export default function JGALive() {
       <header className="border-b border-border bg-card/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-[1400px] mx-auto px-4 py-3 flex items-center justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center">
-              <Layers className="w-4 h-4 text-primary" />
+            <div className="flex flex-col items-center flex-shrink-0">
+              <CrownIcon size={18} color="#C9A84C" />
+              <LionIcon size={22} color="#C9A84C" />
             </div>
+            <div className="w-px h-9 bg-gradient-to-b from-transparent via-primary/40 to-transparent flex-shrink-0" />
             <div>
-              <h1 className="text-sm font-bold text-foreground tracking-wide">JGA Live Rebuild</h1>
-              <p className="text-[10px] text-muted-foreground">BRIC Stitch Method — Demolition → Assembly · J.G.A. · John Arenz</p>
+              <h1 className="text-sm font-bold tracking-widest font-cinzel" style={{ color: "#C9A84C" }}>JGA Live Rebuild</h1>
+              <p className="text-[10px] text-muted-foreground tracking-wider">BRIC Stitch Method · Demolition → Assembly · John Arenz</p>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-wrap">

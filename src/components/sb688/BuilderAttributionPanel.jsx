@@ -1,6 +1,7 @@
 import React from "react";
 import { User, Shield, Layers, Zap, Brain, AlertTriangle, Award, GitBranch } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 
 export default function BuilderAttributionPanel() {
   return (
@@ -17,11 +18,12 @@ export default function BuilderAttributionPanel() {
       {/* Primary Attribution */}
       <div className="bg-card border border-primary/20 rounded-xl p-6 space-y-4">
         <div className="flex items-center gap-4 flex-wrap">
-          <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
-            <User className="w-6 h-6 text-primary" />
+          <div className="flex flex-col items-center gap-0 flex-shrink-0">
+            <CrownIcon size={32} color="#C9A84C" />
+            <LionIcon size={38} color="#C9A84C" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-foreground">John Arenz — JGA</h3>
+            <h3 className="text-lg font-bold font-cinzel" style={{ color: "#C9A84C" }}>John Arenz — JGA</h3>
             <p className="text-xs text-muted-foreground">Resilience Architecture · Platform Direction · System Design</p>
             <div className="flex gap-2 mt-1.5 flex-wrap">
               <Badge className="text-[9px] bg-primary/10 text-primary border border-primary/30">Architecture</Badge>

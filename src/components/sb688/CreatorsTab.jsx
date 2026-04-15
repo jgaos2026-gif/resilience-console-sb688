@@ -1,11 +1,16 @@
 import React from "react";
 import { User, Brain, AlertTriangle, Layers, Lock, Zap } from "lucide-react";
+import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 
 export default function CreatorsTab() {
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
-      <div className="text-center space-y-2">
-        <h2 className="text-xl font-bold text-foreground">Creators</h2>
+      <div className="text-center space-y-3">
+        <div className="flex flex-col items-center gap-1">
+          <CrownIcon size={40} color="#C9A84C" />
+          <LionIcon size={48} color="#C9A84C" />
+        </div>
+        <h2 className="text-xl font-bold font-cinzel" style={{ color: "#C9A84C" }}>Creators</h2>
         <p className="text-sm text-muted-foreground">The people and principles behind the console.</p>
       </div>
 
