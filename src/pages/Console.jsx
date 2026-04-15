@@ -3,7 +3,8 @@ import { INDUSTRIES, createInitialState, loadScenario, simulateProblem, runRecov
 // AI communications are handled via base44.integrations.Core.InvokeLLM — no external API keys needed.
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered, LayoutDashboard, FileCheck, FlaskConical, XOctagon, Radio, Award, Play, Link2, Check } from "lucide-react";
+import { Shield, Eye, Wrench, BookOpen, Building2, BarChart3, Users, Brain, Layers, RotateCcw, ListOrdered, LayoutDashboard, FileCheck, FlaskConical, XOctagon, Radio, Award, Play, Link2, Check, EyeOff } from "lucide-react";
+import PublicObserver from "./PublicObserver";
 import KpiStrip from "@/components/sb688/KpiStrip";
 import ControlPanel from "@/components/sb688/ControlPanel";
 import ComponentList from "@/components/sb688/ComponentList";
@@ -59,6 +60,7 @@ export default function Console() {
   const [state, setState] = useState(createInitialState);
   const [activeTab, setActiveTab] = useState("overview");
   const [copied, setCopied] = useState(false);
+  const [observerMode, setObserverMode] = useState(false);
 
   const handleCopyObserverLink = () => {
     const url = `${window.location.origin}/observe`;
@@ -164,12 +166,40 @@ export default function Console() {
                 {copied ? <Check className="w-3 h-3" /> : <Link2 className="w-3 h-3" />}
                 {copied ? "Copied!" : "Share Observer Link"}
               </button>
+              <button
+                onClick={() => setObserverMode(v => !v)}
+                className="flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded border transition-all font-semibold"
+                style={observerMode
+                  ? { background: "rgba(201,168,76,0.12)", color: "#C9A84C", borderColor: "rgba(201,168,76,0.5)" }
+                  : { background: "rgba(139,92,246,0.08)", color: "#a78bfa", borderColor: "rgba(139,92,246,0.25)" }
+                }
+                title={observerMode ? "Switch to Owner View" : "Preview as Public Observer"}
+              >
+                {observerMode ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+                {observerMode ? "Owner View" : "Observer Preview"}
+              </button>
             </div>
           </div>
         </div>
         {/* Gold bottom rule */}
         <div className="warrior-divider" />
       </header>
+
+      {/* Observer mode banner */}
+      {observerMode && (
+        <div className="sticky top-[57px] z-40 flex items-center justify-between px-4 py-1.5 text-[10px] font-semibold" style={{ background: "rgba(139,92,246,0.12)", borderBottom: "1px solid rgba(139,92,246,0.25)", color: "#c4b5fd" }}>
+          <span className="flex items-center gap-1.5"><Eye className="w-3 h-3" /> You are previewing the <strong>Public Observer</strong> view — this is exactly what visitors without access will see.</span>
+          <button onClick={() => setObserverMode(false)} className="underline hover:text-white transition">Back to Owner View</button>
+        </div>
+      )}
+
+      {/* Observer mode: render PublicObserver inline */}
+      {observerMode ? (
+        <div className="pointer-events-auto">
+          <PublicObserver />
+        </div>
+      ) : (
+      <>
 
       {/* Navigation */}
       <div className="border-b border-border" style={{ background: "hsl(220,20%,5%)" }}>
@@ -347,6 +377,8 @@ export default function Console() {
           </div>
         </div>
       </footer>
+      </>
+      )}
     </div>
   );
 }
