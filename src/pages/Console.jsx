@@ -33,8 +33,10 @@ import GhostNodePanel from "@/components/sb688/GhostNodePanel";
 import QuarantinePanel from "@/components/sb688/QuarantinePanel";
 import VerifiableProofSnapshot from "@/components/sb688/VerifiableProofSnapshot";
 import BuilderAttributionPanel from "@/components/sb688/BuilderAttributionPanel";
+import SovereignSpineHUD from "@/components/sb688/SovereignSpineHUD";
 
 const tabs = [
+  { id: "sovereign", label: "Sovereign Spine", icon: Shield },
   { id: "overview", label: "Overview", icon: Eye },
   { id: "demo", label: "Live Demo", icon: Play },
   { id: "workspace", label: "Workspace", icon: Wrench },
@@ -230,6 +232,8 @@ export default function Console() {
         <KpiStrip state={state} />
 
         {/* Tab Content */}
+        {activeTab === "sovereign" && <SovereignSpineHUD />}
+
         {activeTab === "overview" && <OverviewTab />}
 
         {activeTab === "demo" && <LiveCapabilityDemo />}
