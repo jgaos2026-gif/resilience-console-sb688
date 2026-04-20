@@ -9,7 +9,7 @@ import Console from './pages/Console';
 import SB688Console from './pages/SB688Console';
 import JGALive from './pages/JGALive';
 import PublicObserver from './pages/PublicObserver';
-import JGAStory from './pages/JGAStory.jsx';
+import JGAStory from './pages/JGAStory';
 import BraidAnalytics from './pages/BraidAnalytics';
 // Add page imports here
 
