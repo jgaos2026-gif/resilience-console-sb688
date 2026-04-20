@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Shield, Zap, Radio, Lock, AlertTriangle, CheckCircle2, Activity, Cpu, BatteryCharging, Network, Key, Plus } from "lucide-react";
 import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
+import GovernanceReportGenerator from "@/components/sb688/GovernanceReportGenerator";
 
 // ── 1211 Color Palette — Nuclear-Hardened Gold ────────────────────────────────
 const GOLD    = "#FFD700";   // Sovereign Gold — Braid
@@ -712,14 +713,21 @@ export default function SovereignSpineHUD() {
           )}
         </div>
 
-        {/* RIGHT — Ghost Telemetry */}
-        <div className="xl:col-span-3 p-3">
+        {/* RIGHT — Ghost Telemetry + Report Generator */}
+        <div className="xl:col-span-3 p-3 flex flex-col gap-3">
           <GhostTelemetry
             pulseCount={pulseCount}
             ghostActive={ghostActive}
             lastHeal={lastHeal}
             integrity={integrity}
             clippedBricks={clippedBricks}
+          />
+          <GovernanceReportGenerator
+            ledger={ledger}
+            clippedBricks={clippedBricks}
+            pulseCount={pulseCount}
+            lastHeal={lastHeal}
+            integrity={integrity}
           />
         </div>
       </div>
