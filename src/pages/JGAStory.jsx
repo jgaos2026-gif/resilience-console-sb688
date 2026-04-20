@@ -6,70 +6,86 @@ import { Link } from "react-router-dom";
 
 const CHAPTERS = [
   {
-    year: "Origin",
-    title: "Before the Band",
+    year: "1981",
+    title: "Born in Illinois",
     icon: BookOpen,
     color: "#C9A84C",
-    text: `John Arenz didn't start as a musician. He started as a builder — someone who took broken things apart to understand why they failed, and then rebuilt them better. That instinct for systems, for structure, for finding the integrity underneath the noise — that's the foundation everything else grew from.
+    text: `John E. Arenz was born on August 21, 1981 in Illinois. From the very beginning, he was wired differently — the kind of kid who took apart every machine in the house just to see what made it tick, and then put it back together better than it was. Growing up in the heartland, surrounded by working people who built things with their hands, John absorbed a foundational truth early: if something carries your name, it better hold.
 
-Before JGA was a band, it was a philosophy: that what you build should be honest, resilient, and worth standing behind. That the work should hold up under pressure. That failure isn't the end — it's the diagnostic.`
+That Illinois upbringing — Mendota, the small-town grit, the no-shortcuts work ethic — became the bedrock of everything that followed. Not privilege. Not connections. Just an unshakeable instinct for how things are supposed to work, and a refusal to accept when they don't.`
   },
   {
-    year: "Formation",
-    title: "The JGA Sound",
+    year: "Early Years",
+    title: "The Builder's Instinct",
+    icon: Zap,
+    color: "#C9A84C",
+    text: `Before John ever picked up a guitar or wrote a line of code, he was a builder. Engines, wiring, structures — anything with moving parts that could fail. He didn't study failure in a classroom. He studied it in garages, in shops, in the real world where things break and someone has to fix them before morning.
+
+That hands-on education shaped everything. While other kids were playing video games, John was reverse-engineering how systems actually worked under stress. It wasn't a hobby. It was a compulsion. The question was never "what does it do?" — it was always "what happens when it breaks, and how fast can I bring it back?"
+
+This is where the Brick Stitch concept was born — not in a lab, but in the lived experience of watching systems fail and understanding that the architecture itself had to be the solution.`
+  },
+  {
+    year: "The Music",
+    title: "JGA — The Band",
     icon: Music,
     color: "#C9A84C",
-    text: `JGA — John Arenz's musical project — fuses hard-driving original rock with the kind of architectural thinking that runs through everything John touches. The name isn't a brand. It's a signature. Everything that carries JGA on it is built with the same standard: if it's worth making, it's worth making right.
+    text: `Music hit John the same way engineering did — as a system that either holds or it doesn't. JGA became the outlet for everything he couldn't express in blueprints. Hard-driving original rock, built on groove and intensity, with zero tolerance for filler.
 
-The sound is unapologetically original. Built on groove, driven by intensity, and structured around the idea that a band — like a resilient system — is only as strong as its weakest link. Which is why every link gets tested.`
+The band wasn't a side project. It was the same philosophy in a different language. A live set is a stress test. The audience is the operator. If the rhythm section breaks, the whole system goes down. So you build redundancy into the arrangement. You offset the load. You make sure every player knows their role and can absorb the hit when something shifts.
+
+JGA's sound is Mendota in every note — blue-collar, honest, and built to last. No covers. No compromise. Original music from a guy who treats a song the same way he treats a server rack: if it can't survive the pressure, it doesn't ship.`
   },
   {
-    year: "The Stage",
-    title: "Live & Loud",
-    icon: Mic2,
+    year: "Jay's Graphic Arts",
+    title: "The Business",
+    icon: Globe,
     color: "#C9A84C",
-    text: `JGA's live performances are built the same way the SB688 architecture is built — no single point of failure, every piece doing its job, and when something goes wrong (because it always can), the system keeps moving. That's not a backup plan. That's the plan.
+    text: `Jay's Graphic Arts started as John's business — a graphic design and printing operation built from scratch in Mendota, IL. No investors. No startup culture. Just a man, his skills, and the willingness to outwork anyone in the room.
 
-Live shows aren't a pitch. They're proof of concept. You don't explain resilience. You demonstrate it. Same principle applies on stage as it does in a server rack: the audience (or the operator) should never have to wonder if it's going to hold.`
+The business became the proving ground for everything John believed about systems. Customer management, production workflows, financial tracking, project delivery — every piece of the operation was a system that needed to be resilient. When something broke (and things always break), the question was never "who do we blame?" — it was "how fast do we recover, and how do we make sure it never happens the same way twice?"
+
+Jay's Graphic Arts wasn't just a company. It was the first real-world deployment of the philosophy that would become SB688: build modular, recover fast, prove it worked, and never drift from the standard.`
   },
   {
     year: "Architecture",
-    title: "Music Meets Engineering",
+    title: "The SB688 Vision",
     icon: Zap,
     color: "#C9A84C",
-    text: `The JGA band and the JGA architecture share more than initials. Both are built around the same design principles: redundancy without waste, integrity without bureaucracy, and recovery without pretending the failure didn't happen.
+    text: `The SB688 resilience architecture didn't come from a Silicon Valley think tank. It came from a guy in Mendota, Illinois who had spent his entire life building things that had to work under pressure and rebuilding them when they didn't.
 
-The Brick Stitch geometry — the patented infrastructure architecture John developed — came from the same intuition that makes a rhythm section hold together under pressure: offset the load, stagger the structure, and make every piece aware of the whole. A braid that heals. A mesh that doesn't break. A band that keeps playing.`
+The Brick Stitch geometry — the patented infrastructure pattern — was born from the same instinct that kept John's businesses running when competitors folded: offset the load, stagger the structure, make every piece aware of the whole. A braid that heals. A mesh that doesn't break.
+
+The National Resilience Council direction came from watching critical infrastructure fail — healthcare systems going down, financial networks crashing, government systems exposed — and knowing, from decades of hands-on experience, that the architecture itself was the problem. Not the people. Not the budget. The geometry was wrong. So John built a new one.`
   },
   {
     year: "Now",
-    title: "The National Resilience Council",
-    icon: Globe,
-    color: "#C9A84C",
-    text: `SB688 and the National Resilience Council represent John's most ambitious build to date — a cross-sector resilience platform designed to protect the systems that matter most: healthcare, defense, finance, infrastructure, government.
-
-The same obsessive attention to proof, to honest disclosure, to building things that work under pressure — all of it flows directly from the same source as the music. JGA isn't two different things. It's one person building, in every medium available, toward the same standard: if it carries my name, it holds.`
-  },
-  {
-    year: "Mission",
-    title: "What JGA Stands For",
+    title: "The Living Machine",
     icon: Star,
     color: "#C9A84C",
-    text: `"Build systems where elegance serves consequence. Where the interface tells the truth. Where recovery is not a hope — it is a mechanism. Where proof is not a promise — it is a test you can run."
+    text: `Today, John E. Arenz stands at the intersection of everything he's built — music, business, architecture, and the 1211 Sovereign Interface. The SB688 platform isn't software. It's a living machine built through AI-to-AI orchestration, designed to never drift, and controlled by the one key that matters: 1211.
 
-That's the JGA standard. Applied to music. Applied to infrastructure. Applied to every room we walk into and every system we touch. The name is the warranty.`
+From Mendota, IL to the National Resilience Council. From garage repairs to nuclear-hardened infrastructure. From a kid who took things apart to understand them, to a man who builds systems that protect the systems that matter most.
+
+The mission hasn't changed since August 21, 1981. Build things that hold. Prove they hold. And when they break — because everything breaks — bring them back faster than anyone thought possible, with zero data loss and full integrity.
+
+"If it carries my name, it holds." That's not marketing. That's a life.`
   },
 ];
 
 const TIMELINE = [
-  { year: "2018", event: "JGA — first original compositions written" },
-  { year: "2019", event: "First live performances — original setlist only" },
-  { year: "2021", event: "Brick Stitch architecture concept developed" },
-  { year: "2022", event: "SB688 resilience engine — first prototype" },
-  { year: "2023", event: "National Resilience Council direction formalized" },
-  { year: "2024", event: "SB688 Universal Console — multi-industry platform launch" },
-  { year: "2025", event: "Cross-sector deployment architecture finalized" },
-  { year: "2026", event: "JGA Live Rebuild — public demo console launched" },
+  { year: "1981", event: "Born August 21, 1981 — Mendota, Illinois" },
+  { year: "1990s", event: "Grew up building, repairing, and reverse-engineering machines — the foundation of everything" },
+  { year: "Early 2000s", event: "Jay's Graphic Arts founded in Mendota, IL — graphic design and print operations built from scratch" },
+  { year: "Mid 2000s", event: "JGA band formed — original rock compositions, zero covers, zero compromise" },
+  { year: "2010s", event: "First live JGA performances — full original setlist" },
+  { year: "2018", event: "JGA music catalog expanded — serious studio development begins" },
+  { year: "2021", event: "Brick Stitch architecture concept formalized — 1/2 Offset Spine+Ribs Geometry" },
+  { year: "2022", event: "SB688 resilience engine — first working prototype" },
+  { year: "2023", event: "National Resilience Council platform direction formalized" },
+  { year: "2024", event: "SB688 Universal Console — multi-industry platform deployed" },
+  { year: "2025", event: "Cross-sector deployment architecture finalized — 8 industries" },
+  { year: "2026", event: "1211 Sovereign Interface launched — JGA Live Rebuild goes public · NODE: MENDOTA-IL" },
 ];
 
 export default function JGAStory() {

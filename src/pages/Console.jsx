@@ -377,6 +377,9 @@ export default function Console() {
               <a href="/jga-live" className="text-[9px] text-primary/60 hover:text-primary transition border border-primary/20 hover:border-primary/40 rounded px-2 py-0.5">
                 JGA Live Rebuild →
               </a>
+              <a href="/braid-analytics" className="text-[9px] text-blue-400/60 hover:text-blue-400 transition border border-blue-500/20 hover:border-blue-500/40 rounded px-2 py-0.5">
+                Braid Analytics →
+              </a>
             </div>
           </div>
         </div>
