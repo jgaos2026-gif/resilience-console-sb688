@@ -3,6 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Loader2, Layers, Cpu, Zap, Activity, Brain, RefreshCw } from "lucide-react";
+import BrickStitchGraph from "@/components/sb688/BrickStitchGraph";
 
 const BENCHMARKS = [
   { metric: "Resilience Shear Point", standard: "7% Node Loss", brickStitch: "38% Node Loss", better: true },
@@ -190,6 +191,9 @@ Explain in 3-4 sentences why this matters for a CEO or CTO making infrastructure
           <Badge variant="outline" className="text-[10px] bg-secondary text-muted-foreground border-border">Proprietary / Strategic Infrastructure</Badge>
         </div>
       </div>
+
+      {/* Interactive Node Graph */}
+      <BrickStitchGraph />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Geometry Visualization */}
