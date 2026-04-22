@@ -380,6 +380,9 @@ export default function Console() {
               <a href="/braid-analytics" className="text-[9px] text-blue-400/60 hover:text-blue-400 transition border border-blue-500/20 hover:border-blue-500/40 rounded px-2 py-0.5">
                 Braid Analytics →
               </a>
+              <a href="/whitepaper-timeline" className="text-[9px] text-yellow-400/60 hover:text-yellow-400 transition border border-yellow-500/20 hover:border-yellow-500/40 rounded px-2 py-0.5">
+                White Papers →
+              </a>
             </div>
           </div>
         </div>

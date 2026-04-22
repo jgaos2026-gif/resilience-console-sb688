@@ -11,6 +11,7 @@ import JGALive from './pages/JGALive';
 import PublicObserver from './pages/PublicObserver';
 import JGAStory from './pages/JGAStory.jsx';
 import BraidAnalytics from './pages/BraidAnalytics';
+import WhitePaperTimeline from './pages/WhitePaperTimeline';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -45,6 +46,7 @@ const AuthenticatedApp = () => {
       <Route path="/observe" element={<PublicObserver />} />
       <Route path="/jga-story" element={<JGAStory />} />
       <Route path="/braid-analytics" element={<BraidAnalytics />} />
+      <Route path="/whitepaper-timeline" element={<WhitePaperTimeline />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
