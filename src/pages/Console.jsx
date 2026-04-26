@@ -35,6 +35,7 @@ import VerifiableProofSnapshot from "@/components/sb688/VerifiableProofSnapshot"
 import BuilderAttributionPanel from "@/components/sb688/BuilderAttributionPanel";
 import SovereignSpineHUD from "@/components/sb688/SovereignSpineHUD";
 import HistoricalReplay from "@/components/sb688/HistoricalReplay";
+import ComplianceReportTab from "@/components/sb688/ComplianceReportTab";
 
 const tabs = [
   { id: "sovereign", label: "Sovereign Spine", icon: Shield },
@@ -58,6 +59,7 @@ const tabs = [
   { id: "attribution", label: "Attribution", icon: Award },
   { id: "creators", label: "Creators", icon: Users },
   { id: "replay", label: "Historical Replay", icon: RotateCcw },
+  { id: "compliance", label: "Compliance", icon: FileCheck },
 ];
 
 export default function Console() {
@@ -351,6 +353,8 @@ export default function Console() {
         {activeTab === "creators" && <CreatorsTab />}
 
         {activeTab === "replay" && <HistoricalReplay />}
+
+        {activeTab === "compliance" && <ComplianceReportTab state={state} />}
       </main>
 
       {/* Footer */}
