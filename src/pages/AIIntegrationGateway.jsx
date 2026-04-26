@@ -18,7 +18,7 @@ const TIERS = [
     id: "tier1",
     number: "I",
     label: "Observer Tier",
-    subtitle: "Read-Only HR Telemetry",
+    subtitle: "Public View — No Logs, No Sensitive Data",
     color: "#3b82f6",
     borderColor: "border-blue-500/30",
     bgColor: "rgba(59,130,246,0.06)",
@@ -28,11 +28,11 @@ const TIERS = [
     capabilities: [
       "Live SB688 system health metrics feed",
       "Real-time resilience and continuity scores",
-      "Full component status monitoring",
-      "Direct telemetry stream to any AI system",
+      "Component status monitoring (public view)",
+      "No sensitive data, no code, no commands",
     ],
     restrictions: [],
-    scope: "LIVE | TELEMETRY | STREAMING",
+    scope: "OBSERVE | PUBLIC | NO_SENSITIVE_DATA",
   },
   {
     id: "tier2",
@@ -229,9 +229,56 @@ function TierCard({ tier, selected, onSelect }) {
   );
 }
 
+// ── Owner PIN gate (1211) ─────────────────────────────────────────────────────
+const OWNER_PIN = "1211";
+
+function OwnerPinGate({ onUnlock }) {
+  const [pin, setPin] = useState("");
+  const [error, setError] = useState(false);
+
+  const attempt = () => {
+    if (pin === OWNER_PIN) {
+      onUnlock();
+    } else {
+      setError(true);
+      setPin("");
+      setTimeout(() => setError(false), 900);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+      <div className="rounded-2xl border p-8 space-y-5 w-80 text-center"
+        style={{ background: "hsl(220,20%,6%)", borderColor: error ? "rgba(239,68,68,0.5)" : "rgba(201,168,76,0.3)", boxShadow: error ? "0 0 30px rgba(239,68,68,0.2)" : `0 0 30px rgba(201,168,76,0.12)` }}>
+        <div className="flex flex-col items-center gap-1">
+          <Lock className="w-8 h-8" style={{ color: GOLD }} />
+          <div className="text-sm font-bold font-cinzel mt-1" style={{ color: GOLD }}>Owner Access Required</div>
+          <div className="text-[10px] text-muted-foreground">Tier II & III — Operator only. Enter your key.</div>
+        </div>
+        <input
+          type="password"
+          value={pin}
+          onChange={e => setPin(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && attempt()}
+          maxLength={4}
+          placeholder="····"
+          autoFocus
+          className="w-full text-center text-2xl font-bold font-mono tracking-[0.5em] outline-none rounded-xl py-3 px-4 border"
+          style={{ background: "#0a0a0a", borderColor: error ? "rgba(239,68,68,0.4)" : "rgba(201,168,76,0.2)", color: error ? "#ef4444" : GOLD, caretColor: GOLD }}
+        />
+        {error && <div className="text-xs font-bold text-red-400">✗ Invalid key — access denied</div>}
+        <Button onClick={attempt} className="w-full bg-primary text-primary-foreground hover:bg-primary/90 text-xs font-bold">
+          Unlock
+        </Button>
+        <div className="text-[9px] text-muted-foreground/40">Observer Tier (Tier I) is always available without a key.</div>
+      </div>
+    </div>
+  );
+}
+
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function AIIntegrationGateway() {
-  const [selectedTier, setSelectedTier] = useState("tier2");
+  const [selectedTier, setSelectedTier] = useState("tier1");
   const [prompt, setPrompt] = useState("");
   const [aiSystem, setAiSystem] = useState("");
   const [sessions, setSessions] = useState([]);
@@ -239,9 +286,22 @@ export default function AIIntegrationGateway() {
   const [aiAnalysis, setAiAnalysis] = useState(null);
   const [analysisLoading, setAnalysisLoading] = useState(false);
   const [step, setStep] = useState(1); // 1=configure, 2=confirm, 3=active
+  const [ownerUnlocked, setOwnerUnlocked] = useState(false);
+  const [showPinGate, setShowPinGate] = useState(false);
 
   const tier = TIERS.find(t => t.id === selectedTier);
   const activeSessions = sessions.filter(s => s.expiresAt > Date.now());
+
+  // When a restricted tier is selected, require owner PIN
+  const handleTierSelect = (tierId) => {
+    if (tierId !== "tier1" && !ownerUnlocked) {
+      setShowPinGate(true);
+      // store intended tier to apply after unlock
+      setSelectedTier(tierId);
+    } else {
+      setSelectedTier(tierId);
+    }
+  };
 
   const handleIssue = useCallback(async () => {
     if (!prompt.trim() || !aiSystem.trim()) return;
@@ -296,6 +356,10 @@ Evaluate this integration request in 2-3 sentences. Confirm the integration is f
 
   return (
     <div className="min-h-screen bg-background text-foreground font-inter">
+      {/* Owner PIN gate overlay */}
+      {showPinGate && !ownerUnlocked && (
+        <OwnerPinGate onUnlock={() => { setOwnerUnlocked(true); setShowPinGate(false); }} />
+      )}
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border"
         style={{ background: "hsl(220,22%,5%)", boxShadow: "0 1px 0 rgba(201,168,76,0.18), 0 4px 24px rgba(0,0,0,0.6)" }}>
@@ -309,10 +373,16 @@ Evaluate this integration request in 2-3 sentences. Confirm the integration is f
             <div className="w-px h-8" style={{ background: "linear-gradient(180deg,transparent,rgba(201,168,76,0.45),transparent)" }} />
             <div>
               <div className="text-xs font-bold tracking-widest font-cinzel" style={{ color: GOLD }}>SB688 — AI Integration Gateway</div>
-              <div className="text-[9px] tracking-widest uppercase" style={{ color: "rgba(201,168,76,0.45)" }}>3-Tier HR Connectivity · 1-Hour Sessions · HMAC-Signed Tokens</div>
+              <div className="text-[9px] tracking-widest uppercase" style={{ color: "rgba(201,168,76,0.45)" }}>Tier I: Open Observer · Tier II–III: Owner Only · 1-Hour Sessions</div>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
+            {ownerUnlocked && (
+              <Badge className="text-[9px] border flex items-center gap-1" style={{ background: "rgba(201,168,76,0.1)", color: GOLD, borderColor: "rgba(201,168,76,0.35)" }}>
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse inline-block" style={{ background: GOLD }} />
+                Owner · 1211 Unlocked
+              </Badge>
+            )}
             {activeSessions.length > 0 && (
               <Badge className="text-[9px] border bg-green-500/10 text-green-400 border-green-500/30 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
@@ -393,7 +463,20 @@ Evaluate this integration request in 2-3 sentences. Confirm the integration is f
                 <h2 className="text-sm font-bold text-foreground">Select Integration Tier</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {TIERS.map(t => (
-                    <TierCard key={t.id} tier={t} selected={selectedTier === t.id} onSelect={setSelectedTier} />
+                    <div key={t.id} className="relative">
+                      <TierCard tier={t} selected={selectedTier === t.id} onSelect={handleTierSelect} />
+                      {t.id !== "tier1" && !ownerUnlocked && (
+                        <div className="absolute inset-0 rounded-2xl flex items-center justify-center cursor-pointer"
+                          style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(2px)" }}
+                          onClick={() => { setSelectedTier(t.id); setShowPinGate(true); }}>
+                          <div className="flex flex-col items-center gap-2 text-center px-4">
+                            <Lock className="w-6 h-6" style={{ color: GOLD }} />
+                            <span className="text-xs font-bold" style={{ color: GOLD }}>Owner Only</span>
+                            <span className="text-[10px] text-muted-foreground">Enter key 1211 to unlock</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
                 <div className="flex justify-end">
