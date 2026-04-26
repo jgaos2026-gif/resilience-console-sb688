@@ -12,6 +12,7 @@ import PublicObserver from './pages/PublicObserver';
 import JGAStory from './pages/JGAStory.jsx';
 import BraidAnalytics from './pages/BraidAnalytics';
 import WhitePaperTimeline from './pages/WhitePaperTimeline';
+import HowItWorks from './pages/HowItWorks';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -47,6 +48,7 @@ const AuthenticatedApp = () => {
       <Route path="/jga-story" element={<JGAStory />} />
       <Route path="/braid-analytics" element={<BraidAnalytics />} />
       <Route path="/whitepaper-timeline" element={<WhitePaperTimeline />} />
+      <Route path="/how-it-works" element={<HowItWorks />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

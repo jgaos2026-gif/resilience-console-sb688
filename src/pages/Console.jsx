@@ -383,6 +383,9 @@ export default function Console() {
               <a href="/whitepaper-timeline" className="text-[9px] text-yellow-400/60 hover:text-yellow-400 transition border border-yellow-500/20 hover:border-yellow-500/40 rounded px-2 py-0.5">
                 White Papers →
               </a>
+              <a href="/how-it-works" className="text-[9px] text-purple-400/60 hover:text-purple-400 transition border border-purple-500/20 hover:border-purple-500/40 rounded px-2 py-0.5">
+                How It Works →
+              </a>
             </div>
           </div>
         </div>
