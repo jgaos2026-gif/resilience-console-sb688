@@ -14,6 +14,7 @@ import BraidAnalytics from './pages/BraidAnalytics';
 import WhitePaperTimeline from './pages/WhitePaperTimeline';
 import HowItWorks from './pages/HowItWorks';
 import IndustryComparison from './pages/IndustryComparison';
+import AIBrain from './pages/AIBrain';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -51,6 +52,7 @@ const AuthenticatedApp = () => {
       <Route path="/whitepaper-timeline" element={<WhitePaperTimeline />} />
       <Route path="/how-it-works" element={<HowItWorks />} />
       <Route path="/industry-comparison" element={<IndustryComparison />} />
+      <Route path="/ai-brain" element={<AIBrain />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

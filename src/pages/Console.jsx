@@ -401,6 +401,9 @@ export default function Console() {
               <a href="/industry-comparison" className="text-[9px] text-teal-400/60 hover:text-teal-400 transition border border-teal-500/20 hover:border-teal-500/40 rounded px-2 py-0.5">
                   Industry Comparison →
                 </a>
+              <a href="/ai-brain" className="text-[9px] text-purple-400/60 hover:text-purple-400 transition border border-purple-500/20 hover:border-purple-500/40 rounded px-2 py-0.5">
+                  AI Brain →
+                </a>
             </div>
           </div>
         </div>
