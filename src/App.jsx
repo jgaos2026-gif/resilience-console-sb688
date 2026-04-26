@@ -16,6 +16,7 @@ import HowItWorks from './pages/HowItWorks';
 import IndustryComparison from './pages/IndustryComparison';
 import AIBrain from './pages/AIBrain';
 import AIIntegrationGateway from './pages/AIIntegrationGateway';
+import QuantumBraidPower from './pages/QuantumBraidPower';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -55,6 +56,7 @@ const AuthenticatedApp = () => {
       <Route path="/industry-comparison" element={<IndustryComparison />} />
       <Route path="/ai-brain" element={<AIBrain />} />
       <Route path="/ai-gateway" element={<AIIntegrationGateway />} />
+      <Route path="/quantum-braid" element={<QuantumBraidPower />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
