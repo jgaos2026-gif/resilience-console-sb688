@@ -108,10 +108,10 @@ export default function HowItWorks() {
         <div className="rounded-2xl border p-6 space-y-3" style={{ background: "rgba(201,168,76,0.04)", borderColor: "rgba(201,168,76,0.2)" }}>
           <h2 className="text-base font-bold" style={{ color: GOLD }}>The Big Idea — In One Sentence</h2>
           <p className="text-sm leading-relaxed" style={{ color: TEXT }}>
-            SB688 is a self-healing system that can survive up to <strong style={{ color: GOLD }}>38% of its parts failing at once</strong>, rebuild from a trusted snapshot with <strong style={{ color: GOLD }}>zero data loss</strong>, and prove it happened — all without specialized hardware.
+            SB688 is a self-healing system that begins its heal sequence automatically at <strong style={{ color: GOLD }}>99.8% integrity</strong>. At <strong style={{ color: GOLD }}>99.9% degradation</strong> — right before total collapse — it releases a <strong style={{ color: GOLD }}>Formate Node</strong> that scans and captures the full system state, then the system completes its controlled death and rebuilds itself to <strong style={{ color: GOLD }}>100% with zero data loss</strong>. All without specialized hardware.
           </p>
           <p className="text-xs leading-relaxed" style={{ color: DIM }}>
-            Think of it like a building made of bricks where each brick is held up by two bricks below it. If you pull one out, the two above shift and hold each other. The building doesn't fall — it redistributes the load automatically.
+            Think of it like a building that senses it's about to fall. At 99.8% damage it starts reinforcing itself. At 99.9% — a single instant before collapse — it sends out a scout that photographs every room, every wall, every brick. Then it falls intentionally, controlled, and rebuilds from those photographs perfectly. Nothing is lost. Nothing is forgotten.
           </p>
         </div>
 
@@ -195,8 +195,8 @@ export default function HowItWorks() {
           />
         </Section>
 
-        {/* Section 4 — Ghost Nodes */}
-        <Section icon={Radio} color="#a78bfa" title="4. Ghost Nodes — The Silent Guards">
+        {/* Section 4 — Ghost Nodes + Formate Node */}
+        <Section icon={Radio} color="#a78bfa" title="4. Ghost Nodes & The Formate Node — The Silent Guards">
           <p className="text-sm leading-relaxed" style={{ color: DIM }}>
             Ghost Nodes are decoys placed at the edges of the system. They look exactly like real nodes from the outside, but they have <strong style={{ color: "#a78bfa" }}>no write access</strong> to any trusted data. If a hacker, a bad probe, or a faulty signal hits the system, it hits a Ghost Node first.
           </p>
@@ -212,6 +212,36 @@ export default function HowItWorks() {
                 <div className="text-xs leading-relaxed" style={{ color: DIM }}>{r.val}</div>
               </div>
             ))}
+          </div>
+
+          {/* Formate Node */}
+          <div className="rounded-xl border p-5 space-y-3 mt-2" style={{ borderColor: "rgba(201,168,76,0.35)", background: "rgba(201,168,76,0.04)" }}>
+            <div className="text-sm font-bold" style={{ color: GOLD }}>The Formate Node — Released at 99.9%</div>
+            <p className="text-xs leading-relaxed" style={{ color: DIM }}>
+              The Formate Node is a special emergency node that the system releases at the <strong style={{ color: GOLD }}>exact moment integrity hits 99.9%</strong> — one step before total collapse. It is not a passive observer. It is an active scanner that captures a complete snapshot of the system's entire state in that final instant.
+            </p>
+            <div className="space-y-2">
+              {[
+                { step: "99.8%", color: "#f59e0b", title: "Heal Sequence Begins", desc: "The system detects degradation at 99.8% and immediately begins its self-heal protocol — rerouting, reinforcing, and preparing a recovery path." },
+                { step: "99.9%", color: "#ef4444", title: "Formate Node Released", desc: "One step before total collapse, the Formate Node is ejected from the Stem. It scans the entire system — every node, every stitch, every ledger entry — and carries that snapshot safely outside the dying system." },
+                { step: "100%", color: "#ef4444", title: "Controlled System Death", desc: "The system completes its controlled collapse. Nothing unsafe is committed. The ledger does not advance. The Formate Node holds the last clean state." },
+                { step: "REBUILD", color: "#22c55e", title: "Rebuild to 100% — Zero Data Loss", desc: "Using the Formate Node's snapshot, the system rebuilds every component to its exact pre-death state. The ledger advances once — only after every node passes verification. Data loss: 0.0000%." },
+              ].map((s, i) => (
+                <div key={i} className="flex gap-3 items-start">
+                  <div className="flex-shrink-0 text-[9px] font-bold font-mono px-2 py-1 rounded"
+                    style={{ background: s.color + "12", color: s.color, border: `1px solid ${s.color}30`, minWidth: 58, textAlign: "center" }}>
+                    {s.step}
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold" style={{ color: s.color }}>{s.title}</div>
+                    <div className="text-xs leading-relaxed" style={{ color: DIM }}>{s.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="rounded-lg px-3 py-2 text-[10px] font-mono" style={{ background: "rgba(0,0,0,0.4)", color: GOLD, border: "1px solid rgba(201,168,76,0.15)" }}>
+              Heal threshold: 99.8% → Formate release: 99.9% → Rebuild: 100% · Data loss: 0.0000%
+            </div>
           </div>
         </Section>
 
@@ -262,11 +292,13 @@ export default function HowItWorks() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {[
-              { formula: "38% node loss tolerance", plain: "Lose more than a third of your system — it still runs." },
-              { formula: "150% overhead (not 300%)", plain: "Half the cost of traditional triple-mirroring." },
-              { formula: "0.0000% data loss on heal", plain: "Every recovery restores exactly what was there before." },
-              { formula: "1:2 node support ratio", plain: "Each node is held up by two neighbors — load redistributes automatically." },
-              { formula: "45-minute temporal hold", plain: "Stem keeps state alive for 45 minutes without the Brain." },
+              { formula: "Heal begins at 99.8% degradation", plain: "The moment integrity drops to 99.8%, self-heal fires automatically — no human needed." },
+              { formula: "Formate Node released at 99.9%", plain: "One instant before collapse, a scanner node captures the full system state and holds it safely." },
+              { formula: "0.0000% data loss on rebuild", plain: "Rebuild from the Formate snapshot restores every node to its exact pre-death state. Nothing is lost." },
+              { formula: "38% node loss tolerance", plain: "Lose more than a third of your system — it still runs. Braid geometry absorbs the load." },
+              { formula: "150% overhead (not 300%)", plain: "Half the cost of traditional triple-mirroring. More resilience, lower price." },
+              { formula: "1:2 node support ratio", plain: "Each node is held up by two neighbors — load redistributes automatically on failure." },
+              { formula: "45-minute temporal hold", plain: "Stem keeps state alive for 45 minutes without the Brain. Brain rejoins with zero loss." },
               { formula: "SHA3-256 hash per ledger entry", plain: "Every record is cryptographically fingerprinted — tampering is instantly detectable." },
               { formula: "4-layer Brain casing", plain: "Four independent security checks before anything touches the core logic." },
               { formula: "7/7 proof suite tests", plain: "Seven automated verifications confirm every recovery is legitimate." },
