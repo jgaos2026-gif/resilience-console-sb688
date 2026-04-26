@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import SovereignStitchPanel from "@/components/sb688/SovereignStitchPanel";
+import DemoScript from "@/components/sb688/DemoScript";
 
 // ── Topology data ─────────────────────────────────────────────────────────────
 const NODES = [
@@ -642,6 +643,9 @@ export default function SB688Console() {
 
         {/* Sovereign Stitch Panel */}
         <SovereignStitchPanel />
+
+        {/* April 27 Demo Script */}
+        <DemoScript />
 
         {/* Builder Export */}
         <div className="bg-[#0e1218] border border-[#2a2622] rounded-lg p-4 space-y-3">
