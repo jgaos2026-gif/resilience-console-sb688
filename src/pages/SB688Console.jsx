@@ -3,6 +3,7 @@ import SovereignStitchPanel from "@/components/sb688/SovereignStitchPanel";
 import DemoScript from "@/components/sb688/DemoScript";
 import SovereignAuditPanel from "@/components/sb688/SovereignAuditPanel";
 import SpineArchitecturePanel from "@/components/sb688/SpineArchitecturePanel";
+import SovereignTerminal from "@/components/sb688/SovereignTerminal";
 
 // ── Topology data ─────────────────────────────────────────────────────────────
 const NODES = [
@@ -645,6 +646,9 @@ export default function SB688Console() {
 
         {/* Sovereign Stitch Panel */}
         <SovereignStitchPanel />
+
+        {/* Sovereign Terminal — LLM with brick programming */}
+        <SovereignTerminal />
 
         {/* Sovereign Spine Architecture */}
         <SpineArchitecturePanel />
