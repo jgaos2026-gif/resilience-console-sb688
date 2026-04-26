@@ -36,6 +36,7 @@ import BuilderAttributionPanel from "@/components/sb688/BuilderAttributionPanel"
 import SovereignSpineHUD from "@/components/sb688/SovereignSpineHUD";
 import HistoricalReplay from "@/components/sb688/HistoricalReplay";
 import ComplianceReportTab from "@/components/sb688/ComplianceReportTab";
+import PredictiveIntelligenceTab from "@/components/sb688/PredictiveIntelligenceTab";
 
 const tabs = [
   { id: "sovereign", label: "Sovereign Spine", icon: Shield },
@@ -60,6 +61,7 @@ const tabs = [
   { id: "creators", label: "Creators", icon: Users },
   { id: "replay", label: "Historical Replay", icon: RotateCcw },
   { id: "compliance", label: "Compliance", icon: FileCheck },
+  { id: "predictive", label: "Predictive AI", icon: Brain },
 ];
 
 export default function Console() {
@@ -355,6 +357,8 @@ export default function Console() {
         {activeTab === "replay" && <HistoricalReplay />}
 
         {activeTab === "compliance" && <ComplianceReportTab state={state} />}
+
+        {activeTab === "predictive" && <PredictiveIntelligenceTab state={state} />}
       </main>
 
       {/* Footer */}
