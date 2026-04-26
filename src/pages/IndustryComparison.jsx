@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   Shield, Zap, Heart, Plane, Building2, Cpu, Globe, Landmark,
   ChevronDown, ChevronUp, CheckCircle2, XCircle, ArrowRight, TrendingUp, AlertTriangle,
-  Monitor, Tablet, Smartphone
+  Monitor, Tablet, Smartphone, Link2, Rocket, Radio, Bot, Car
 } from "lucide-react";
 import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 
@@ -222,6 +222,116 @@ const INDUSTRIES = [
       "Immutable model training ledger — every weight update, every gradient, sealed with SHA3-256 for AI governance compliance",
     ],
   },
+  {
+    id: "neuro_link",
+    label: "Neuro-Link / BCI",
+    icon: Link2,
+    color: "#e879f9",
+    currentSystems: "Neuralink N1 implants, BrainGate arrays, Synchron Stentrode — all on proprietary closed-loop firmware with no geometric redundancy",
+    currentGap: "A single firmware node failure in a neural interface during active motor control can cause loss of patient mobility commands. No passive mesh fallback exists at the hardware layer.",
+    currentUses: [
+      "Motor cortex signal continuity during wireless dropout",
+      "Closed-loop stimulation integrity for Parkinson's patients",
+      "BCI firmware checkpoint versioning",
+      "Real-time spike sorting node redundancy",
+      "FDA-grade audit logging for implanted device events",
+    ],
+    futureUses: [
+      "Geometric Brick Stitch mesh absorbing BCI node dropout without interrupting patient motor commands — zero latency gap",
+      "Formate Node capturing full neural signal state before planned device firmware update — instant rollback if needed",
+      "Ghost nodes at the wireless BCI boundary absorbing spoofed signal injection before it reaches the implant decode layer",
+      "Sovereign Guardian detecting adversarial prompt injection into AI-assisted BCI decode models in real time",
+      "Immutable neural event ledger — every spike, every stimulation command, cryptographically sealed for FDA and IRB compliance",
+    ],
+  },
+  {
+    id: "space_travel",
+    label: "Space Travel / Deep Space",
+    icon: Rocket,
+    color: "#818cf8",
+    currentSystems: "NASA DSOC, SpaceX Starship onboard computers, Orion MPCV triple-redundant voting, ESA LEON processors on cold-standby clusters",
+    currentGap: "At Mars distance, round-trip signal latency is 6–44 minutes. Recovery commands cannot arrive in time. Software-reactive HA is useless — only passive geometric resilience survives.",
+    currentUses: [
+      "Spacecraft avionics voting system redundancy",
+      "Deep space comms relay node continuity",
+      "Orbital station life support control failover",
+      "Launch vehicle telemetry node HA",
+      "Satellite attitude control system integrity",
+    ],
+    futureUses: [
+      "Passive Brick Stitch braid on Mars-bound vessels — 38% avionics node loss absorbed geometrically with zero Earth-command dependency",
+      "Formate Node capturing full mission state at the moment of solar particle event for instant autonomous rebuild at Mars distance",
+      "Ghost nodes at spacecraft comms boundary absorbing spoofed ground-control signals during adversarial orbital pass",
+      "Immutable mission ledger sealed on-board — every thruster firing, every life support event, cryptographically signed for mission debrief",
+      "AI autopilot with Sovereign Guardian preventing hallucination drift in autonomous deep-space decision systems with no human correction loop",
+    ],
+  },
+  {
+    id: "mars_colonies",
+    label: "Mars Colonies",
+    icon: Globe,
+    color: "#f87171",
+    currentSystems: "Conceptual ISRU systems, SpaceX Starship cargo manifest planning, NASA Mars Surface systems — all still paper architecture with no deployed mesh resilience",
+    currentGap: "A single habitat pressurization controller failure with a 20-minute Earth signal delay means colonists cannot wait for remote recovery. Every system must self-heal passively or people die.",
+    currentUses: [
+      "Habitat environmental control node redundancy",
+      "ISRU oxygen production system continuity",
+      "Solar farm inverter mesh failover",
+      "Regolith excavation robot swarm coordination",
+      "Interplanetary comms relay checkpoint logging",
+    ],
+    futureUses: [
+      "Geometric Brick Stitch habitat mesh that absorbs 38% infrastructure node loss from radiation damage — colony survives without Earth intervention",
+      "Formate Node capturing full colony state at the moment of a dust storm power event for autonomous system rebuild",
+      "Ghost nodes at colony network perimeter absorbing adversarial signal injection during communications blackout windows",
+      "Immutable colony operations ledger — every life support event, every resource allocation, sealed for Earth mission control audit",
+      "Sovereign Guardian preventing AI hallucination in autonomous colony resource management systems operating without real-time Earth oversight",
+    ],
+  },
+  {
+    id: "radioactive_burst",
+    label: "Radioactive Burst / EMP Response",
+    icon: Radio,
+    color: "#fb923c",
+    currentSystems: "FEMA IPAWS, DoE radiological monitoring networks, NRC emergency response systems on legacy hot-standby with manual fallback",
+    currentGap: "An EMP or nuclear burst disables the very communication and control infrastructure needed to coordinate response. Software-reactive HA fails instantly — only passive geometry survives.",
+    currentUses: [
+      "Radiation sensor mesh continuity during blast events",
+      "Emergency broadcast network node redundancy",
+      "NRC reactor safety system failover monitoring",
+      "Dosimetry data logging integrity",
+      "Emergency response coordination network uptime",
+    ],
+    futureUses: [
+      "EMP-hardened Brick Stitch mesh where 38% of monitoring nodes are physically destroyed and the mesh still maintains situational awareness",
+      "Formate Node capturing full radiation field map state at the moment of burst for forensic-grade post-event reconstruction",
+      "Ghost nodes at monitoring network perimeter absorbing spoofed sensor data injected to mask actual radiation levels",
+      "Immutable radiation event ledger — every sensor reading, every response action, sealed with SHA3-256 for NRC and IAEA audit",
+      "AI exposure triage with Sovereign Guardian preventing hallucination in autonomous radiological risk assessment under infrastructure stress",
+    ],
+  },
+  {
+    id: "robotics_av",
+    label: "Robotics / Self-Driving Vehicles",
+    icon: Car,
+    color: "#34d399",
+    currentSystems: "Waymo Driver, Tesla FSD, Boston Dynamics controllers, ROS2 on traditional active-passive failover with software watchdogs",
+    currentGap: "At 70mph a software watchdog restart takes 200ms — enough to cause a fatality. Reactive recovery is incompatible with real-time robotics. Geometric passive resilience is the only viable path.",
+    currentUses: [
+      "Autonomous vehicle sensor fusion node redundancy",
+      "Robot swarm coordination mesh continuity",
+      "EV fleet management system HA",
+      "Industrial robot arm controller failover",
+      "V2X infrastructure node uptime",
+    ],
+    futureUses: [
+      "Brick Stitch sensor mesh absorbing LiDAR or camera node failure at highway speed — vehicle maintains safe trajectory without software restart",
+      "Formate Node capturing full vehicle state at the moment of critical sensor failure for regulatory black-box forensics",
+      "Ghost nodes at V2X network boundary absorbing spoofed traffic signal injection before it reaches the autonomous decision layer",
+      "Immutable fleet operations ledger — every steering command, every braking event, sealed with SHA3-256 for NHTSA and SAE audit",
+      "Sovereign Guardian preventing adversarial prompt injection into LLM-assisted autonomous decision models at 70mph",
+    ],
+  },
 ];
 
 // ── Sub-components ─────────────────────────────────────────────────────────────
@@ -398,7 +508,7 @@ export default function IndustryComparison() {
             <div className="w-px h-8" style={{ background: "linear-gradient(180deg,transparent,rgba(201,168,76,0.45),transparent)" }} />
             <div>
               <div className="text-xs font-bold tracking-widest font-cinzel" style={{ color: GOLD }}>SB688 — Industry Comparison</div>
-              <div className="text-[9px] tracking-widest uppercase" style={{ color: "rgba(201,168,76,0.45)" }}>Stress Test · 8 Industries · 80 Use Cases</div>
+              <div className="text-[9px] tracking-widest uppercase" style={{ color: "rgba(201,168,76,0.45)" }}>Stress Test · 13 Industries · 130 Use Cases</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -466,7 +576,7 @@ export default function IndustryComparison() {
           </div>
           <h1 className={`${vm.heroTitle} font-bold font-cinzel`} style={{ color: GOLD }}>SB688 vs Everything Else</h1>
           <p className="text-sm leading-relaxed max-w-2xl mx-auto" style={{ color: DIM }}>
-            A head-to-head stress test against legacy infrastructure. 8 industries. 15 performance metrics. 40 current use cases. 40 future use cases. All the evidence — plain English, no gatekeeping.
+            A head-to-head stress test against legacy infrastructure. 13 industries. 15 performance metrics. 65 current use cases. 65 future use cases. All the evidence — plain English, no gatekeeping.
           </p>
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <Badge className="text-[10px] border font-bold" style={{ background: "rgba(34,197,94,0.08)", color: "#22c55e", borderColor: "rgba(34,197,94,0.25)" }}>15/15 Metrics Won</Badge>
