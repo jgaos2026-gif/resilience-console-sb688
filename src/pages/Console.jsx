@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { INDUSTRIES, createInitialState, loadScenario, simulateProblem, runRecovery, runProofSuite, factoryReset } from "@/lib/sb688Engine";
 // AI communications are handled via base44.integrations.Core.InvokeLLM — no external API keys needed.
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -37,6 +37,7 @@ import SovereignSpineHUD from "@/components/sb688/SovereignSpineHUD";
 import HistoricalReplay from "@/components/sb688/HistoricalReplay";
 import ComplianceReportTab from "@/components/sb688/ComplianceReportTab";
 import PredictiveIntelligenceTab from "@/components/sb688/PredictiveIntelligenceTab";
+import BraidReplay, { captureSnapshot } from "@/components/sb688/BraidReplay";
 
 const tabs = [
   { id: "sovereign", label: "Sovereign Spine", icon: Shield },
@@ -62,6 +63,7 @@ const tabs = [
   { id: "replay", label: "Historical Replay", icon: RotateCcw },
   { id: "compliance", label: "Compliance", icon: FileCheck },
   { id: "predictive", label: "Predictive AI", icon: Brain },
+  { id: "braid_replay", label: "Braid Replay", icon: RotateCcw },
 ];
 
 export default function Console() {
@@ -69,6 +71,25 @@ export default function Console() {
   const [activeTab, setActiveTab] = useState("overview");
   const [copied, setCopied] = useState(false);
   const [observerMode, setObserverMode] = useState(false);
+  const [snapshots, setSnapshots] = useState([]);
+
+  // Auto-capture snapshot on meaningful state changes
+  const prevStateRef = useRef(null);
+  useEffect(() => {
+    const prev = prevStateRef.current;
+    const changed = !prev ||
+      prev.resilienceScore !== state.resilienceScore ||
+      prev.continuityScore !== state.continuityScore ||
+      prev.operationalState !== state.operationalState ||
+      prev.proofRun !== state.proofRun ||
+      prev.recoveryRun !== state.recoveryRun ||
+      prev.problemSimulated !== state.problemSimulated ||
+      prev.industry !== state.industry;
+    if (changed) {
+      setSnapshots(prev => [...prev, captureSnapshot(state)]);
+      prevStateRef.current = state;
+    }
+  }, [state.resilienceScore, state.continuityScore, state.operationalState, state.proofRun, state.recoveryRun, state.problemSimulated, state.industry]);
 
   const handleCopyObserverLink = () => {
     const url = `${window.location.origin}/observe`;
@@ -113,6 +134,7 @@ export default function Console() {
 
   const handleReset = useCallback(() => {
     setState(factoryReset());
+    setSnapshots([]);
   }, []);
 
   const handleProof = useCallback(() => {
@@ -359,6 +381,14 @@ export default function Console() {
         {activeTab === "compliance" && <ComplianceReportTab state={state} />}
 
         {activeTab === "predictive" && <PredictiveIntelligenceTab state={state} />}
+
+        {activeTab === "braid_replay" && (
+          <BraidReplay
+            state={state}
+            snapshots={snapshots}
+            onClearSnapshots={() => setSnapshots([])}
+          />
+        )}
       </main>
 
       {/* Footer */}
