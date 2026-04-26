@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import {
   Shield, Zap, Heart, Plane, Building2, Cpu, Globe, Landmark,
-  ChevronDown, ChevronUp, CheckCircle2, XCircle, ArrowRight, TrendingUp, AlertTriangle
+  ChevronDown, ChevronUp, CheckCircle2, XCircle, ArrowRight, TrendingUp, AlertTriangle,
+  Monitor, Tablet, Smartphone
 } from "lucide-react";
 import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 
@@ -241,7 +242,7 @@ function StressRow({ metric, sb688, legacy, winner, i }) {
   );
 }
 
-function IndustryCard({ ind }) {
+function IndustryCard({ ind, compact = false }) {
   const [open, setOpen] = useState(false);
   const Icon = ind.icon;
   return (
@@ -255,8 +256,8 @@ function IndustryCard({ ind }) {
             <Icon className="w-5 h-5" style={{ color: ind.color }} />
           </div>
           <div>
-            <div className="text-sm font-bold" style={{ color: open ? ind.color : TEXT }}>{ind.label}</div>
-            <div className="text-[10px] mt-0.5" style={{ color: DIM }}>{ind.currentSystems.split(",")[0].trim()} + more</div>
+            <div className={`${compact ? "text-xs" : "text-sm"} font-bold`} style={{ color: open ? ind.color : TEXT }}>{ind.label}</div>
+            {!compact && <div className="text-[10px] mt-0.5" style={{ color: DIM }}>{ind.currentSystems.split(",")[0].trim()} + more</div>}
           </div>
         </div>
         {open
@@ -310,10 +311,76 @@ function IndustryCard({ ind }) {
   );
 }
 
+// ── View mode config ──────────────────────────────────────────────────────────
+const VIEW_MODES = [
+  {
+    id: "desktop",
+    icon: Monitor,
+    label: "Desktop",
+    maxW: "max-w-5xl",
+    industryGrid: "grid grid-cols-1 lg:grid-cols-2 gap-3",
+    stressGrid: "grid grid-cols-3",
+    metricGrid: "grid grid-cols-2 sm:grid-cols-4",
+    heroSize: { crown: 44, lion: 52 },
+    heroTitle: "text-3xl",
+    showLegacyNames: true,
+    compactAudit: false,
+  },
+  {
+    id: "tablet",
+    icon: Tablet,
+    label: "Tablet",
+    maxW: "max-w-2xl",
+    industryGrid: "grid grid-cols-1 gap-3",
+    stressGrid: "grid grid-cols-3",
+    metricGrid: "grid grid-cols-2",
+    heroSize: { crown: 36, lion: 44 },
+    heroTitle: "text-2xl",
+    showLegacyNames: true,
+    compactAudit: true,
+  },
+  {
+    id: "mobile",
+    icon: Smartphone,
+    label: "Mobile",
+    maxW: "max-w-sm",
+    industryGrid: "grid grid-cols-1 gap-2",
+    stressGrid: "grid grid-cols-1",
+    metricGrid: "grid grid-cols-2",
+    heroSize: { crown: 28, lion: 34 },
+    heroTitle: "text-xl",
+    showLegacyNames: false,
+    compactAudit: true,
+  },
+];
+
+// ── Mobile stress row (single col) ────────────────────────────────────────────
+function StressRowMobile({ metric, sb688, legacy, i }) {
+  return (
+    <div className="rounded-lg p-3 space-y-1.5 text-xs"
+      style={{ background: i % 2 === 0 ? "rgba(255,255,255,0.02)" : "transparent" }}>
+      <div className="font-semibold" style={{ color: "rgba(201,168,76,0.7)" }}>{metric}</div>
+      <div className="flex gap-3">
+        <div className="flex items-center gap-1 flex-1" style={{ color: "#22c55e" }}>
+          <CheckCircle2 className="w-3 h-3 flex-shrink-0" />
+          <span className="font-bold">{sb688}</span>
+        </div>
+        <div className="flex items-center gap-1 flex-1" style={{ color: "rgba(239,68,68,0.65)" }}>
+          <XCircle className="w-3 h-3 flex-shrink-0" />
+          <span>{legacy}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function IndustryComparison() {
   const [stressOpen, setStressOpen] = useState(true);
   const [legacyOpen, setLegacyOpen] = useState(false);
+  const [viewMode, setViewMode] = useState("desktop");
+
+  const vm = VIEW_MODES.find(v => v.id === viewMode);
 
   return (
     <div className="min-h-screen font-inter" style={{ background: BG, color: TEXT }}>
@@ -334,12 +401,32 @@ export default function IndustryComparison() {
               <div className="text-[9px] tracking-widest uppercase" style={{ color: "rgba(201,168,76,0.45)" }}>Stress Test · 8 Industries · 80 Use Cases</div>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            {/* View mode switcher */}
+            <div className="flex items-center rounded-lg border overflow-hidden" style={{ borderColor: BORDER }}>
+              {VIEW_MODES.map(v => {
+                const Icon = v.icon;
+                const active = viewMode === v.id;
+                return (
+                  <button key={v.id} onClick={() => setViewMode(v.id)}
+                    title={v.label}
+                    className="px-2.5 py-1.5 flex items-center gap-1 text-[10px] font-semibold transition-all"
+                    style={{
+                      background: active ? "rgba(201,168,76,0.15)" : "transparent",
+                      color: active ? GOLD : "rgba(201,168,76,0.35)",
+                      borderRight: v.id !== "mobile" ? `1px solid ${BORDER}` : "none",
+                    }}>
+                    <Icon className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">{v.label}</span>
+                  </button>
+                );
+              })}
+            </div>
             <Link to="/" className="text-[10px] px-3 py-1.5 rounded border font-semibold"
               style={{ color: GOLD, borderColor: "rgba(201,168,76,0.3)", background: "rgba(201,168,76,0.06)" }}>
               ← Console
             </Link>
-            <Link to="/how-it-works" className="text-[10px] px-3 py-1.5 rounded border font-semibold"
+            <Link to="/how-it-works" className="text-[10px] px-3 py-1.5 rounded border font-semibold hidden sm:block"
               style={{ color: DIM, borderColor: BORDER }}>
               How It Works
             </Link>
@@ -348,7 +435,28 @@ export default function IndustryComparison() {
         <div style={{ height: 1, background: "linear-gradient(90deg,transparent,rgba(201,168,76,0.2),transparent)" }} />
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-10 space-y-10">
+      {/* View mode indicator */}
+      <div className="flex items-center justify-center gap-2 py-1.5 text-[10px] border-b"
+        style={{ background: "rgba(201,168,76,0.03)", borderColor: BORDER }}>
+        {VIEW_MODES.map(v => {
+          const Icon = v.icon;
+          const active = viewMode === v.id;
+          return (
+            <button key={v.id} onClick={() => setViewMode(v.id)}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full border transition-all font-semibold"
+              style={{
+                background: active ? "rgba(201,168,76,0.12)" : "transparent",
+                color: active ? GOLD : "rgba(201,168,76,0.3)",
+                borderColor: active ? "rgba(201,168,76,0.35)" : "transparent",
+              }}>
+              <Icon className="w-3 h-3" /> {v.label}
+            </button>
+          );
+        })}
+        <span className="ml-2" style={{ color: "rgba(201,168,76,0.3)" }}>— Viewing as <strong style={{ color: GOLD }}>{vm.label}</strong></span>
+      </div>
+
+      <main className={`${vm.maxW} mx-auto px-4 py-8 space-y-8 transition-all duration-300`}>
 
         {/* Hero */}
         <div className="text-center space-y-4">
@@ -356,7 +464,7 @@ export default function IndustryComparison() {
             <CrownIcon size={44} color={GOLD} />
             <LionIcon  size={52} color={GOLD} />
           </div>
-          <h1 className="text-3xl font-bold font-cinzel" style={{ color: GOLD }}>SB688 vs Everything Else</h1>
+          <h1 className={`${vm.heroTitle} font-bold font-cinzel`} style={{ color: GOLD }}>SB688 vs Everything Else</h1>
           <p className="text-sm leading-relaxed max-w-2xl mx-auto" style={{ color: DIM }}>
             A head-to-head stress test against legacy infrastructure. 8 industries. 15 performance metrics. 40 current use cases. 40 future use cases. All the evidence — plain English, no gatekeeping.
           </p>
@@ -369,7 +477,7 @@ export default function IndustryComparison() {
         </div>
 
         {/* Key numbers strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className={`${vm.metricGrid} gap-3`}>
           {[
             { val: "38%",      label: "Node Loss Survived",      color: "#22c55e" },
             { val: "0.0000%",  label: "Data Loss on Full Heal",  color: GOLD },
@@ -398,15 +506,24 @@ export default function IndustryComparison() {
           {stressOpen && (
             <div className="px-4 pb-5 space-y-1">
               <div style={{ height: 1, background: `linear-gradient(90deg,transparent,rgba(201,168,76,0.2),transparent)`, marginBottom: 8 }} />
-              {/* Header row */}
-              <div className="grid grid-cols-3 gap-2 px-3 pb-2 text-[9px] font-bold uppercase tracking-widest" style={{ color: "rgba(201,168,76,0.5)" }}>
-                <div>Metric</div>
-                <div style={{ color: "#22c55e" }}>SB688</div>
-                <div style={{ color: "#ef4444" }}>Legacy / Industry Standard</div>
-              </div>
-              {STRESS_TESTS.map((row, i) => (
-                <StressRow key={i} {...row} i={i} />
-              ))}
+              {viewMode === "mobile" ? (
+                <>
+                  <div className="flex gap-3 px-2 pb-2 text-[9px] font-bold uppercase tracking-widest">
+                    <div className="flex-1" style={{ color: "#22c55e" }}>SB688</div>
+                    <div className="flex-1" style={{ color: "#ef4444" }}>Legacy</div>
+                  </div>
+                  {STRESS_TESTS.map((row, i) => <StressRowMobile key={i} {...row} i={i} />)}
+                </>
+              ) : (
+                <>
+                  <div className="grid grid-cols-3 gap-2 px-3 pb-2 text-[9px] font-bold uppercase tracking-widest" style={{ color: "rgba(201,168,76,0.5)" }}>
+                    <div>Metric</div>
+                    <div style={{ color: "#22c55e" }}>SB688</div>
+                    <div style={{ color: "#ef4444" }}>Legacy / Industry Standard</div>
+                  </div>
+                  {STRESS_TESTS.map((row, i) => <StressRow key={i} {...row} i={i} />)}
+                </>
+              )}
             </div>
           )}
         </div>
@@ -438,12 +555,14 @@ export default function IndustryComparison() {
         {/* ── Industries ── */}
         <div className="space-y-3">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <h2 className="text-base font-bold font-cinzel" style={{ color: GOLD }}>8 Industries — Current vs Future</h2>
+            <h2 className={`${vm.id === "mobile" ? "text-sm" : "text-base"} font-bold font-cinzel`} style={{ color: GOLD }}>8 Industries — Current vs Future</h2>
             <span className="text-[10px]" style={{ color: DIM }}>Tap any industry to expand</span>
           </div>
-          {INDUSTRIES.map(ind => (
-            <IndustryCard key={ind.id} ind={ind} />
-          ))}
+          <div className={vm.industryGrid}>
+            {INDUSTRIES.map(ind => (
+              <IndustryCard key={ind.id} ind={ind} compact={vm.compactAudit} />
+            ))}
+          </div>
         </div>
 
         {/* Bottom summary */}
