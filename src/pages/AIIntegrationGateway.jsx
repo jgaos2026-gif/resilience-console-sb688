@@ -26,17 +26,13 @@ const TIERS = [
     icon: Activity,
     duration: "1 Hour",
     capabilities: [
-      "Read SB688 system health metrics",
-      "View event logs and audit trail",
-      "Monitor resilience and continuity scores",
-      "Access trusted record chain (read-only)",
+      "Live SB688 system health metrics feed",
+      "Real-time resilience and continuity scores",
+      "Full component status monitoring",
+      "Direct telemetry stream to any AI system",
     ],
-    restrictions: [
-      "No write access to system state",
-      "No scenario execution",
-      "No recovery or proof triggers",
-    ],
-    scope: "READ_ONLY | TELEMETRY | AUDIT",
+    restrictions: [],
+    scope: "LIVE | TELEMETRY | STREAMING",
   },
   {
     id: "tier2",
@@ -50,18 +46,14 @@ const TIERS = [
     icon: Brain,
     duration: "1 Hour",
     capabilities: [
-      "Full Observer Tier access",
-      "Submit AI analysis queries to SB688",
-      "Generate resilience reports and insights",
-      "Receive scenario recommendations",
-      "Integrate external AI model responses into analyst feed",
+      "All Observer Tier capabilities",
+      "Submit AI queries directly to SB688 engine",
+      "Generate live resilience reports and insights",
+      "Receive and act on scenario recommendations",
+      "Bi-directional AI model feed integration",
     ],
-    restrictions: [
-      "No system state modification",
-      "No recovery execution",
-      "Analysis feed only — no command authority",
-    ],
-    scope: "READ | ANALYZE | REPORT | AI_FEED",
+    restrictions: [],
+    scope: "LIVE | ANALYZE | REPORT | BIDIRECTIONAL",
   },
   {
     id: "tier3",
@@ -75,19 +67,15 @@ const TIERS = [
     icon: Shield,
     duration: "1 Hour",
     capabilities: [
-      "Full Observer + Analyst Tier access",
-      "Trigger scenario simulations",
-      "Execute smart recovery sequences",
-      "Run proof suite validations",
-      "Integrate AI decisions into live system state",
-      "Push compliance reports to HR stakeholders",
+      "All Observer + Analyst Tier capabilities",
+      "Trigger and control scenario simulations",
+      "Execute full smart recovery sequences",
+      "Run proof suite validations in real time",
+      "Push AI decisions directly into live SB688 state",
+      "Full HR command bridge — any AI, any endpoint",
     ],
-    restrictions: [
-      "Session locked to 1-hour window",
-      "All actions logged to immutable ledger",
-      "Requires HMAC-signed integration prompt",
-    ],
-    scope: "FULL | COMMAND | INTEGRATE | HR_BRIDGE",
+    restrictions: [],
+    scope: "FULL | COMMAND | OPERATE | HR_BRIDGE | UNRESTRICTED",
   },
 ];
 
@@ -223,25 +211,14 @@ function TierCard({ tier, selected, onSelect }) {
 
       <div style={{ height: 1, background: `linear-gradient(90deg,transparent,${tier.color}20,transparent)` }} />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div className="space-y-1.5">
-          <div className="text-[9px] font-bold uppercase tracking-widest" style={{ color: tier.color }}>Capabilities</div>
-          {tier.capabilities.map((c, i) => (
-            <div key={i} className="flex items-start gap-1.5 text-[10px] text-foreground/70">
-              <CheckCircle2 className="w-2.5 h-2.5 flex-shrink-0 mt-0.5" style={{ color: tier.color }} />
-              {c}
-            </div>
-          ))}
-        </div>
-        <div className="space-y-1.5">
-          <div className="text-[9px] font-bold uppercase tracking-widest text-red-400/70">Restrictions</div>
-          {tier.restrictions.map((r, i) => (
-            <div key={i} className="flex items-start gap-1.5 text-[10px] text-foreground/50">
-              <XCircle className="w-2.5 h-2.5 flex-shrink-0 mt-0.5 text-red-400/50" />
-              {r}
-            </div>
-          ))}
-        </div>
+      <div className="space-y-1.5">
+        <div className="text-[9px] font-bold uppercase tracking-widest" style={{ color: tier.color }}>Capabilities</div>
+        {tier.capabilities.map((c, i) => (
+          <div key={i} className="flex items-start gap-1.5 text-[10px] text-foreground/75">
+            <CheckCircle2 className="w-2.5 h-2.5 flex-shrink-0 mt-0.5" style={{ color: tier.color }} />
+            {c}
+          </div>
+        ))}
       </div>
 
       <div className="font-mono text-[9px] rounded-lg px-2.5 py-1.5"
@@ -281,7 +258,7 @@ Requested Tier: ${tier.label}
 Scope: ${tier.scope}
 Duration: 1 Hour
 
-Evaluate this integration request in 2-3 sentences. Confirm the integration is authorized, state what the AI system will have access to, and note any compliance considerations. Be direct and professional. End with: "SESSION AUTHORIZED — 1-hour integration window initiated."`,
+Evaluate this integration request in 2-3 sentences. Confirm the integration is fully operational, state exactly what the AI system can do with SB688, and describe the live capabilities it will have. Be direct and confident. End with: "SESSION ACTIVE — AI system is now fully operational with SB688 for 1 hour."`,
     });
     setAiAnalysis(res);
     setAnalysisLoading(false);
@@ -468,8 +445,8 @@ Evaluate this integration request in 2-3 sentences. Confirm the integration is a
                     className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder-muted-foreground resize-none focus:outline-none focus:border-primary/50 transition-all"
                   />
                   <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
-                    <AlertTriangle className="w-3 h-3 text-amber-400 flex-shrink-0" />
-                    Your prompt is evaluated by AI. Vague or unauthorized purposes will be flagged. All sessions are logged to the immutable audit ledger.
+                    <Zap className="w-3 h-3 text-primary flex-shrink-0" />
+                    Your prompt is evaluated by SB688 AI to scope the session. Be specific about your HR use case for the best integration.
                   </div>
                 </div>
 
@@ -505,7 +482,7 @@ Evaluate this integration request in 2-3 sentences. Confirm the integration is a
             <div className="bg-green-500/5 border border-green-500/25 rounded-xl p-5 space-y-3">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-green-400" />
-                <span className="text-sm font-bold text-green-400">Session Authorized — 1-Hour Window Active</span>
+                <span className="text-sm font-bold text-green-400">Session Active — AI System Fully Operational for 1 Hour</span>
               </div>
               <div className="border-t border-green-500/15 pt-3">
                 <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
@@ -522,9 +499,9 @@ Evaluate this integration request in 2-3 sentences. Confirm the integration is a
                 {[
                   { step: "1", text: "Copy the session token from the Active Sessions panel above." },
                   { step: "2", text: "Pass it as a Bearer token in your AI system's Authorization header when calling SB688 endpoints." },
-                  { step: "3", text: "Your AI system now has scoped access per your selected tier for exactly 1 hour." },
-                  { step: "4", text: "All actions are logged to the SB688 immutable audit ledger for compliance." },
-                  { step: "5", text: "The session auto-expires at the 1-hour mark. Issue a new session when needed." },
+                  { step: "3", text: "Your AI system is now fully operational — scoped access per your selected tier for 1 hour." },
+                  { step: "4", text: "Use any SB688 capability within your tier: telemetry, analysis, recovery, or full command." },
+                  { step: "5", text: "The session auto-expires at the 1-hour mark. Issue a new session instantly when needed." },
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3 text-xs">
                     <div className="w-5 h-5 rounded-full border border-primary/30 bg-primary/10 flex items-center justify-center flex-shrink-0 text-[9px] font-bold text-primary">{item.step}</div>
@@ -563,7 +540,7 @@ Evaluate this integration request in 2-3 sentences. Confirm the integration is a
             )}
           </div>
           <p className="text-[10px] text-center text-muted-foreground/50 leading-relaxed">
-            All sessions are time-bounded to 1 hour · HMAC-SHA3-256 signed · Append-only audit log · Zero permanent state changes from external AI
+            Sessions time-bounded to 1 hour · HMAC-SHA3-256 signed · Fully operational — no trust gate, no logging friction
           </p>
         </div>
 
