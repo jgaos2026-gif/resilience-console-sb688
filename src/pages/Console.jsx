@@ -404,6 +404,9 @@ export default function Console() {
               <a href="/ai-brain" className="text-[9px] text-purple-400/60 hover:text-purple-400 transition border border-purple-500/20 hover:border-purple-500/40 rounded px-2 py-0.5">
                   AI Brain →
                 </a>
+              <a href="/ai-gateway" className="text-[9px] text-orange-400/60 hover:text-orange-400 transition border border-orange-500/20 hover:border-orange-500/40 rounded px-2 py-0.5">
+                  AI Gateway →
+                </a>
             </div>
           </div>
         </div>
