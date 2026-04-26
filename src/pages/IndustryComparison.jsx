@@ -580,8 +580,8 @@ export default function IndustryComparison() {
           </p>
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <Badge className="text-[10px] border font-bold" style={{ background: "rgba(34,197,94,0.08)", color: "#22c55e", borderColor: "rgba(34,197,94,0.25)" }}>15/15 Metrics Won</Badge>
-            <Badge className="text-[10px] border font-bold" style={{ background: "rgba(201,168,76,0.08)", color: GOLD, borderColor: "rgba(201,168,76,0.25)" }}>8 Industries</Badge>
-            <Badge className="text-[10px] border font-bold" style={{ background: "rgba(59,130,246,0.08)", color: "#60a5fa", borderColor: "rgba(59,130,246,0.25)" }}>80 Use Cases</Badge>
+            <Badge className="text-[10px] border font-bold" style={{ background: "rgba(201,168,76,0.08)", color: GOLD, borderColor: "rgba(201,168,76,0.25)" }}>13 Industries</Badge>
+            <Badge className="text-[10px] border font-bold" style={{ background: "rgba(59,130,246,0.08)", color: "#60a5fa", borderColor: "rgba(59,130,246,0.25)" }}>130 Use Cases</Badge>
             <Badge className="text-[10px] border font-bold" style={{ background: "rgba(239,68,68,0.08)", color: "#f87171", borderColor: "rgba(239,68,68,0.2)" }}>BSS-2026-ARCH-01</Badge>
           </div>
         </div>
@@ -665,7 +665,7 @@ export default function IndustryComparison() {
         {/* ── Industries ── */}
         <div className="space-y-3">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <h2 className={`${vm.id === "mobile" ? "text-sm" : "text-base"} font-bold font-cinzel`} style={{ color: GOLD }}>8 Industries — Current vs Future</h2>
+            <h2 className={`${vm.id === "mobile" ? "text-sm" : "text-base"} font-bold font-cinzel`} style={{ color: GOLD }}>13 Industries — Current vs Future</h2>
             <span className="text-[10px]" style={{ color: DIM }}>Tap any industry to expand</span>
           </div>
           <div className={vm.industryGrid}>
