@@ -34,6 +34,7 @@ import QuarantinePanel from "@/components/sb688/QuarantinePanel";
 import VerifiableProofSnapshot from "@/components/sb688/VerifiableProofSnapshot";
 import BuilderAttributionPanel from "@/components/sb688/BuilderAttributionPanel";
 import SovereignSpineHUD from "@/components/sb688/SovereignSpineHUD";
+import HistoricalReplay from "@/components/sb688/HistoricalReplay";
 
 const tabs = [
   { id: "sovereign", label: "Sovereign Spine", icon: Shield },
@@ -56,6 +57,7 @@ const tabs = [
   { id: "proof_snapshot", label: "Proof Snapshot", icon: FileCheck },
   { id: "attribution", label: "Attribution", icon: Award },
   { id: "creators", label: "Creators", icon: Users },
+  { id: "replay", label: "Historical Replay", icon: RotateCcw },
 ];
 
 export default function Console() {
@@ -347,6 +349,8 @@ export default function Console() {
         {activeTab === "attribution" && <BuilderAttributionPanel />}
 
         {activeTab === "creators" && <CreatorsTab />}
+
+        {activeTab === "replay" && <HistoricalReplay />}
       </main>
 
       {/* Footer */}
