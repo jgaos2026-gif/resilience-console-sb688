@@ -151,7 +151,7 @@ const SOCIAL_LINKS = [
   { label: "YouTube", icon: Youtube,   color: "#FF0000", url: "https://youtube.com/@JGAband" },
   { label: "Twitter", icon: Twitter,   color: "#1DA1F2", url: "https://x.com/JGAband" },
   { label: "Instagram",icon: Instagram,color: "#E1306C", url: "https://instagram.com/JGAband" },
-  { label: "Live",    icon: Tv2,       color: T.gold,    url: "#" },
+  { label: "Live",    icon: Tv2,       color: T.gold,    url: "https://www.jgaos2026-gif.com" },
 ];
 
 const PROOF_LOG_ENTRIES = [
