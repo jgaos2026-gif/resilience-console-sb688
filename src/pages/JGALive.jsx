@@ -44,7 +44,7 @@ const BRIC_SEQUENCE = [
       "Project intake form · active",
       "Automated estimate system · online",
       "Confirmation email pipeline · connected",
-      "Client-facing interface · deployed",
+      "www.jgaos2026-gif.com · deployed",
     ],
     duration: 1800,
   },
@@ -374,9 +374,16 @@ export default function JGALive() {
                 <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-teal-400" />Spine Sealed</span>
               </div>
               <p className="text-xs text-muted-foreground italic">Visitors just watched the entire infrastructure appear step-by-step. That's memorable.</p>
-              <Button onClick={reset} variant="outline" size="sm" className="border-border text-foreground text-xs mt-2">
-                <RotateCcw className="w-3.5 h-3.5 mr-1.5" /> Reset Sequence
-              </Button>
+              <div className="flex items-center justify-center gap-3 flex-wrap mt-2">
+                <a href="https://www.jgaos2026-gif.com" target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-5 py-2 rounded-lg bg-primary/10 border border-primary/30 text-xs font-bold hover:bg-primary/20 transition-all"
+                  style={{ color: "#C9A84C" }}>
+                  <Globe className="w-3.5 h-3.5" /> Visit www.jgaos2026-gif.com
+                </a>
+                <Button onClick={reset} variant="outline" size="sm" className="border-border text-foreground text-xs">
+                  <RotateCcw className="w-3.5 h-3.5 mr-1.5" /> Reset Sequence
+                </Button>
+              </div>
             </>
           )}
         </div>
