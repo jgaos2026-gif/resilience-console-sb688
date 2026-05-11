@@ -1,0 +1,125 @@
+# SB688 Sovereign Constitution
+# JGA Enterprise · NODE: MENDOTA-IL
+# Ratified: 2026-04-27 — Day Zero Production
+
+preamble: >
+  This constitution governs the operational principles, trust hierarchy, recovery mandates,
+  and sovereign authority of the SB688 National Resilience Console. All components, protocols,
+  and actors operating within this system are bound by the articles herein.
+  Architect: John E. Arenz — JGA Enterprise.
+
+articles:
+
+  - id: "CONST-01"
+    title: "Sovereignty of the Trusted Record"
+    text: >
+      The trusted record chain is the supreme authority of system state. No state transition
+      is valid unless it has been committed to the chain with a verifiable HMAC signature.
+      Any write that cannot be authenticated is rejected before chain advancement.
+
+  - id: "CONST-02"
+    title: "Continuity Above All"
+    text: >
+      System continuity takes precedence over individual component health. When a component
+      fails, the engine must reroute through verified alternate paths without interrupting
+      operator workloads. Downtime is never acceptable if an alternate path exists.
+
+  - id: "CONST-03"
+    title: "Ghost Node Sovereignty"
+    text: >
+      Ghost nodes are sovereign sensors operating outside the trusted mesh. Their telemetry
+      is read-only with respect to the core. No ghost node may write to the trusted record
+      chain. Ghost node data feeds the audit log only.
+
+  - id: "CONST-04"
+    title: "Quarantine Before Termination"
+    text: >
+      A compromised component must be moved to a disposable quarantine sandbox before
+      termination. Termination without quarantine is a protocol violation. Recovery from
+      a quarantined component is only permitted after state hash verification.
+
+  - id: "CONST-05"
+    title: "Proof-First Governance"
+    text: >
+      All governance reports must be accompanied by a verifiable proof suite result.
+      Reports without proof signatures are classified as draft and cannot be submitted
+      to auditors or regulatory bodies.
+
+  - id: "CONST-06"
+    title: "Brick Stitch Integrity"
+    text: >
+      The Brick Stitch protocol governs the knitting of recovery paths. Each stitch
+      must reference an approved checkpoint. Stitches referencing unverified or
+      expired checkpoints are invalid and trigger an immediate re-stitch cycle.
+
+  - id: "CONST-07"
+    title: "Braid Redundancy Mandate"
+    text: >
+      At least one braid strand must be operational at all times. If Braid Alpha is
+      isolated or compromised, Braid Beta assumes primary continuity responsibility
+      automatically. Dual-braid failure triggers an emergency sovereign lockdown.
+
+  - id: "CONST-08"
+    title: "Operator Authority"
+    text: >
+      The operator holds sovereign authority over the console. The AI Analyst is an
+      advisory system and may not initiate recovery, isolation, or quarantine actions
+      without operator confirmation. Autonomous AI action is prohibited at the sovereign level.
+
+  - id: "CONST-09"
+    title: "Immutable Ledger Principle"
+    text: >
+      The system ledger is append-only and read-only once committed. No entry may be
+      modified or deleted. The genesis hash, sealed on Day Zero (2026-04-27), anchors
+      all subsequent state. Any detected ledger mutation triggers an immediate integrity alarm.
+
+  - id: "CONST-10"
+    title: "Recovery Must Be Provable"
+    text: >
+      Recovery is not complete until a verifiable proof snapshot has been generated and
+      signed. Systems that report recovery without an associated proof record are in an
+      unverified recovery state and must not be presented as compliant to external auditors.
+
+trust_hierarchy:
+  levels:
+    - rank: 1
+      label: "Sovereign Architect"
+      authority: "Full system authority. Can seal protocols, issue constitutional amendments."
+      holder: "John E. Arenz — JGA Enterprise"
+    - rank: 2
+      label: "System Core"
+      authority: "Operational authority. Initiates recovery, manages trusted chain, issues routes."
+    - rank: 3
+      label: "Operator"
+      authority: "Console authority. Executes scenarios, approves AI recommendations, exports reports."
+    - rank: 4
+      label: "AI Analyst"
+      authority: "Advisory only. No write authority on the trusted chain."
+    - rank: 5
+      label: "Observer"
+      authority: "Read-only. Public telemetry and event log access only."
+
+sealed_protocols:
+  - namespace: "SB688-CORE"
+    count: 5
+    sealed_date: "2026-04-27"
+  - namespace: "SB688-GOV"
+    count: 4
+    sealed_date: "2026-04-27"
+  - namespace: "SB688-IND"
+    count: 4
+    sealed_date: "2026-04-27"
+  - namespace: "SB688-SVRN"
+    count: 4
+    sealed_date: "2026-04-27"
+  - namespace: "SB688-OPS"
+    count: 3
+    sealed_date: "2026-04-27"
+
+ledger:
+  type: "immutable-append-only-read-only"
+  genesis_date: "2026-04-27"
+  genesis_node: "MENDOTA-IL"
+  hash_algorithm: "SHA3-256"
+  unauthorized_writes_detected: 0
+  status: "NOMINAL"

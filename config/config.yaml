@@ -1,0 +1,89 @@
+# SB688 Resilience Console — System Configuration
+# JGA Enterprise · NODE: MENDOTA-IL
+# Version: 2.1 — Day Zero Production (BSS-2026-PROD-01)
+
+system:
+  name: "SB688 National Resilience Console"
+  version: "2.1"
+  build: "BSS-2026-PROD-01"
+  node: "MENDOTA-IL"
+  architect: "John E. Arenz — JGA Enterprise"
+  production_date: "2026-04-27"
+  environment: "production"
+
+frontend:
+  framework: "React 18"
+  build_tool: "Vite"
+  platform: "Base44"
+  app_id_env: "VITE_BASE44_APP_ID"
+  app_base_url_env: "VITE_BASE44_APP_BASE_URL"
+
+backend:
+  framework: "FastAPI"
+  language: "Python 3.11+"
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+  reload: false
+  log_level: "info"
+
+protocols:
+  active_count: 20
+  namespaces:
+    - id: "SB688-CORE"
+      description: "Resilience Engine, HMAC, Merkle Stitch, Ghost Node, Quarantine"
+    - id: "SB688-GOV"
+      description: "Governance Reports, Proof Suite, Policy DSL, Industry Layer"
+    - id: "SB688-IND"
+      description: "Industry-specific resilience overlays"
+    - id: "SB688-SVRN"
+      description: "1211 Auth, Triple-Braid, Clipping, Ledger, Kill/Resurrect"
+    - id: "SB688-OPS"
+      description: "Daily Report, Observer Mode, White Paper Archive, Prod Seal"
+
+components:
+  keys:
+    - core
+    - driver_net
+    - fs
+    - user_app
+    - braidA
+    - braidB
+  default_route: ["core", "driver_net", "braidA", "fs", "user_app"]
+
+resilience:
+  baseline_score: 100
+  minimum_score: 20
+  recovery_boost: 35
+  continuity_boost: 30
+  route_time_primary_ms: 12
+  route_time_recovered_ms: 14
+
+security:
+  hmac_algorithm: "SHA3-256"
+  ledger_type: "immutable-append-only"
+  signature_prefix: "sb688-hmac"
+  max_governance_reports: 50
+  max_trusted_chain_export: 20
+  max_event_log_export: 50
+
+ai:
+  model: "gpt-4o"
+  max_tokens: 1500
+  functions_platform: "Deno (Base44 Serverless)"
+  voice_model: "whisper-1"
+
+observability:
+  daily_report_schedule: "07:00 CST"
+  report_recipient: "jaysgraphicarts@outlook.com"
+  node_label: "NODE: MENDOTA-IL"
+
+industries:
+  - universal
+  - healthcare
+  - manufacturing
+  - logistics
+  - finance
+  - government
+  - aerospace
+  - industrial_ai
