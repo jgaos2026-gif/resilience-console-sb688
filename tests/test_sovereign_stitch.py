@@ -321,9 +321,10 @@ class TestSovereignStitchEndToEnd:
         assert state["problemSimulated"] is True
         assert state["resilienceScore"] < 100
 
+        pre_recovery_score = state["resilienceScore"]
         state = run_recovery(state)
         assert state["recoveryRun"] is True
-        assert state["resilienceScore"] > state["resilienceScore"] - 35  # score improved
+        assert state["resilienceScore"] > pre_recovery_score  # score improved after recovery
 
         state = run_proof_suite(state)
         assert state["proofRun"] is True
