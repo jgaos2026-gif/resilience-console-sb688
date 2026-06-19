@@ -41,7 +41,7 @@ const TIERS = [
     subtitle: "AI-Assisted Resilience Analysis",
     color: GOLD,
     borderColor: "border-primary/40",
-    bgColor: "rgba(201,168,76,0.06)",
+    bgColor: "rgba(161, 130, 43, 0.06)",
     badgeClass: "bg-primary/10 text-primary border-primary/30",
     icon: Brain,
     duration: "1 Hour",
