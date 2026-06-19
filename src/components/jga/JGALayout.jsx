@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Shield, Layers, LayoutGrid, CheckSquare, Brain, Heart, Building2, Users, Wrench as HardHat, Archive, FileText, AlertTriangle, Map, Settings, Menu, X } from "lucide-react";
+import { Shield, Layers, LayoutGrid, CheckSquare, Brain, Heart, Building2, Users, Wrench as HardHat, Archive, FileText, AlertTriangle, Map, Settings, Menu, X, Star } from "lucide-react";
 
 const NAV = [
   { path: "/", label: "Demo Council", icon: Shield },
@@ -17,6 +17,7 @@ const NAV = [
   { path: "/risk-compliance", label: "Risk / Compliance", icon: AlertTriangle },
   { path: "/roadmap", label: "Roadmap", icon: Map },
   { path: "/jga-settings", label: "Settings", icon: Settings },
+  { path: "/jga-about", label: "About JGA", icon: Star },
 ];
 
 const GOLD = "#C9A84C";
@@ -50,9 +51,15 @@ export default function JGALayout() {
           className={`fixed lg:sticky top-0 left-0 h-screen w-60 border-r border-border z-40 overflow-y-auto flex-shrink-0 transition-transform duration-200 ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
           style={{ background: "hsl(220,22%,5%)" }}
         >
-          <div className="p-4 border-b border-border">
-            <h2 className="text-sm font-bold font-cinzel gold-shimmer">JGA DEMO COUNCIL</h2>
-            <p className="text-[9px] text-muted-foreground mt-1">SB688 / SB689 / SB712 / Omega</p>
+          <div className="p-4 border-b border-border space-y-2">
+            <div className="flex items-center gap-2">
+              <img src="https://media.base44.com/images/public/69d5af52688205fc104c687c/a27bf93c0_IMG_0843_Original_Original.jpeg" alt="JGA Logo" className="w-8 h-8 rounded object-cover flex-shrink-0" />
+              <div>
+                <h2 className="text-xs font-bold gold-shimmer" style={{ fontFamily: "'Cinzel', serif" }}>JGA Enterprises</h2>
+                <p className="text-[8px] text-muted-foreground">Jay's Graphic Arts</p>
+              </div>
+            </div>
+            <p className="text-[8px] text-muted-foreground">SB688 / SB689 / SB712 / Omega</p>
           </div>
           <nav className="p-2 space-y-0.5">
             {NAV.map(item => {
@@ -89,7 +96,9 @@ export default function JGALayout() {
               <p className="text-[10px] text-muted-foreground leading-relaxed max-w-3xl mx-auto">
                 This demo illustrates authorized integrity monitoring, business automation, audit readiness, and recovery workflows. Real deployment requires legal, security, payment, and compliance review.
               </p>
-              <p className="text-[9px] text-muted-foreground/50">Architecture &amp; Direction: John Arenz — J.G.A. © {new Date().getFullYear()}</p>
+              <p className="text-[9px] text-muted-foreground/50">
+              JGA Enterprises (Jay's Graphic Arts) · John Arenz · <a href="tel:7793966934" className="hover:underline">779-396-6934</a> · Mendota, IL · © {new Date().getFullYear()}
+            </p>
             </div>
           </footer>
         </main>

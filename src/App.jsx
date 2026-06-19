@@ -21,6 +21,7 @@ import DailyReportsPage from './pages/jga/DailyReports';
 import RiskCompliance from './pages/jga/RiskCompliance';
 import RoadmapPage from './pages/jga/RoadmapPage';
 import JGASettings from './pages/jga/JGASettings';
+import JGAAbout from './pages/jga/JGAAbout';
 import Console from './pages/Console';
 import SB688Console from './pages/SB688Console';
 import JGALive from './pages/JGALive';
@@ -78,6 +79,7 @@ const AuthenticatedApp = () => {
           <Route path="/risk-compliance" element={<RiskCompliance />} />
           <Route path="/roadmap" element={<RoadmapPage />} />
           <Route path="/jga-settings" element={<JGASettings />} />
+          <Route path="/jga-about" element={<JGAAbout />} />
         </Route>
         <Route path="/legacy-console" element={<Console />} />
         <Route path="/sb688" element={<SB688Console />} />

@@ -27,19 +27,45 @@ export default function DemoCouncil() {
   return (
     <div className="p-4 sm:p-6 max-w-6xl mx-auto space-y-8">
       {/* Hero */}
-      <div className="rounded-2xl border border-border p-6 sm:p-10 text-center space-y-4" style={{ background: "linear-gradient(135deg, hsl(220,22%,5%) 0%, hsl(220,18%,8%) 50%, hsl(220,22%,5%) 100%)" }}>
-        <div className="flex justify-center">
-          <Badge className="text-[10px] px-3 py-1 font-bold border" style={{ background: "rgba(201,168,76,0.1)", color: GOLD, borderColor: "rgba(201,168,76,0.3)" }}>
-            ♛ COUNCIL COMMAND ROOM
-          </Badge>
+      <div className="rounded-2xl border border-border overflow-hidden" style={{ background: "linear-gradient(135deg, hsl(220,22%,5%) 0%, hsl(220,18%,8%) 50%, hsl(220,22%,5%) 100%)" }}>
+        <div className="grid grid-cols-1 sm:grid-cols-3">
+          {/* Brand image */}
+          <div className="sm:col-span-1 relative overflow-hidden" style={{ minHeight: 200 }}>
+            <img
+              src="https://media.base44.com/images/public/69d5af52688205fc104c687c/d45280968_IMG_1807_Original.jpeg"
+              alt="Jay's Graphic Arts"
+              className="w-full h-full object-cover object-top"
+              style={{ minHeight: 200 }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/60 sm:block hidden" />
+          </div>
+          {/* Text content */}
+          <div className="sm:col-span-2 p-6 sm:p-8 space-y-3 flex flex-col justify-center">
+            <div className="flex items-center gap-2 flex-wrap">
+              <Badge className="text-[10px] px-3 py-1 font-bold border" style={{ background: "rgba(201,168,76,0.1)", color: GOLD, borderColor: "rgba(201,168,76,0.3)" }}>
+                ♛ COUNCIL COMMAND ROOM
+              </Badge>
+              <Badge className="text-[10px] px-2 py-1 font-bold border" style={{ background: "rgba(34,197,94,0.08)", color: "#4ade80", borderColor: "rgba(34,197,94,0.25)" }}>
+                ILLINOIS PILOT · PHASE 1
+              </Badge>
+            </div>
+            <div>
+              <h1 className="text-xl sm:text-3xl font-bold gold-shimmer" style={{ fontFamily: "'UnifrakturMaguntia', 'Cinzel', serif" }}>JGA Enterprises</h1>
+              <p className="text-[10px] uppercase tracking-widest mt-0.5" style={{ color: "rgba(201,168,76,0.6)" }}>Jay's Graphic Arts · Demo Council</p>
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
+              JGA Demo Council brings the Stitch Brick architecture, braided memory, node mesh verification, Phoenix recovery, and JGA business automation into one council-ready command room. Every state is quarantined first. Nothing touches the Spine without three marks.
+            </p>
+            <div className="flex flex-wrap gap-3 text-[10px]">
+              <a href="tel:7793966934" className="flex items-center gap-1 hover:underline" style={{ color: GOLD }}>📞 779-396-6934</a>
+              <a href="mailto:jgaos2026@outlook.com" className="flex items-center gap-1 hover:underline" style={{ color: GOLD }}>✉ jgaos2026@outlook.com</a>
+              <span style={{ color: "rgba(201,168,76,0.5)" }}>📍 Mendota, IL</span>
+            </div>
+            <p className="text-[10px] font-mono italic" style={{ color: "rgba(201,168,76,0.5)" }}>
+              "No active state becomes trusted state without verification, validation, and certification."
+            </p>
+          </div>
         </div>
-        <h1 className="text-2xl sm:text-4xl font-bold font-cinzel gold-shimmer">JGA DEMO COUNCIL</h1>
-        <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          JGA Demo Council brings the Stitch Brick architecture, braided memory, node mesh verification, Phoenix recovery, and JGA business automation into one council-ready command room. Every state is quarantined first. Every trusted state is verified, validated, and certified. Nothing touches the Spine.
-        </p>
-        <p className="text-[10px] font-mono italic" style={{ color: "rgba(201,168,76,0.6)" }}>
-          "No active state becomes trusted state without verification, validation, and certification three times marked."
-        </p>
       </div>
 
       {/* Readiness Strip */}
