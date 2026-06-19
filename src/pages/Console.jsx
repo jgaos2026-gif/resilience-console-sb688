@@ -440,6 +440,9 @@ export default function Console() {
               <a href="/quantum-braid" className="text-[9px] text-teal-400/60 hover:text-teal-400 transition border border-teal-500/20 hover:border-teal-500/40 rounded px-2 py-0.5">
                   Quantum Braid →
                 </a>
+              <a href="/resilience-council" className="text-[9px] text-purple-400/60 hover:text-purple-400 transition border border-purple-500/20 hover:border-purple-500/40 rounded px-2 py-0.5">
+                  Resilience Council →
+                </a>
             </div>
           </div>
         </div>
