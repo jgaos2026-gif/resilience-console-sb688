@@ -4,6 +4,7 @@ import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
+import SiteLayout from '@/components/SiteLayout';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Console from './pages/Console';
 import SB688Console from './pages/SB688Console';
@@ -46,20 +47,22 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={<Console />} />
-      <Route path="/sb688" element={<SB688Console />} />
-      <Route path="/jga-live" element={<JGALive />} />
-      <Route path="/observe" element={<PublicObserver />} />
-      <Route path="/jga-story" element={<JGAStory />} />
-      <Route path="/braid-analytics" element={<BraidAnalytics />} />
-      <Route path="/whitepaper-timeline" element={<WhitePaperTimeline />} />
-      <Route path="/how-it-works" element={<HowItWorks />} />
-      <Route path="/industry-comparison" element={<IndustryComparison />} />
-      <Route path="/ai-brain" element={<AIBrain />} />
-      <Route path="/ai-gateway" element={<AIIntegrationGateway />} />
-      <Route path="/quantum-braid" element={<QuantumBraidPower />} />
-      <Route path="/resilience-council" element={<ResilienceCouncil />} />
-      <Route path="*" element={<PageNotFound />} />
+      <Route element={<SiteLayout />}>
+        <Route path="/" element={<Console />} />
+        <Route path="/sb688" element={<SB688Console />} />
+        <Route path="/jga-live" element={<JGALive />} />
+        <Route path="/observe" element={<PublicObserver />} />
+        <Route path="/jga-story" element={<JGAStory />} />
+        <Route path="/braid-analytics" element={<BraidAnalytics />} />
+        <Route path="/whitepaper-timeline" element={<WhitePaperTimeline />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/industry-comparison" element={<IndustryComparison />} />
+        <Route path="/ai-brain" element={<AIBrain />} />
+        <Route path="/ai-gateway" element={<AIIntegrationGateway />} />
+        <Route path="/quantum-braid" element={<QuantumBraidPower />} />
+        <Route path="/resilience-council" element={<ResilienceCouncil />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Route>
     </Routes>
   );
 };
