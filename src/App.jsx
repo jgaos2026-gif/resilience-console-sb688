@@ -22,6 +22,7 @@ import RiskCompliance from './pages/jga/RiskCompliance';
 import RoadmapPage from './pages/jga/RoadmapPage';
 import JGASettings from './pages/jga/JGASettings';
 import JGAAbout from './pages/jga/JGAAbout';
+import DiamondHunterCore from './pages/jga/DiamondHunterCore';
 import Console from './pages/Console';
 import SB688Console from './pages/SB688Console';
 import JGALive from './pages/JGALive';
@@ -80,6 +81,7 @@ const AuthenticatedApp = () => {
           <Route path="/roadmap" element={<RoadmapPage />} />
           <Route path="/jga-settings" element={<JGASettings />} />
           <Route path="/jga-about" element={<JGAAbout />} />
+          <Route path="/diamond-hunter" element={<DiamondHunterCore />} />
         </Route>
         <Route path="/legacy-console" element={<Console />} />
         <Route path="/sb688" element={<SB688Console />} />

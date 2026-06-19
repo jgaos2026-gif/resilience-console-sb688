@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Shield, Layers, LayoutGrid, CheckSquare, Brain, Heart, Building2, Users, Wrench as HardHat, Archive, FileText, AlertTriangle, Map, Settings, Menu, X, Star } from "lucide-react";
+import { Shield, Layers, LayoutGrid, CheckSquare, Brain, Heart, Building2, Users, Wrench as HardHat, Archive, FileText, AlertTriangle, Map, Settings, Menu, X, Star, Gem } from "lucide-react";
 
 const NAV = [
   { path: "/", label: "Demo Council", icon: Shield },
@@ -18,6 +18,7 @@ const NAV = [
   { path: "/roadmap", label: "Roadmap", icon: Map },
   { path: "/jga-settings", label: "Settings", icon: Settings },
   { path: "/jga-about", label: "About JGA", icon: Star },
+  { path: "/diamond-hunter", label: "Diamond Hunter Core", icon: Gem },
 ];
 
 const GOLD = "#C9A84C";
