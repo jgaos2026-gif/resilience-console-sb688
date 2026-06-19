@@ -1,0 +1,50 @@
+{
+  "name": "VerificationGate",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "gate_type": {
+      "type": "string",
+      "enum": [
+        "input",
+        "quarantine",
+        "verification",
+        "validation",
+        "certification",
+        "trusted",
+        "spine_access"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "closed",
+        "restricted",
+        "locked"
+      ],
+      "default": "open"
+    },
+    "pass_count": {
+      "type": "number",
+      "default": 0
+    },
+    "fail_count": {
+      "type": "number",
+      "default": 0
+    },
+    "last_activity": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "connected_module": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "gate_type"
+  ]
+}

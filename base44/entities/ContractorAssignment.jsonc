@@ -1,0 +1,43 @@
+{
+  "name": "ContractorAssignment",
+  "type": "object",
+  "properties": {
+    "contractor_name": {
+      "type": "string"
+    },
+    "order_title": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "assigned",
+        "accepted",
+        "draft_uploaded",
+        "revision",
+        "final_submitted",
+        "approved",
+        "paid_out",
+        "cancelled"
+      ],
+      "default": "assigned"
+    },
+    "deadline": {
+      "type": "string",
+      "format": "date"
+    },
+    "payout_estimate": {
+      "type": "number"
+    },
+    "client_brief": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "contractor_name",
+    "order_title"
+  ]
+}

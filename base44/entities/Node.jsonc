@@ -1,0 +1,81 @@
+{
+  "name": "Node",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "node_type": {
+      "type": "string",
+      "enum": [
+        "truth",
+        "verification",
+        "validation",
+        "certification",
+        "hunter",
+        "cleaner",
+        "cooling",
+        "repair",
+        "anchor",
+        "silencing",
+        "warrior",
+        "builder",
+        "tester",
+        "health",
+        "relaxation",
+        "ghost",
+        "phoenix",
+        "ledger",
+        "ram_guard",
+        "memory_pocket",
+        "contractor_routing",
+        "client_intake",
+        "payment_verification",
+        "deposit_policy"
+      ]
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "warning",
+        "quarantined",
+        "sleeping",
+        "repairing"
+      ],
+      "default": "active"
+    },
+    "trust_level": {
+      "type": "number",
+      "default": 100
+    },
+    "last_heartbeat": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "connected_module": {
+      "type": "string"
+    },
+    "recent_log": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "security",
+        "business",
+        "memory",
+        "recovery",
+        "compliance",
+        "demo"
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "node_type"
+  ]
+}

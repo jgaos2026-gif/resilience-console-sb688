@@ -1,0 +1,59 @@
+{
+  "name": "Contractor",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "specialty": {
+      "type": "string",
+      "enum": [
+        "logo_design",
+        "illustration",
+        "web_design",
+        "branding",
+        "print",
+        "social_media",
+        "photography",
+        "video",
+        "general"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "pending_review",
+        "suspended"
+      ],
+      "default": "active"
+    },
+    "rating": {
+      "type": "number",
+      "default": 5
+    },
+    "active_jobs": {
+      "type": "number",
+      "default": 0
+    },
+    "completed_jobs": {
+      "type": "number",
+      "default": 0
+    },
+    "payout_total": {
+      "type": "number",
+      "default": 0
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "email"
+  ]
+}

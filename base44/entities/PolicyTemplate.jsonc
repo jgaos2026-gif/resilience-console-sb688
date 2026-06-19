@@ -1,0 +1,46 @@
+{
+  "name": "PolicyTemplate",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "deposit",
+        "refund",
+        "contractor",
+        "watermark",
+        "payment",
+        "escalation",
+        "compliance",
+        "privacy"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "draft",
+        "review",
+        "archived"
+      ],
+      "default": "draft"
+    },
+    "content": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string",
+      "default": "1.0"
+    },
+    "legal_disclaimer": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ]
+}

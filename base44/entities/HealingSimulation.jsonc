@@ -1,0 +1,61 @@
+{
+  "name": "HealingSimulation",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "failure_type": {
+      "type": "string",
+      "enum": [
+        "drift",
+        "ledger_mismatch",
+        "pocket_corruption",
+        "workflow_failure",
+        "payment_failure",
+        "report_failure",
+        "heartbeat_failure",
+        "node_failure"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "healthy",
+        "detected",
+        "quarantined",
+        "rolling_back",
+        "repairing",
+        "re_verifying",
+        "certified",
+        "recovered"
+      ],
+      "default": "healthy"
+    },
+    "detection_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "recovery_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "result": {
+      "type": "string",
+      "enum": [
+        "success",
+        "partial",
+        "failed",
+        "pending"
+      ],
+      "default": "pending"
+    },
+    "log_entries": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "failure_type"
+  ]
+}

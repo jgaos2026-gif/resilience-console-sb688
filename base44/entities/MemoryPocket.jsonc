@@ -1,0 +1,66 @@
+{
+  "name": "MemoryPocket",
+  "type": "object",
+  "properties": {
+    "pocket_name": {
+      "type": "string"
+    },
+    "pocket_type": {
+      "type": "string",
+      "enum": [
+        "active",
+        "cold_storage",
+        "offline",
+        "verified",
+        "quarantined"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "loaded",
+        "unloaded",
+        "quarantined",
+        "cold",
+        "verifying"
+      ],
+      "default": "unloaded"
+    },
+    "last_verified": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "hash": {
+      "type": "string"
+    },
+    "size_estimate": {
+      "type": "string"
+    },
+    "loaded_active": {
+      "type": "boolean",
+      "default": false
+    },
+    "trust_score": {
+      "type": "number",
+      "default": 100
+    },
+    "notes": {
+      "type": "string"
+    },
+    "strand_group": {
+      "type": "string",
+      "enum": [
+        "logic",
+        "comprehension",
+        "speech",
+        "emotion",
+        "memory",
+        "guard"
+      ]
+    }
+  },
+  "required": [
+    "pocket_name",
+    "pocket_type"
+  ]
+}

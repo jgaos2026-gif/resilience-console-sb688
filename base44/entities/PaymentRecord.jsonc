@@ -1,0 +1,58 @@
+{
+  "name": "PaymentRecord",
+  "type": "object",
+  "properties": {
+    "payment_type": {
+      "type": "string",
+      "enum": [
+        "deposit",
+        "final_payment",
+        "refund",
+        "contractor_payout",
+        "tax_allocation"
+      ]
+    },
+    "amount": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "completed",
+        "failed",
+        "refunded",
+        "processing"
+      ],
+      "default": "pending"
+    },
+    "client_name": {
+      "type": "string"
+    },
+    "order_title": {
+      "type": "string"
+    },
+    "method": {
+      "type": "string",
+      "enum": [
+        "card",
+        "bank_transfer",
+        "cash",
+        "check",
+        "platform"
+      ],
+      "default": "card"
+    },
+    "refund_window_open": {
+      "type": "boolean",
+      "default": true
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "payment_type",
+    "amount"
+  ]
+}

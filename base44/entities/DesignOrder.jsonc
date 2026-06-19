@@ -1,0 +1,95 @@
+{
+  "name": "DesignOrder",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "client_name": {
+      "type": "string"
+    },
+    "service_type": {
+      "type": "string",
+      "enum": [
+        "logo",
+        "branding",
+        "flyer",
+        "banner",
+        "social_media",
+        "packaging",
+        "web_design",
+        "custom"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "intake",
+        "deposit_pending",
+        "in_progress",
+        "proof_sent",
+        "revision",
+        "approved",
+        "watermarked",
+        "final_released",
+        "completed",
+        "refund_window",
+        "cancelled"
+      ],
+      "default": "intake"
+    },
+    "deposit_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "paid",
+        "refunded",
+        "non_refundable"
+      ],
+      "default": "pending"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "deposit_amount": {
+      "type": "number"
+    },
+    "deadline": {
+      "type": "string",
+      "format": "date"
+    },
+    "track": {
+      "type": "string",
+      "enum": [
+        "system_a",
+        "system_b"
+      ],
+      "default": "system_a"
+    },
+    "watermark_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "removed",
+        "not_applicable"
+      ],
+      "default": "active"
+    },
+    "final_payment_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "paid",
+        "overdue"
+      ],
+      "default": "pending"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "client_name"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "name": "StateItem",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "item_type": {
+      "type": "string",
+      "enum": [
+        "client_request",
+        "uploaded_receipt",
+        "contractor_submission",
+        "design_proof",
+        "payment_event",
+        "config_change",
+        "memory_pocket_load",
+        "report_generation",
+        "ai_response"
+      ]
+    },
+    "current_stage": {
+      "type": "string",
+      "enum": [
+        "input",
+        "quarantine",
+        "verification",
+        "validation",
+        "certification",
+        "trusted",
+        "rejected",
+        "rollback"
+      ],
+      "default": "input"
+    },
+    "risk_score": {
+      "type": "number",
+      "default": 0
+    },
+    "gate_result": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "pass",
+        "fail",
+        "hold"
+      ],
+      "default": "pending"
+    },
+    "reviewer": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "approve",
+        "reject",
+        "quarantine",
+        "rollback",
+        "pending"
+      ],
+      "default": "pending"
+    },
+    "source": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "item_type"
+  ]
+}

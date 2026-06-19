@@ -1,0 +1,67 @@
+{
+  "name": "BusinessClient",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "business_name": {
+      "type": "string"
+    },
+    "industry": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "pending",
+        "completed",
+        "archived"
+      ],
+      "default": "pending"
+    },
+    "intake_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "target_audience": {
+      "type": "string"
+    },
+    "preferred_colors": {
+      "type": "string"
+    },
+    "colors_to_avoid": {
+      "type": "string"
+    },
+    "logo_style": {
+      "type": "string"
+    },
+    "emotional_feel": {
+      "type": "string"
+    },
+    "competitors": {
+      "type": "string"
+    },
+    "budget_range": {
+      "type": "string"
+    },
+    "deadline": {
+      "type": "string",
+      "format": "date"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "email"
+  ]
+}

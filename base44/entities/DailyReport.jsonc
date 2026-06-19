@@ -1,0 +1,71 @@
+{
+  "name": "DailyReport",
+  "type": "object",
+  "properties": {
+    "report_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "report_type": {
+      "type": "string",
+      "enum": [
+        "daily",
+        "council",
+        "investor",
+        "pilot"
+      ],
+      "default": "daily"
+    },
+    "system_health": {
+      "type": "string",
+      "enum": [
+        "healthy",
+        "degraded",
+        "critical"
+      ],
+      "default": "healthy"
+    },
+    "node_status_summary": {
+      "type": "string"
+    },
+    "ledger_status": {
+      "type": "string"
+    },
+    "memory_pockets_checked": {
+      "type": "number",
+      "default": 0
+    },
+    "ram_guard_status": {
+      "type": "string"
+    },
+    "business_activity": {
+      "type": "string"
+    },
+    "failed_states": {
+      "type": "number",
+      "default": 0
+    },
+    "recovery_actions": {
+      "type": "number",
+      "default": 0
+    },
+    "proof_vault_additions": {
+      "type": "number",
+      "default": 0
+    },
+    "compliance_warnings": {
+      "type": "number",
+      "default": 0
+    },
+    "next_actions": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "report_date",
+    "report_type"
+  ]
+}

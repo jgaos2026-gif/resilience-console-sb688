@@ -1,0 +1,67 @@
+{
+  "name": "ProofRecord",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "system",
+        "business",
+        "node",
+        "memory",
+        "recovery",
+        "client",
+        "contractor",
+        "compliance",
+        "daily_report"
+      ]
+    },
+    "related_module": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "generated",
+        "verified",
+        "certified",
+        "archived",
+        "pending"
+      ],
+      "default": "pending"
+    },
+    "hash": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "verification_stage": {
+      "type": "string",
+      "enum": [
+        "unverified",
+        "verified",
+        "validated",
+        "certified"
+      ],
+      "default": "unverified"
+    },
+    "visibility": {
+      "type": "string",
+      "enum": [
+        "private",
+        "internal",
+        "investor",
+        "public"
+      ],
+      "default": "internal"
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "name": "SystemLog",
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "error",
+        "critical",
+        "success"
+      ],
+      "default": "info"
+    },
+    "module": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "system",
+        "business",
+        "security",
+        "memory",
+        "recovery",
+        "compliance"
+      ]
+    },
+    "details": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "message",
+    "level"
+  ]
+}

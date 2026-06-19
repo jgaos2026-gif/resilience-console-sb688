@@ -6,6 +6,21 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import SiteLayout from '@/components/SiteLayout';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import JGALayout from '@/components/jga/JGALayout';
+import DemoCouncil from './pages/jga/DemoCouncil';
+import SystemSpine from './pages/jga/SystemSpine';
+import NodeMesh from './pages/jga/NodeMesh';
+import VerificationGates from './pages/jga/VerificationGates';
+import MemoryBraid from './pages/jga/MemoryBraid';
+import SelfHealingDemo from './pages/jga/SelfHealingDemo';
+import JGABusinessOS from './pages/jga/JGABusinessOS';
+import ClientPortal from './pages/jga/ClientPortal';
+import ContractorPortal from './pages/jga/ContractorPortal';
+import ProofVault from './pages/jga/ProofVault';
+import DailyReportsPage from './pages/jga/DailyReports';
+import RiskCompliance from './pages/jga/RiskCompliance';
+import RoadmapPage from './pages/jga/RoadmapPage';
+import JGASettings from './pages/jga/JGASettings';
 import Console from './pages/Console';
 import SB688Console from './pages/SB688Console';
 import JGALive from './pages/JGALive';
@@ -48,7 +63,23 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route element={<SiteLayout />}>
-        <Route path="/" element={<Console />} />
+        <Route element={<JGALayout />}>
+          <Route path="/" element={<DemoCouncil />} />
+          <Route path="/system-spine" element={<SystemSpine />} />
+          <Route path="/node-mesh" element={<NodeMesh />} />
+          <Route path="/verification-gates" element={<VerificationGates />} />
+          <Route path="/memory-braid" element={<MemoryBraid />} />
+          <Route path="/self-healing" element={<SelfHealingDemo />} />
+          <Route path="/business-os" element={<JGABusinessOS />} />
+          <Route path="/client-portal" element={<ClientPortal />} />
+          <Route path="/contractor-portal" element={<ContractorPortal />} />
+          <Route path="/proof-vault" element={<ProofVault />} />
+          <Route path="/daily-reports" element={<DailyReportsPage />} />
+          <Route path="/risk-compliance" element={<RiskCompliance />} />
+          <Route path="/roadmap" element={<RoadmapPage />} />
+          <Route path="/jga-settings" element={<JGASettings />} />
+        </Route>
+        <Route path="/legacy-console" element={<Console />} />
         <Route path="/sb688" element={<SB688Console />} />
         <Route path="/jga-live" element={<JGALive />} />
         <Route path="/observe" element={<PublicObserver />} />

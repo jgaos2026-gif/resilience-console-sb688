@@ -1,0 +1,54 @@
+{
+  "name": "ComplianceItem",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "audit",
+        "refund_policy",
+        "contractor_payout",
+        "deposit_policy",
+        "data_integrity",
+        "privacy",
+        "legal",
+        "chain_of_custody"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "compliant",
+        "review_needed",
+        "non_compliant",
+        "pending",
+        "waived"
+      ],
+      "default": "pending"
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "default": "low"
+    },
+    "last_reviewed": {
+      "type": "string",
+      "format": "date"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ]
+}

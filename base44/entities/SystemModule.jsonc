@@ -1,0 +1,48 @@
+{
+  "name": "SystemModule",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "demo",
+        "planned",
+        "offline"
+      ],
+      "default": "demo"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "sovereign",
+        "business",
+        "security",
+        "memory",
+        "recovery",
+        "assistant"
+      ]
+    },
+    "health_score": {
+      "type": "number",
+      "default": 100
+    },
+    "last_verified": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "name",
+    "code"
+  ]
+}
