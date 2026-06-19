@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Shield, Layers, LayoutGrid, CheckSquare, Brain, Heart, Building2, Users, Wrench as HardHat, Archive, FileText, AlertTriangle, Map, Settings, Menu, X, Star, Gem, Zap } from "lucide-react";
+import { Shield, Layers, LayoutGrid, CheckSquare, Brain, Heart, Building2, Users, Wrench as HardHat, Archive, FileText, AlertTriangle, Map, Settings, Menu, X, Star, Gem, Zap, BarChart2 } from "lucide-react";
 
 const NAV = [
   { path: "/", label: "Demo Council", icon: Shield },
@@ -22,6 +22,7 @@ const NAV = [
   { path: "/resilience-sim", label: "Resilience Simulator", icon: Zap },
   { path: "/deep-space-sim", label: "Deep Space Sim", icon: Star },
   { path: "/brand-proof", label: "Brand Proof Assets", icon: Gem },
+  { path: "/industry-impact", label: "Industry Impact", icon: BarChart2 },
 ];
 
 const GOLD = "#C9A84C";

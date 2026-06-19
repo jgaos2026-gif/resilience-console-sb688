@@ -39,6 +39,7 @@ import AIBrain from './pages/AIBrain';
 import AIIntegrationGateway from './pages/AIIntegrationGateway';
 import QuantumBraidPower from './pages/QuantumBraidPower';
 import ResilienceCouncil from './pages/ResilienceCouncil';
+import IndustryImpact from './pages/IndustryImpact';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -102,6 +103,7 @@ const AuthenticatedApp = () => {
         <Route path="/ai-gateway" element={<AIIntegrationGateway />} />
         <Route path="/quantum-braid" element={<QuantumBraidPower />} />
         <Route path="/resilience-council" element={<ResilienceCouncil />} />
+        <Route path="/industry-impact" element={<IndustryImpact />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
