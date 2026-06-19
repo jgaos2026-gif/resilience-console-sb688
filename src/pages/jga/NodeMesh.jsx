@@ -4,6 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Activity, Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import NodeVerificationEngine from "@/components/jga/NodeVerificationEngine";
 
 const GOLD = "#C9A84C";
 const STATUS_COLORS = {
@@ -51,6 +52,9 @@ export default function NodeMesh() {
           MESH ACTIVE
         </Badge>
       </div>
+
+      {/* Verification Engine */}
+      <NodeVerificationEngine nodes={nodes} />
 
       {/* Heartbeat Rhythm */}
       <div className="rounded-xl border border-border p-4 flex items-center gap-3 overflow-hidden" style={{ background: "hsl(220,18%,7%)" }}>
