@@ -11,6 +11,7 @@ import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 import MasterControlPanel from "@/components/council/MasterControlPanel";
 import LivingBraidedCore from "@/components/council/LivingBraidedCore";
 import DriftHunterPanel from "@/components/council/DriftHunterPanel";
+import CouncilPDFReport from "@/components/council/CouncilPDFReport";
 
 const GOLD = "#C9A84C";
 const BORDER = "rgba(201,168,76,0.18)";
@@ -88,6 +89,7 @@ export default function ResilienceCouncil() {
               style={{ background: "rgba(59,130,246,0.08)", color: "#60a5fa", borderColor: "rgba(59,130,246,0.2)" }}>
               Drift: {coreState.driftScore}
             </Badge>
+            <CouncilPDFReport coreState={coreState} />
             <Link to="/" className="text-[9px] px-3 py-1.5 rounded border font-semibold"
               style={{ color: GOLD, borderColor: "rgba(201,168,76,0.3)", background: "rgba(201,168,76,0.06)" }}>
               ← Console
