@@ -4,9 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import {
   Shield, Activity, Lock, CheckCircle2, AlertTriangle, XCircle,
   RefreshCw, Database, GitBranch, Layers, Cpu, Eye, FileText,
-  Play, RotateCcw, Zap, Radio
+  Play, RotateCcw, Zap, Radio, Download
 } from "lucide-react";
 import moment from "moment";
+import { generateCouncilPDF } from "@/components/council/CouncilPDFReport";
 
 const GOLD = "#C9A84C";
 const DIM = "rgba(232,217,176,0.55)";
@@ -280,6 +281,12 @@ export default function MasterControlPanel({ coreState, patchCore }) {
                 onClick={coreState.systemLocked ? unlockSystem : lockSystem}>
                 <Lock className="w-3.5 h-3.5 mr-2" />
                 {coreState.systemLocked ? "Unseal System" : "Final Lock"}
+              </Button>
+              <Button className="w-full text-xs font-bold h-9"
+                style={{ background: "rgba(96,165,250,0.08)", color: "#60a5fa", border: "1px solid rgba(96,165,250,0.25)" }}
+                onClick={() => generateCouncilPDF(coreState, simLog)}>
+                <Download className="w-3.5 h-3.5 mr-2" />
+                Download PDF Report
               </Button>
               <Button className="w-full text-xs h-9 border-border text-muted-foreground"
                 variant="outline" onClick={factoryReset}>
