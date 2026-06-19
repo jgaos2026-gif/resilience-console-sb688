@@ -21,7 +21,7 @@ const TIERS = [
     subtitle: "Public View — No Logs, No Sensitive Data",
     color: "#3b82f6",
     borderColor: "border-blue-500/30",
-    bgColor: "rgba(59,130,246,0.06)",
+    bgColor: "rgba(243, 246, 59, 0.06)",
     badgeClass: "bg-blue-500/10 text-blue-400 border-blue-500/30",
     icon: Activity,
     duration: "1 Hour",
