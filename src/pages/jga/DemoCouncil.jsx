@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { Shield, Activity, Eye, CheckCircle2, Zap, Star, ArrowRight, Lock, Layers, Brain, Heart, Database, Radio, Award, ChevronDown, ChevronUp, Building2 } from "lucide-react";
 
 const GOLD = "#C9A84C";
@@ -252,9 +253,15 @@ export default function DemoCouncil() {
 
         {goldRoomOpen && (
           <div className="rounded-2xl border-2 p-6 sm:p-8 space-y-6" style={{ borderColor: `${GOLD}50`, background: "linear-gradient(135deg, #0d0f1a 0%, #1a1200 50%, #0d0f1a 100%)", boxShadow: `0 0 60px ${GOLD}15` }}>
-            <div className="text-center space-y-2">
+            <div className="text-center space-y-3">
               <Badge className="text-[10px] px-4 py-1.5 font-black border uppercase tracking-widest" style={{ background: `${GOLD}15`, color: GOLD, borderColor: `${GOLD}50` }}>♛ THE GOLD ROOM</Badge>
+              <div className="flex justify-center">
+                <div className="w-28 h-28 rounded-2xl overflow-hidden border-2" style={{ borderColor: `${GOLD}50`, boxShadow: `0 0 30px ${GOLD}30` }}>
+                  <img src={IMGS.logo} alt="Gold Room Seal" className="w-full h-full object-cover" />
+                </div>
+              </div>
               <h2 className="text-xl font-bold font-cinzel gold-shimmer">Owner Command Summary</h2>
+              <p className="text-[10px] italic font-cinzel" style={{ color: `${GOLD}70` }}>Gold Room Seal · Elegance with Consequences · Protected by verification-first architecture.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {[
@@ -278,6 +285,14 @@ export default function DemoCouncil() {
                   </div>
                 );
               })}
+            </div>
+            <div className="text-center pt-2">
+              <Link to="/brand-proof"
+                className="inline-flex items-center gap-2 text-[10px] font-bold px-4 py-2 rounded-xl border hover:opacity-80 transition"
+                style={{ color: GOLD, borderColor: `${GOLD}30`, background: `${GOLD}08` }}>
+                <Shield className="w-3.5 h-3.5" />
+                View Brand Proof Asset Vault →
+              </Link>
             </div>
           </div>
         )}

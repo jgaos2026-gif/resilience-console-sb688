@@ -21,6 +21,7 @@ const NAV = [
   { path: "/diamond-hunter", label: "Diamond Hunter Core", icon: Gem },
   { path: "/resilience-sim", label: "Resilience Simulator", icon: Zap },
   { path: "/deep-space-sim", label: "Deep Space Sim", icon: Star },
+  { path: "/brand-proof", label: "Brand Proof Assets", icon: Gem },
 ];
 
 const GOLD = "#C9A84C";
