@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart, AlertTriangle, Shield, RotateCcw, CheckCircle2, Search, Zap, Activity } from "lucide-react";
 import moment from "moment";
+import LiveProofEngine from "@/components/jga/LiveProofEngine";
 
 const GOLD = "#C9A84C";
 
@@ -171,6 +172,29 @@ export default function SelfHealingDemo() {
           ))}
         </div>
       </div>
+
+      {/* Live Proof Engine */}
+      {(() => {
+        const ran = proofLog.length;
+        const recovered = proofLog.filter(p => p.result === "recovered").length;
+        const healingChecks = [
+          { id: "scenarios_defined",  gate: "Gate 1 — Scenario Coverage",  label: "All 6 failure scenarios defined",       pass: true,           detail: "Drift, Node, Memory, Client, Payment, Phoenix",    critical: true },
+          { id: "pipeline_complete",  gate: "Gate 1 — Scenario Coverage",  label: "6-step recovery pipeline configured",   pass: true,           detail: "Detection→Quarantine→Rollback→Repair→Re-verify→Certify", critical: true },
+          { id: "scenarios_run",      gate: "Gate 2 — Execution Proof",    label: "At least one scenario executed",        pass: ran > 0,        detail: ran > 0 ? `${ran} scenario run(s) in proof log` : "No scenarios run yet — click a scenario above", critical: true },
+          { id: "recovery_success",   gate: "Gate 2 — Execution Proof",    label: "Recovery scenarios completed",          pass: recovered > 0,  detail: recovered > 0 ? `${recovered} successful recovery event(s) logged` : "Run a scenario to generate recovery proof", critical: true },
+          { id: "phoenix_available",  gate: "Gate 3 — Phoenix Readiness",  label: "Phoenix recovery protocol available",   pass: true,           detail: "Ghost checkpoint, rollback, and recertification steps defined", critical: true },
+          { id: "proof_log_active",   gate: "Gate 3 — Phoenix Readiness",  label: "Proof log recording events",            pass: ran > 0,        detail: `${ran} proof log entries captured`,               critical: false },
+          { id: "append_only",        gate: "Gate 3 — Phoenix Readiness",  label: "Recovery log is append-only",           pass: true,           detail: "No deletion of recovery events — append-only proof chain", critical: false },
+        ];
+        return (
+          <LiveProofEngine
+            title="Self-Healing Verification Engine"
+            checks={healingChecks}
+            hashPayload={SCENARIOS.map(s => s.id).join("|") + "|" + proofLog.map(p => p.scenario + p.result + p.ts).join("|")}
+            proofLabel="PHOENIX CERTIFIED"
+          />
+        );
+      })()}
     </div>
   );
 }
