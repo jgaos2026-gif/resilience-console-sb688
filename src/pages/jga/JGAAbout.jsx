@@ -1,8 +1,9 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
-import { Phone, Mail, Globe, MapPin, Shield, CheckCircle2 } from "lucide-react";
+import { Phone, Mail, MapPin, CheckCircle2 } from "lucide-react";
 
 const GOLD = "#C9A84C";
+const OE = { fontFamily: "'UnifrakturMaguntia', serif" };
 
 const IMAGES = {
   sb712: "https://media.base44.com/images/public/69d5af52688205fc104c687c/cab0b693b_10E06BC3-278A-42DB-9012-1281571C15D8.png",
@@ -28,10 +29,10 @@ export default function JGAAbout() {
           <Badge className="mb-2 text-[10px] border font-bold" style={{ background: "rgba(201,168,76,0.15)", color: GOLD, borderColor: "rgba(201,168,76,0.4)" }}>
             ♛ JGA ENTERPRISES
           </Badge>
-          <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white" style={{ fontFamily: "'UnifrakturMaguntia', 'Cinzel', serif", textShadow: "0 2px 20px rgba(201,168,76,0.6)" }}>
+          <h1 className="text-3xl sm:text-5xl gold-shimmer leading-none" style={{ ...OE, textShadow: "0 2px 20px rgba(201,168,76,0.6)" }}>
             Jay's Graphic Arts
           </h1>
-          <p className="text-sm mt-1" style={{ color: GOLD }}>Elegance With Consequences · Built From Struggle. Fueled By Vision.</p>
+          <p className="text-sm mt-2 font-cinzel" style={{ color: GOLD }}>Elegance With Consequences · Built From Struggle. Fueled By Vision.</p>
         </div>
       </div>
 
@@ -63,14 +64,41 @@ export default function JGAAbout() {
         </div>
       </div>
 
-      {/* Two-column: cloud photo + signage */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="rounded-2xl overflow-hidden border border-border" style={{ maxHeight: 420 }}>
-          <img src={IMAGES.cloudPhoto} alt="Jay's Graphic Arts" className="w-full h-full object-cover" />
+      {/* Owner / Cloud Photo — PROMINENTLY FEATURED here */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+        <div className="rounded-2xl overflow-hidden border-2" style={{ borderColor: "rgba(201,168,76,0.25)", maxHeight: 440 }}>
+          <img src={IMAGES.cloudPhoto} alt="John Arenz — JGA Founder" className="w-full h-full object-cover object-top" style={{ minHeight: 360 }} />
         </div>
-        <div className="rounded-2xl overflow-hidden border border-border" style={{ maxHeight: 420 }}>
-          <img src={IMAGES.signage} alt="Jay's Graphic Arts LLC Sign" className="w-full h-full object-cover" />
+        <div className="space-y-4 p-2">
+          <Badge className="text-[9px] border font-bold" style={{ background: "rgba(201,168,76,0.1)", color: GOLD, borderColor: "rgba(201,168,76,0.3)" }}>♛ FOUNDER & ARCHITECT</Badge>
+          <h2 className="text-2xl font-bold font-cinzel" style={{ color: GOLD }}>John Arenz</h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Built JGA Enterprises from the ground up in Mendota, IL. Jay's Graphic Arts is the engine that funds the vision. The profit fuels the platform. The platform builds the future.
+          </p>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Architect of the SB688 / SB689 / SB712 sovereign runtime ecosystem — the first live deployment of braided verification infrastructure inside a real, operating business.
+          </p>
+          <div className="space-y-2 text-xs">
+            {[
+              "Active Testing & Real-World Refinement",
+              "Real Business Automation — Live",
+              "AI Workflow Integration (AVA / VERA)",
+              "Verification & Self-Healing Recovery Systems",
+              "Operational Continuity Validation",
+              "Illinois Phase 1 Pilot — Demo Ready",
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#4ade80" }} />
+                <span className="text-muted-foreground">{item}</span>
+              </div>
+            ))}
+          </div>
         </div>
+      </div>
+
+      {/* Signage photo */}
+      <div className="rounded-2xl overflow-hidden border border-border" style={{ maxHeight: 380 }}>
+        <img src={IMAGES.signage} alt="Jay's Graphic Arts LLC Sign" className="w-full h-full object-cover" />
       </div>
 
       {/* SB712 Architecture Visual */}
@@ -86,7 +114,7 @@ export default function JGAAbout() {
         <img src={IMAGES.vision} alt="Your Vision Secured" className="w-full object-contain" style={{ maxHeight: 700, background: "#000" }} />
       </div>
 
-      {/* Logos grid */}
+      {/* Logo grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-2xl overflow-hidden border border-border aspect-square">
           <img src={IMAGES.logo} alt="JGA Logo — Elegance With Consequences" className="w-full h-full object-cover" />
@@ -99,41 +127,11 @@ export default function JGAAbout() {
         </div>
       </div>
 
-      {/* Team / Owner photo */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
-        <div className="rounded-2xl overflow-hidden border border-border">
-          <img src={IMAGES.teamPhoto} alt="JGA Team" className="w-full object-cover" style={{ maxHeight: 340 }} />
-        </div>
-        <div className="space-y-4 p-2">
-          <h2 className="text-xl font-bold font-cinzel" style={{ color: GOLD }}>The First Live Deployment of the SB Ecosystem</h2>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            We're not just building software. We're building it inside a real business, in real time. Testing now. Launching soon. Funding the future.
-          </p>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Jay's Graphic Arts is the engine that funds the vision. The profit fuels the platform. The platform builds the future.
-          </p>
-          <div className="space-y-2 text-xs">
-            {[
-              "Active Testing & Refinement",
-              "Real-World Automation",
-              "AI Workflow Integration",
-              "Verification & Recovery Systems",
-              "Production Routing & Customer Handling",
-              "Operational Continuity Validation",
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#4ade80" }} />
-                <span className="text-muted-foreground">{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Bottom tagline */}
       <div className="rounded-2xl border-2 text-center p-8 space-y-3" style={{ borderColor: "rgba(201,168,76,0.3)", background: "linear-gradient(135deg, hsl(220,22%,5%), hsl(40,12%,7%))" }}>
         <p className="text-[10px] tracking-widest uppercase text-muted-foreground">From the Block to the Boardroom</p>
-        <h3 className="text-2xl font-black gold-shimmer font-cinzel">WE BUILD. WE PRINT. WE WIN.</h3>
+        <h3 className="text-3xl gold-shimmer" style={OE}>JGA Enterprises</h3>
+        <p className="text-lg font-bold font-cinzel" style={{ color: GOLD }}>WE BUILD. WE PRINT. WE WIN.</p>
         <p className="text-xs" style={{ color: GOLD }}>THIS IS JGA. THIS IS JUST THE BEGINNING.</p>
         <p className="text-[10px] italic text-muted-foreground">DISCIPLINE IS FREEDOM. CONTROL IS POWER. PEACE IS THE GOAL. — JGA</p>
       </div>
