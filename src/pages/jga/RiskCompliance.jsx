@@ -31,6 +31,33 @@ export default function RiskCompliance() {
         <p className="text-xs text-muted-foreground">Audit readiness, policy tracking, and compliance monitoring</p>
       </div>
 
+      {/* Business Registration Block */}
+      <div className="rounded-xl border p-5 space-y-4" style={{ background: `${GOLD}08`, borderColor: `${GOLD}30` }}>
+        <div className="flex items-center gap-2 mb-1">
+          <Shield className="w-4 h-4" style={{ color: GOLD }} />
+          <h2 className="text-sm font-bold font-cinzel" style={{ color: GOLD }}>Business Registration & Standing</h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {[
+            { label: "Legal Entity",         value: "Sole Proprietorship",          sub: "Registered in Illinois",              color: "#4ade80" },
+            { label: "Tax Election",          value: "S-Corporation",                sub: "IRS S-Corp status — good standing",   color: "#4ade80" },
+            { label: "Business Name",         value: "Jay's Graphic Arts",           sub: "DBA — JGA Enterprises",               color: GOLD },
+            { label: "Owner",                 value: "John E. Arenz",                sub: "Sole Owner / Orchestrator",           color: GOLD },
+            { label: "Location",              value: "Mendota, IL",                  sub: "LaSalle County, Illinois",            color: "#60a5fa" },
+            { label: "Banking",               value: "BlueVine Business Banking",    sub: "FDIC-insured business checking",       color: "#60a5fa" },
+            { label: "EIN",                   value: "Registered ✓",                 sub: "Federal Employer ID — on file",       color: "#4ade80" },
+            { label: "DUNS Number",           value: "Certified ✓",                  sub: "D&B DUNS — verified & active",        color: "#4ade80" },
+            { label: "IL Good Standing",      value: "Active ✓",                     sub: "Illinois Secretary of State",         color: "#4ade80" },
+          ].map((item, i) => (
+            <div key={i} className="rounded-lg border border-border p-3 space-y-0.5" style={{ background: "rgba(0,0,0,0.3)" }}>
+              <p className="text-[9px] uppercase tracking-widest text-muted-foreground">{item.label}</p>
+              <p className="text-xs font-bold" style={{ color: item.color }}>{item.value}</p>
+              <p className="text-[9px] text-muted-foreground">{item.sub}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Legal Warning */}
       <div className="rounded-xl border p-4 flex items-start gap-3" style={{ background: "rgba(239,68,68,0.04)", borderColor: "rgba(239,68,68,0.15)" }}>
         <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5 text-red-400" />

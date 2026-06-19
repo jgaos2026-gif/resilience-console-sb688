@@ -12,7 +12,7 @@ const MODULES = [
     icon: Landmark,
     label: "Banking & Record Keeping",
     color: "#60a5fa",
-    prompt: (data) => `You are an AI CFO for a small creative business called JGA Enterprises (Jay's Graphic Arts) in Mendota, IL. 
+    prompt: (data) => `You are an AI CFO for Jay's Graphic Arts (JGA Enterprises), a sole proprietorship taxed as an S-Corporation, owned by John E. Arenz, located in Mendota, IL. EIN registered, DUNS certified, banking with BlueVine Business Banking, Illinois good standing.
 Business data: ${JSON.stringify(data)}
 Provide a banking and record-keeping summary including:
 1. Cash flow health assessment
@@ -28,7 +28,7 @@ Be specific, practical, and speak like a trusted financial advisor.`,
     icon: ReceiptText,
     label: "Taxes, Write-Offs & Year-End",
     color: "#4ade80",
-    prompt: (data) => `You are a tax strategist for JGA Enterprises, a graphic arts LLC in Illinois.
+    prompt: (data) => `You are a tax strategist for Jay's Graphic Arts (JGA Enterprises), owned by John E. Arenz. Entity: sole proprietorship TAXED AS S-CORPORATION in Illinois, EIN registered, DUNS certified, BlueVine banking. This S-Corp election means owner takes a reasonable salary + distributions to reduce self-employment tax.
 Business data: ${JSON.stringify(data)}
 Provide a comprehensive tax strategy including:
 1. Estimated quarterly tax obligations
@@ -45,7 +45,7 @@ Be specific with dollar thresholds and percentages where relevant.`,
     icon: Scale,
     label: "Compliance & Legal",
     color: "#a78bfa",
-    prompt: (data) => `You are a compliance officer for JGA Enterprises, a creative services LLC in Illinois.
+    prompt: (data) => `You are a compliance officer for Jay's Graphic Arts (JGA Enterprises), owned by John E. Arenz. Entity: sole proprietorship taxed as S-Corp, Illinois good standing, EIN registered, DUNS certified, BlueVine Business Banking. NOT an LLC — sole proprietorship with S-Corp tax election.
 Business data: ${JSON.stringify(data)}
 Provide a compliance health report including:
 1. LLC compliance checklist for Illinois
@@ -61,7 +61,7 @@ Provide a compliance health report including:
     icon: TrendingUp,
     label: "Investment & Angel Repayment",
     color: GOLD,
-    prompt: (data) => `You are an investment strategist for JGA Enterprises, a creative tech startup seeking angel investment.
+    prompt: (data) => `You are an investment strategist for Jay's Graphic Arts (JGA Enterprises), owned by John E. Arenz. Entity: sole proprietorship taxed as S-Corp in Illinois, DUNS certified, EIN on file, BlueVine banking, Illinois good standing. Credentialed and structured for serious investor conversations.
 Business data: ${JSON.stringify(data)}
 Provide an investment and repayment strategy including:
 1. Angel investor pitch summary (what to highlight)
@@ -77,7 +77,7 @@ Provide an investment and repayment strategy including:
     icon: Heart,
     label: "Charity & Donation Strategy",
     color: "#ef4444",
-    prompt: (data) => `You are a charitable giving strategist for JGA Enterprises in Illinois.
+    prompt: (data) => `You are a charitable giving strategist for Jay's Graphic Arts (JGA Enterprises), owned by John E. Arenz — sole proprietorship taxed as S-Corp in Illinois, EIN registered, DUNS certified, BlueVine banking. Illinois good standing.
 Business data: ${JSON.stringify(data)}
 Provide a charitable giving and community strategy including:
 1. How to structure charitable giving for maximum tax benefit
@@ -93,7 +93,7 @@ Provide a charitable giving and community strategy including:
     icon: DollarSign,
     label: "Sales Follow-Ups & Pipeline",
     color: "#f97316",
-    prompt: (data) => `You are a sales coach for JGA Enterprises, a graphic arts and design business.
+    prompt: (data) => `You are a sales coach for Jay's Graphic Arts (JGA Enterprises), owned by John E. Arenz — sole proprietorship taxed as S-Corp in Mendota, IL. DUNS certified, EIN registered, BlueVine banking, Illinois good standing. A credible, structured creative services business.
 Business data: ${JSON.stringify(data)}
 Provide a sales strategy including:
 1. Follow-up sequence (day 1, 3, 7, 14 scripts)
@@ -202,8 +202,16 @@ export default function AIFinancePanel({ payments, clients, orders, contractors 
     total_clients: clients.length,
     active_orders: orders.filter(o => !["completed", "cancelled"].includes(o.status)).length,
     contractors: contractors.length,
-    location: "Mendota, IL",
-    business_type: "Graphic Arts / Creative Services LLC",
+    legal_name: "Jay's Graphic Arts",
+    dba: "JGA Enterprises",
+    owner: "John E. Arenz",
+    entity_type: "Sole Proprietorship — taxed as S-Corporation",
+    state: "Illinois",
+    location: "Mendota, IL (LaSalle County)",
+    ein: "EIN registered",
+    duns: "D&B DUNS certified",
+    banking: "BlueVine Business Banking (FDIC-insured)",
+    standing: "Illinois good standing — active",
     phase: "Illinois Pilot Phase 1",
   };
 
