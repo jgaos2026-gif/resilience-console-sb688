@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Activity, Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import NodeVerificationEngine from "@/components/jga/NodeVerificationEngine";
+import IndustryApplications from "@/components/jga/IndustryApplications";
 
 const GOLD = "#C9A84C";
 const STATUS_COLORS = {
@@ -133,105 +134,7 @@ export default function NodeMesh() {
         </div>
       )}
 
-      {/* Industry Applications */}
-      <div className="space-y-4 pt-4 border-t" style={{ borderColor: `${GOLD}20` }}>
-        <div className="text-center space-y-1">
-          <p className="text-[9px] tracking-[0.4em] uppercase text-muted-foreground">Real-World Impact</p>
-          <h2 className="text-sm font-black font-cinzel" style={{ color: GOLD }}>What This Node Mesh Architecture Can Do Across Industries</h2>
-          <p className="text-[10px] text-muted-foreground max-w-2xl mx-auto">
-            The same verification-first, self-healing node mesh running here can be deployed inside any organization that cannot afford silent failures.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {[
-            {
-              industry: "Tesla / EV Manufacturing",
-              icon: "⚡",
-              color: "#e11d48",
-              use: "Real-time node mesh across vehicle assembly lines. Every sensor, robot arm, and quality check becomes a verified node. Drift in torque specs, weld integrity, or battery cell data triggers instant quarantine before a defective unit reaches the road.",
-              proof: "Zero-defect gates on production floor. Append-only ledger for NHTSA recall defense.",
-            },
-            {
-              industry: "SpaceX / Aerospace",
-              icon: "🚀",
-              color: "#7c3aed",
-              use: "Mission-critical node validation for rocket telemetry, fuel systems, and avionics. Each flight computer node is triple-verified before state changes. A failing node triggers Phoenix recovery — clean checkpoint restoration mid-mission without human intervention.",
-              proof: "Sovereign runtime on Falcon 9 health nodes. Verified checkpoint before every stage separation.",
-            },
-            {
-              industry: "Deep Space Travel / NASA",
-              icon: "🌌",
-              color: "#0ea5e9",
-              use: "Communication lag of 20+ minutes means no human can intervene in real time. This mesh runs autonomous verification and self-healing across life support, navigation, and power nodes. If a node drifts, it quarantines itself, rolls back to last certified state, and recertifies — all without ground control.",
-              proof: "Fully autonomous sovereign system. Zero reliance on Earth uplink for recovery.",
-            },
-            {
-              industry: "Law Enforcement / Justice",
-              icon: "⚖️",
-              color: "#d97706",
-              use: "Body cam footage, evidence chain-of-custody, and case file nodes are hash-verified on intake. Any modification to evidence triggers a tamper alert. Every access event is append-only logged. Proof records are court-admissible by design — no silent edits, ever.",
-              proof: "Chain-of-custody nodes. SHA-256 hash on every evidence record. Tamper-evident audit trail.",
-            },
-            {
-              industry: "National Security / DoD",
-              icon: "🛡️",
-              color: "#dc2626",
-              use: "Classified network nodes operate in verified mesh topology. Insider threats and lateral movement are detected when any node deviates from certified behavior. RAM Guard prevents memory injection. Triple verification before any command node transitions to 'trusted' state.",
-              proof: "Zero-trust node architecture. Every command chain requires tri-mark certification before execution.",
-            },
-            {
-              industry: "FinTech / Banking",
-              icon: "🏦",
-              color: "#16a34a",
-              use: "Every transaction, ledger update, and account state change passes through the verification pipeline. No payment reaches 'trusted' without three independent gates. Fraud attempts are quarantined in real time. Dispute resolution is backed by immutable proof records — no 'he said / she said'.",
-              proof: "Triple-verified payment nodes. Rollback-capable ledger. Regulatory audit trail on demand.",
-            },
-            {
-              industry: "ComEd / Utility Grids",
-              icon: "🔋",
-              color: "#ca8a04",
-              use: "Grid substations and smart meter nodes are monitored for drift. A node reporting anomalous load data is quarantined before it cascades into outages. Phoenix recovery restores last known good grid state within seconds. Proof vault logs every grid event for FERC compliance.",
-              proof: "Self-healing grid node mesh. Real-time substation quarantine. FERC-ready audit trail.",
-            },
-            {
-              industry: "Healthcare / Hospital Systems",
-              icon: "🏥",
-              color: "#0891b2",
-              use: "Patient record nodes, dosing systems, and diagnostic machine outputs enter quarantine on intake. Any data point flagged as anomalous cannot affect treatment decisions until triple-verified. Medication dispensing nodes are certified before activation. HIPAA audit trail baked in.",
-              proof: "Triple-verified patient data nodes. No dosing change without certification. HIPAA-ready proof log.",
-            },
-            {
-              industry: "AI / LLM Infrastructure",
-              icon: "🧠",
-              color: "#8b5cf6",
-              use: "Every AI model response, training data batch, and memory pocket is a node in this mesh. Hallucinated or poisoned outputs are quarantined before reaching users. Model weight updates require three-gate certification. Memory braid ensures only verified knowledge is loaded into active context.",
-              proof: "Sovereign AI runtime. Quarantined LLM outputs. Verified memory pockets before load.",
-            },
-          ].map((item, i) => (
-            <div key={i} className="rounded-xl border p-4 space-y-3 hover:scale-[1.01] transition-all"
-              style={{ background: "hsl(220,18%,7%)", borderColor: `${item.color}20` }}>
-              <div className="flex items-center gap-2">
-                <span className="text-xl">{item.icon}</span>
-                <h3 className="text-[11px] font-black uppercase tracking-wide" style={{ color: item.color }}>{item.industry}</h3>
-              </div>
-              <p className="text-[10px] text-muted-foreground leading-relaxed">{item.use}</p>
-              <div className="rounded-lg p-2 text-[9px] font-mono leading-relaxed"
-                style={{ background: `${item.color}08`, color: `${item.color}90`, border: `1px solid ${item.color}15` }}>
-                ♛ {item.proof}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="rounded-xl border p-4 text-center space-y-1.5" style={{ background: "#0e0c00", borderColor: `${GOLD}25` }}>
-          <p className="text-[10px] font-black uppercase tracking-widest" style={{ color: GOLD }}>The Core Principle Is The Same Everywhere</p>
-          <p className="text-[10px] text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Any system where a silent failure, an undetected change, or an unverified state can cause harm — financial loss, injury, national security risk, or legal liability — is a candidate for the JGA Node Mesh architecture.
-            <span className="font-bold" style={{ color: GOLD }}> No state becomes trusted without earning it.</span>
-          </p>
-        </div>
-      </div>
+      <IndustryApplications />
     </div>
   );
 }
