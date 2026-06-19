@@ -8,6 +8,7 @@ import {
   ChevronDown, ChevronUp, Building2, Info
 } from "lucide-react";
 import ProofBadge from "@/components/jga/ProofBadge";
+import VerifiedBusinessProof from "@/components/jga/VerifiedBusinessProof";
 
 const GOLD = "#C9A84C";
 const OE = { fontFamily: "'UnifrakturMaguntia', serif" };
@@ -226,6 +227,11 @@ export default function DemoCouncil() {
         </div>
       </div>
       <style>{`@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
+
+      {/* ════ VERIFIED BUSINESS PROOF ════ */}
+      <div className="px-4 sm:px-6 py-4">
+        <VerifiedBusinessProof />
+      </div>
 
       {/* ════ LOGO + CONTACT SPLIT ════ */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-0">

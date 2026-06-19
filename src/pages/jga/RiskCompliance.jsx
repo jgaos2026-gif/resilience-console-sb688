@@ -39,15 +39,15 @@ export default function RiskCompliance() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {[
-            { label: "Legal Entity",         value: "Sole Proprietorship",          sub: "Registered in Illinois",              color: "#4ade80" },
-            { label: "Tax Election",          value: "S-Corporation",                sub: "IRS S-Corp status — good standing",   color: "#4ade80" },
-            { label: "Business Name",         value: "Jay's Graphic Arts",           sub: "DBA — JGA Enterprises",               color: GOLD },
-            { label: "Owner",                 value: "John E. Arenz",                sub: "Sole Owner / Orchestrator",           color: GOLD },
-            { label: "Location",              value: "Mendota, IL",                  sub: "LaSalle County, Illinois",            color: "#60a5fa" },
-            { label: "Banking",               value: "BlueVine Business Banking",    sub: "FDIC-insured business checking",       color: "#60a5fa" },
-            { label: "EIN",                   value: "Registered ✓",                 sub: "Federal Employer ID — on file",       color: "#4ade80" },
-            { label: "DUNS Number",           value: "Certified ✓",                  sub: "D&B DUNS — verified & active",        color: "#4ade80" },
-            { label: "IL Good Standing",      value: "Active ✓",                     sub: "Illinois Secretary of State",         color: "#4ade80" },
+            { label: "Legal Entity",         value: "LLC – Corporation",            sub: "Jays Graphic Arts LLC · File #0906787-6",  color: "#4ade80" },
+            { label: "Tax Election",          value: "S-Corporation Election",       sub: "IRS Form SS-4 / CP575G filed",         color: "#4ade80" },
+            { label: "Business Name",         value: "Jays Graphic Arts LLC",        sub: "DBA Jps Professional Services",        color: GOLD },
+            { label: "Owner",                 value: "John E. Arenz",                sub: "Sole Member / Organizer",              color: GOLD },
+            { label: "Address",               value: "603 6th Ave Uppr",             sub: "Mendota IL 61342-2149 · LaSalle Co.",  color: "#60a5fa" },
+            { label: "EIN",                   value: "39-3127122",                   sub: "IRS-issued · Notice CP575G · 07/09/2025", color: "#4ade80" },
+            { label: "IL Good Standing",      value: "Good Standing ✓",              sub: "IL Sec of State · Organized 07/21/2025", color: "#4ade80" },
+            { label: "IL Biz Authorization",  value: "Cert #4362-4189",              sub: "IDOR · Sales & use tax · Loc 050-0015-7-001", color: "#4ade80" },
+            { label: "REG-1 Tax Account",     value: "Active ✓",                     sub: "Business Income Tax begin 08/12/2025", color: "#4ade80" },
           ].map((item, i) => (
             <div key={i} className="rounded-lg border border-border p-3 space-y-0.5" style={{ background: "rgba(0,0,0,0.3)" }}>
               <p className="text-[9px] uppercase tracking-widest text-muted-foreground">{item.label}</p>
