@@ -20,6 +20,7 @@ const NAV = [
   { path: "/jga-about", label: "About JGA", icon: Star },
   { path: "/diamond-hunter", label: "Diamond Hunter Core", icon: Gem },
   { path: "/resilience-sim", label: "Resilience Simulator", icon: Zap },
+  { path: "/deep-space-sim", label: "Deep Space Sim", icon: Star },
 ];
 
 const GOLD = "#C9A84C";

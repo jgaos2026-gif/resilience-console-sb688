@@ -24,6 +24,7 @@ import JGASettings from './pages/jga/JGASettings';
 import JGAAbout from './pages/jga/JGAAbout';
 import DiamondHunterCore from './pages/jga/DiamondHunterCore';
 import ResilienceSimulator from './pages/jga/ResilienceSimulator';
+import DeepSpaceSim from './pages/jga/DeepSpaceSim';
 import Console from './pages/Console';
 import SB688Console from './pages/SB688Console';
 import JGALive from './pages/JGALive';
@@ -84,6 +85,7 @@ const AuthenticatedApp = () => {
           <Route path="/jga-about" element={<JGAAbout />} />
           <Route path="/diamond-hunter" element={<DiamondHunterCore />} />
           <Route path="/resilience-sim" element={<ResilienceSimulator />} />
+          <Route path="/deep-space-sim" element={<DeepSpaceSim />} />
         </Route>
         <Route path="/legacy-console" element={<Console />} />
         <Route path="/sb688" element={<SB688Console />} />
