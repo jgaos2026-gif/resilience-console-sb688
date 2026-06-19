@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import AIFinancePanel from "@/components/jga/bos/AIFinancePanel";
 import BrandingQuestionnaire from "@/components/jga/bos/BrandingQuestionnaire";
+import InterventionLog from "@/components/jga/bos/InterventionLog";
 
 const GOLD = "#C9A84C";
 
@@ -58,6 +59,9 @@ export default function JGABusinessOS() {
           AI-powered enterprise command center — banking, taxes, compliance, investment, branding, sales & more
         </p>
       </div>
+
+      {/* Intervention Log — always visible */}
+      <InterventionLog />
 
       {/* Stats Strip */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
