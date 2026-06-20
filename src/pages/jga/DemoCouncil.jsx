@@ -10,6 +10,7 @@ import {
 import ProofBadge from "@/components/jga/ProofBadge";
 import VerifiedBusinessProof from "@/components/jga/VerifiedBusinessProof";
 import RecoveryCommandPanel from "@/components/jga/RecoveryCommandPanel";
+import AVAWidget from "@/components/jga/AVAWidget";
 
 const GOLD = "#C9A84C";
 const OE = { fontFamily: "'UnifrakturMaguntia', serif" };
@@ -359,6 +360,9 @@ export default function DemoCouncil() {
           </div>
         </div>
       </div>
+
+      {/* ════ AVA AI ASSISTANT ════ */}
+      <AVAWidget />
 
       {/* ════ COUNCIL BRIEFING ════ */}
       <div className="px-4 sm:px-6 pb-2">
