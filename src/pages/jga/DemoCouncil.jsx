@@ -11,6 +11,7 @@ import ProofBadge from "@/components/jga/ProofBadge";
 import VerifiedBusinessProof from "@/components/jga/VerifiedBusinessProof";
 import RecoveryCommandPanel from "@/components/jga/RecoveryCommandPanel";
 import AVAWidget from "@/components/jga/AVAWidget";
+import ImageManager, { loadImages } from "@/components/jga/ImageManager";
 
 const GOLD = "#C9A84C";
 const OE = { fontFamily: "'UnifrakturMaguntia', serif" };
@@ -36,12 +37,7 @@ function CrownStamp({ label = "CERTIFIED", size = "md" }) {
   );
 }
 
-const IMGS = {
-  flyer:   "https://media.base44.com/images/public/69d5af52688205fc104c687c/336e66e85_FF2B5757-3BC6-4E14-9251-BF3005F719D7.png",
-  logo:    "https://media.base44.com/images/public/69d5af52688205fc104c687c/a27bf93c0_IMG_0843_Original_Original.jpeg",
-  sb712:   "https://media.base44.com/images/public/69d5af52688205fc104c687c/cab0b693b_10E06BC3-278A-42DB-9012-1281571C15D8.png",
-  founder: "https://media.base44.com/images/public/69d5af52688205fc104c687c/006aa7b4e_IMG_1321_Original_Original.jpeg",
-};
+
 
 const MODULES = [
   {
@@ -187,11 +183,15 @@ export default function DemoCouncil() {
   const [viewMode, setViewMode] = useState("simple");
   const [goldRoomOpen, setGoldRoomOpen] = useState(false);
   const [flowStep, setFlowStep] = useState(0);
+  const [IMGS, setIMGS] = useState(() => loadImages());
 
   const FLOW = ["Unknown State", "Quarantine", "Verification", "Validation", "Certification", "Trusted State ♛"];
 
   return (
     <div className="max-w-6xl mx-auto space-y-0" style={{ background: "#080808" }}>
+
+      {/* ════ IMAGE MANAGER (admin) ════ */}
+      <ImageManager images={IMGS} onImagesChange={setIMGS} />
 
       {/* ════ GLOBAL FACT-AWARENESS BANNER ════ */}
       <div className="px-4 py-2 text-center text-[9px] font-bold tracking-widest uppercase border-b"
