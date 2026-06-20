@@ -104,8 +104,12 @@ export default function JGALayout() {
                 Proof over promises. Every trusted state earns its mark. Features labeled SIMULATION or DEMO VISUALIZATION show system logic — not live production events. Business policies are working templates and require legal review. Expansion projections are founder estimates, not guaranteed outcomes. Real deployment requires legal, security, payment, and operational review.
               </p>
               <p className="text-[9px] text-muted-foreground/50">
-              JGA Enterprises (Jay's Graphic Arts) · John Arenz · <a href="tel:7793966934" className="hover:underline">779-396-6934</a> · Mendota, IL · © {new Date().getFullYear()}
-            </p>
+                © 2026 JGA Enterprises / Jay's Graphic Arts ·{" "}
+                <a href="https://jgaenterprise.org" target="_blank" rel="noopener noreferrer" className="hover:underline">jgaenterprise.org</a>
+              </p>
+              <p className="text-[9px] italic" style={{ color: "rgba(201,168,76,0.4)" }}>
+                "Verification first. Design bolder. Systems built to earn trust."
+              </p>
             </div>
           </footer>
         </main>
