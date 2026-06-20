@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Shield, Layers, LayoutGrid, CheckSquare, Brain, Heart, Building2, Users, Wrench as HardHat, Archive, FileText, AlertTriangle, Map, Settings, Menu, X, Star, Gem, Zap, BarChart2 } from "lucide-react";
+import { Shield, Layers, LayoutGrid, CheckSquare, Brain, Heart, Building2, Users, Wrench as HardHat, Archive, FileText, AlertTriangle, Map, Settings, Menu, X, Star, Gem, Zap, BarChart2, ClipboardList } from "lucide-react";
 
 const NAV = [
   { path: "/", label: "Demo Council", icon: Shield },
+  { path: "/executive-brief", label: "Executive Brief", icon: ClipboardList },
   { path: "/system-spine", label: "System Spine", icon: Layers },
   { path: "/node-mesh", label: "Node Mesh", icon: LayoutGrid },
   { path: "/verification-gates", label: "Verification Gates", icon: CheckSquare },
