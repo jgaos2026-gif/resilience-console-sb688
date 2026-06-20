@@ -12,6 +12,8 @@ import VerifiedBusinessProof from "@/components/jga/VerifiedBusinessProof";
 import RecoveryCommandPanel from "@/components/jga/RecoveryCommandPanel";
 import AVAWidget from "@/components/jga/AVAWidget";
 import ImageManager, { loadImages } from "@/components/jga/ImageManager";
+import BuiltFromRealLife from "@/components/council/BuiltFromRealLife";
+import ProofWall from "@/components/council/ProofWall";
 
 const GOLD = "#C9A84C";
 const OE = { fontFamily: "'UnifrakturMaguntia', serif" };
@@ -289,6 +291,12 @@ export default function DemoCouncil() {
           </div>
         ))}
       </div>
+
+      {/* ════ BUILT FROM REAL LIFE + WHY IT FEELS DIFFERENT ════ */}
+      <BuiltFromRealLife />
+
+      {/* ════ PROOF WALL ════ */}
+      <ProofWall />
 
       {/* ════ SB712 VISUAL ════ */}
       <div className="relative">
