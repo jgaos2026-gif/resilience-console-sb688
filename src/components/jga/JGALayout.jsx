@@ -5,6 +5,7 @@ import { Shield, Layers, LayoutGrid, CheckSquare, Brain, Heart, Building2, Users
 const NAV = [
   { path: "/", label: "Demo Council", icon: Shield },
   { path: "/executive-brief", label: "Executive Brief", icon: ClipboardList },
+  { path: "/demo-arcade", label: "🎮 Demo Arcade", icon: Zap },
   { path: "/system-spine", label: "System Spine", icon: Layers },
   { path: "/node-mesh", label: "Node Mesh", icon: LayoutGrid },
   { path: "/verification-gates", label: "Verification Gates", icon: CheckSquare },

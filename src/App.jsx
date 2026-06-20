@@ -41,6 +41,7 @@ import QuantumBraidPower from './pages/QuantumBraidPower';
 import ResilienceCouncil from './pages/ResilienceCouncil';
 import IndustryImpact from './pages/IndustryImpact';
 import ExecutiveBrief from './pages/ExecutiveBrief';
+import DemoArcade from './pages/DemoArcade';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -106,6 +107,7 @@ const AuthenticatedApp = () => {
         <Route path="/resilience-council" element={<ResilienceCouncil />} />
         <Route path="/industry-impact" element={<IndustryImpact />} />
         <Route path="/executive-brief" element={<ExecutiveBrief />} />
+        <Route path="/demo-arcade" element={<DemoArcade />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
