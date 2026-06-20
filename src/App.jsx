@@ -42,6 +42,8 @@ import ResilienceCouncil from './pages/ResilienceCouncil';
 import IndustryImpact from './pages/IndustryImpact';
 import ExecutiveBrief from './pages/ExecutiveBrief';
 import DemoArcade from './pages/DemoArcade';
+import About from './pages/About';
+import Contact from './pages/Contact';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -108,6 +110,8 @@ const AuthenticatedApp = () => {
         <Route path="/industry-impact" element={<IndustryImpact />} />
         <Route path="/executive-brief" element={<ExecutiveBrief />} />
         <Route path="/demo-arcade" element={<DemoArcade />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>

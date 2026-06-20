@@ -106,6 +106,10 @@ export default function JGALayout() {
               <p className="text-[9px] text-muted-foreground/50">
                 © 2026 JGA Enterprises / Jay's Graphic Arts ·{" "}
                 <a href="https://jgaenterprise.org" target="_blank" rel="noopener noreferrer" className="hover:underline">jgaenterprise.org</a>
+                {" · "}
+                <a href="/about" className="hover:underline">About</a>
+                {" · "}
+                <a href="/contact" className="hover:underline">Contact</a>
               </p>
               <p className="text-[9px] italic" style={{ color: "rgba(201,168,76,0.4)" }}>
                 "Verification first. Design bolder. Systems built to earn trust."
