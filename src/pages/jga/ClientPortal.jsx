@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { base44 } from "@/api/base44Client";
 import { useMutation } from "@tanstack/react-query";
-import { Users, CheckCircle2, Upload, FileText, Shield } from "lucide-react";
+import { Users, CheckCircle2, Upload, FileText, Shield, Phone, Mail, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 
 const GOLD = "#C9A84C";
@@ -23,10 +23,26 @@ export default function ClientPortal() {
   const [submitted, setSubmitted] = useState(false);
 
   const createClient = useMutation({
-    mutationFn: (data) => base44.entities.BusinessClient.create(data),
+    mutationFn: async (data) => {
+      await base44.entities.BusinessClient.create(data);
+      // Also send email notification
+      await base44.functions.invoke("sendClientInquiry", {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        business_name: data.business_name,
+        service,
+        notes: data.notes,
+        budget_range: data.budget_range,
+        deadline: data.deadline,
+      });
+    },
     onSuccess: () => {
-      toast.success("Design request submitted!");
+      toast.success("Design request submitted! John will follow up shortly.");
       setSubmitted(true);
+    },
+    onError: () => {
+      toast.error("Submission failed. Please try again or contact us directly.");
     },
   });
 
@@ -50,6 +66,18 @@ export default function ClientPortal() {
           <p className="text-muted-foreground">• Proof will be sent with watermark</p>
           <p className="text-muted-foreground">• Final files released after full payment</p>
         </div>
+        <div className="flex flex-wrap justify-center gap-2">
+          <a href="sms:7793966934"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition hover:opacity-80"
+            style={{ background: "linear-gradient(135deg, #C9A84C, #7a5010)", color: "#080808" }}>
+            <MessageSquare className="w-4 h-4" /> Text John — 779-396-6934
+          </a>
+          <a href="tel:7793966934"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm border transition hover:opacity-80"
+            style={{ borderColor: "rgba(201,168,76,0.35)", color: GOLD, background: "rgba(201,168,76,0.06)" }}>
+            <Phone className="w-4 h-4" /> Call John
+          </a>
+        </div>
         <Button onClick={() => setSubmitted(false)} variant="outline" className="text-xs">Submit Another Request</Button>
       </div>
     );
@@ -60,6 +88,29 @@ export default function ClientPortal() {
       <div>
         <h1 className="text-xl font-bold font-cinzel" style={{ color: GOLD }}>Client Portal</h1>
         <p className="text-xs text-muted-foreground">Submit your design request and answer brand discovery questions</p>
+      </div>
+
+      {/* Direct Contact */}
+      <div className="rounded-xl border p-4 space-y-3" style={{ background: "rgba(201,168,76,0.04)", borderColor: "rgba(201,168,76,0.2)" }}>
+        <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: GOLD }}>Prefer to reach out directly?</p>
+        <div className="flex flex-wrap gap-2">
+          <a href="tel:7793966934"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition hover:opacity-80"
+            style={{ background: "linear-gradient(135deg, #C9A84C, #7a5010)", color: "#080808" }}>
+            <Phone className="w-4 h-4" /> Call John — 779-396-6934
+          </a>
+          <a href="sms:7793966934"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm border transition hover:opacity-80"
+            style={{ borderColor: "rgba(201,168,76,0.35)", color: GOLD, background: "rgba(201,168,76,0.06)" }}>
+            <MessageSquare className="w-4 h-4" /> Text John Directly
+          </a>
+          <a href="mailto:jgaos2026@outlook.com"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm border transition hover:opacity-80"
+            style={{ borderColor: "rgba(201,168,76,0.2)", color: "rgba(201,168,76,0.7)", background: "transparent" }}>
+            <Mail className="w-4 h-4" /> jgaos2026@outlook.com
+          </a>
+        </div>
+        <p className="text-[9px] text-muted-foreground">John responds personally — Mendota, IL</p>
       </div>
 
       {/* Policies */}
