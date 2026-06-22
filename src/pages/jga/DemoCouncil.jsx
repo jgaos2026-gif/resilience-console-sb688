@@ -14,6 +14,7 @@ import AVAWidget from "@/components/jga/AVAWidget";
 import ImageManager, { loadImages } from "@/components/jga/ImageManager";
 import BuiltFromRealLife from "@/components/council/BuiltFromRealLife";
 import ProofWall from "@/components/council/ProofWall";
+import IndustryLens from "@/components/council/IndustryLens";
 
 const GOLD = "#C9A84C";
 const OE = { fontFamily: "'UnifrakturMaguntia', serif" };
@@ -291,6 +292,9 @@ export default function DemoCouncil() {
           </div>
         ))}
       </div>
+
+      {/* ════ INDUSTRY INTELLIGENCE LENS ════ */}
+      <IndustryLens />
 
       {/* ════ BUILT FROM REAL LIFE + WHY IT FEELS DIFFERENT ════ */}
       <BuiltFromRealLife />
