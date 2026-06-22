@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ChevronDown, Rocket, Shield, Building2, Cpu, Truck, Heart, Landmark, Zap } from "lucide-react";
+import PrototypeReadinessCheck from "@/components/council/PrototypeReadinessCheck";
 
 const GOLD = "#C9A84C";
 
@@ -27,7 +28,7 @@ const INDUSTRIES = [
     tagline: "Mission-critical state integrity for launch & telemetry systems",
     pitch: {
       headline: "Why SpaceX & Aerospace Need This",
-      body: "A single unverified state in a launch sequence can cost $62M and a mission. JGA's triple-verified pipeline means every telemetry packet, staging command, and system handoff passes three independent certification gates before it's trusted — with append-only audit logs that survive a total system failure. Phoenix Recovery can roll the entire runtime back to the last certified checkpoint in under two seconds. This isn't theoretical. The architecture is built for exactly this kind of zero-tolerance environment.",
+      body: "A single unverified state in a launch sequence can cost a mission. JGA's triple-verified pipeline is designed so telemetry packets, staging commands, and system handoffs can pass independent certification gates before they're trusted — with append-only audit logs built for failure review. Phoenix Recovery is shown as a prototype recovery pattern targeting fast rollback to the last certified checkpoint. The value is the architecture: fewer blind trust points in a zero-tolerance environment.",
       who: ["Mission assurance engineers", "Ground control systems architects", "DoD / NASA program managers", "Launch vehicle software leads"],
       badge: "ZERO TOLERANCE",
       badgeColor: "#60a5fa",
@@ -53,7 +54,7 @@ const INDUSTRIES = [
     tagline: "Sovereign runtime architecture for classified state management",
     pitch: {
       headline: "Why National Security Demands This",
-      body: "Classified environments require systems that can prove their own integrity without trusting external validation. JGA's Sovereign Stitch Protocol creates a braided, append-only ledger where data cannot be silently altered — any modification is immediately detectable. The SB689 Guarded Runtime Body monitors for drift in real time, quarantining compromised states before they propagate. The SB712 Möbius loop means the system continuously re-certifies itself. No human has to verify it — the architecture does. That's what national security infrastructure needs: sovereignty over its own truth.",
+      body: "Classified environments require systems with strong internal proof of integrity. JGA's Sovereign Stitch Protocol is designed as a braided, append-only ledger where silent alteration becomes detectable. The SB689 Guarded Runtime Body represents drift monitoring and quarantine logic before compromised states propagate. The SB712 Möbius loop shows a continuous re-certification pattern. The big idea: infrastructure should not just store truth — it should prove when truth changed.",
       who: ["DoD systems integrators", "Intelligence community architects", "Cybersecurity program leads", "CMMC / FedRAMP compliance officers"],
       badge: "SOVEREIGN",
       badgeColor: "#f87171",
@@ -105,7 +106,7 @@ const INDUSTRIES = [
     tagline: "HIPAA-aligned state integrity for patient data and device logs",
     pitch: {
       headline: "Why Healthcare Needs State Sovereignty",
-      body: "Patient records altered without a verified audit trail are a liability. Medical device state changes without certification are a safety risk. JGA's triple-verification engine ensures every patient data update, device log entry, or clinical workflow state passes through a certified pipeline — with Phoenix Recovery to roll back any corrupted state to the last trusted checkpoint. The append-only memory braid means nothing is ever silently overwritten. That's HIPAA alignment baked into the architecture, not bolted on as a checkbox.",
+      body: "Patient records altered without a verified audit trail are a liability. Medical device state changes without certification are a safety risk. JGA's triple-verification engine is designed so patient data updates, device log entries, or clinical workflow states can pass through a certified pipeline — with Phoenix Recovery shown as a rollback pattern to the last trusted checkpoint. The append-only memory braid means nothing is silently overwritten. This supports HIPAA-style accountability, while real deployment would still require legal and security review.",
       who: ["Hospital IT & compliance leads", "Medical device firmware engineers", "EHR systems architects", "FDA / HIPAA audit teams"],
       badge: "HIPAA-ALIGNED",
       badgeColor: "#e879f9",
@@ -230,7 +231,7 @@ export default function IndustryLens() {
             </div>
             <span className="text-[8px] font-black px-2.5 py-1 rounded-lg border tracking-widest uppercase"
               style={{ background: `${GOLD}12`, borderColor: `${GOLD}40`, color: GOLD }}>
-              NEW · DEMO FEATURE
+              INTERACTIVE PROTOTYPE
             </span>
           </div>
           <p className="text-[11px] text-muted-foreground leading-relaxed max-w-2xl">
@@ -374,6 +375,9 @@ export default function IndustryLens() {
                   ))}
                 </ul>
               </div>
+            </div>
+            <div className="sm:col-span-2">
+              <PrototypeReadinessCheck color={industry.color} label={industry.label} />
             </div>
           </div>
         ) : (

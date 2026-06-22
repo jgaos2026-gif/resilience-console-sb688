@@ -210,10 +210,10 @@ export default function DemoCouncil() {
         <div className="absolute top-0 right-0 w-14 h-14 border-r-2 border-t-2" style={{ borderColor: GOLD }} />
         <div className="absolute bottom-6 left-0 right-0 flex justify-center">
           <ProofBadge
-            status="OWNER_CLAIM"
-            proof="Physical flyer and brand assets uploaded to Proof Vault"
-            missing="Notarized brand registration"
-            note="This brand image is founder-owned. Asset continuity demonstrated — not a guaranteed legal trademark claim."
+            status="PROTOTYPE_ASSET"
+            proof="Prototype flyer and brand visuals uploaded to Proof Vault"
+            missing="Production deployment and final legal trademark review"
+            note="These visuals are prototype assets for the JGA system, not generic demo placeholders."
             updated="June 2026"
             compact
           />
@@ -244,7 +244,7 @@ export default function DemoCouncil() {
           <img src={IMGS.logo} alt="Elegance With Consequences" className="w-full h-full object-cover" style={{ minHeight: 340 }} />
           <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(8,8,8,0.05), rgba(8,8,8,0.55))" }} />
           <div className="absolute bottom-3 left-3">
-            <ProofBadge status="VERIFIED_FACT" proof="Uploaded brand image in Proof Vault" missing="None for visual identity" note="This proves brand asset continuity." compact />
+            <ProofBadge status="PROTOTYPE_ASSET" proof="Uploaded prototype brand image in Proof Vault" missing="Final production brand package" note="This is a prototype visual asset for the JGA system identity." compact />
           </div>
         </div>
         <div className="flex flex-col justify-center p-8 space-y-5" style={{ background: "linear-gradient(135deg, #0e0c00, #111111)" }}>
@@ -280,10 +280,10 @@ export default function DemoCouncil() {
       {/* ════ KPI STRIP ════ */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-px" style={{ background: `${GOLD}18` }}>
         {[
-          { label: "Demo Readiness",  value: "92%",      color: "#4ade80", note: "DEMO VISUALIZATION" },
-          { label: "Modules Active",  value: "10 / 10",  color: GOLD,      note: "DEMO VISUALIZATION" },
-          { label: "Proof Records",   value: "47",        color: "#b0b8c8", note: "VERIFIED FACT" },
-          { label: "Illinois Pilot",  value: "Phase 1",  color: GOLD,      note: "INVESTOR PROJECTION" },
+          { label: "Prototype Readiness", value: "92%",     color: "#4ade80", note: "PROTOTYPE ASSET" },
+          { label: "Modules Mapped",      value: "10 / 10", color: GOLD,      note: "PROTOTYPE ARCHITECTURE" },
+          { label: "Proof Records",       value: "47",      color: "#b0b8c8", note: "VERIFIED FACT" },
+          { label: "Illinois Pilot",      value: "Phase 1", color: GOLD,      note: "INVESTOR PROJECTION" },
         ].map((s, i) => (
           <div key={i} className="p-5 text-center" style={{ background: "#0d0c0a" }}>
             <div className="text-[8px] uppercase tracking-widest text-muted-foreground mb-1">{s.label}</div>
@@ -309,10 +309,10 @@ export default function DemoCouncil() {
         <div className="absolute inset-x-0 bottom-0 h-24 z-10" style={{ background: "linear-gradient(to top, #080808, transparent)" }} />
         <div className="absolute bottom-6 left-0 right-0 flex justify-center z-20">
           <ProofBadge
-            status="DEMO_VISUALIZATION"
-            proof="Architecture diagram rendered from design documentation"
+            status="PROTOTYPE_ASSET"
+            proof="Prototype architecture visual rendered from design documentation"
             missing="Live backend connection, signed deployment"
-            note="This diagram shows system logic visually, not a live production event."
+            note="This is a prototype visual for the system concept, not a generic demo placeholder or live production event."
             updated="June 2026"
             compact
           />
@@ -388,9 +388,9 @@ export default function DemoCouncil() {
             {[
               {
                 title: "What JGA Is Building",
-                body: "A verification-first business automation platform organizing design services, contractor management, client onboarding, and financial compliance — backed by sovereign runtime architecture.",
-                proof: "DEMO_VISUALIZATION",
-                proofNote: "Platform shown in demo mode. Live production requires full backend, payment, and legal integration.",
+                body: "A verification-first business automation prototype organizing design services, contractor management, client onboarding, and financial compliance — backed by sovereign runtime architecture.",
+                proof: "PROTOTYPE_ASSET",
+                proofNote: "Platform shown as an interactive prototype. Live production still requires full backend, payment, and legal integration."
               },
               {
                 title: "Why Verification-First",
@@ -400,9 +400,9 @@ export default function DemoCouncil() {
               },
               {
                 title: "Illinois Pilot Readiness",
-                body: "Phase 1 targets Illinois-only operations with demo council, JGA design intake, client/contractor portals, proof vault, and daily reporting — demo-ready for investor review.",
-                proof: "DEMO_VISUALIZATION",
-                proofNote: "Pilot is in demo phase. Real-world deployment requires legal entity, contracts, and operational infrastructure.",
+                body: "Phase 1 targets Illinois-only operations with prototype council, JGA design intake, client/contractor portals, proof vault, and daily reporting — prototype-ready for investor review.",
+                proof: "PROTOTYPE_ASSET",
+                proofNote: "Pilot is in prototype phase. Real-world deployment requires legal entity, contracts, and operational infrastructure."
               },
               {
                 title: "Expansion Roadmap",
@@ -590,7 +590,7 @@ export default function DemoCouncil() {
           <div className="flex items-start gap-2">
             <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: GOLD }} />
             <div className="text-[9px] leading-relaxed text-muted-foreground space-y-1">
-              <p><span className="font-bold" style={{ color: GOLD }}>Site Disclaimer:</span> This demo council illustrates authorized integrity monitoring, business automation, and recovery workflows. Features labeled "SIMULATION" or "DEMO VISUALIZATION" show system logic visually — they are not live production events.</p>
+              <p><span className="font-bold" style={{ color: GOLD }}>Site Disclaimer:</span> This prototype council illustrates authorized integrity monitoring, business automation, and recovery workflows. Visuals labeled "PROTOTYPE ASSET" are founder-provided prototype assets; features labeled "SIMULATION" show system logic visually — they are not live production events.</p>
               <p>Business policies shown are working templates and should be reviewed by a qualified attorney before public use. Expansion projections are founder estimates, not guaranteed outcomes. Graded topology concepts are theory-inspired design language, not proven physics.</p>
               <p>Real deployment requires legal, security, payment integration, and operational testing. <span className="font-bold" style={{ color: GOLD }}>Every trusted state earns its mark. Certified before trusted.</span></p>
             </div>

@@ -6,6 +6,7 @@ const GOLD = "#C9A84C";
 export const PROOF_STATUSES = {
   VERIFIED_FACT:          { label: "VERIFIED FACT",           color: "#4ade80", bg: "rgba(74,222,128,0.08)", border: "rgba(74,222,128,0.3)" },
   DEMO_VISUALIZATION:     { label: "DEMO VISUALIZATION",      color: GOLD,      bg: "rgba(201,168,76,0.08)", border: "rgba(201,168,76,0.3)" },
+  PROTOTYPE_ASSET:        { label: "PROTOTYPE ASSET",          color: GOLD,      bg: "rgba(201,168,76,0.1)",  border: "rgba(201,168,76,0.38)" },
   SIMULATION:             { label: "SIMULATION",               color: "#60a5fa", bg: "rgba(96,165,250,0.08)", border: "rgba(96,165,250,0.3)" },
   THEORY_INSPIRED:        { label: "THEORY-INSPIRED MODEL",   color: "#a78bfa", bg: "rgba(167,139,250,0.08)", border: "rgba(167,139,250,0.3)" },
   BUSINESS_POLICY:        { label: "BUSINESS POLICY TEMPLATE",color: "#f59e0b", bg: "rgba(245,158,11,0.08)",  border: "rgba(245,158,11,0.3)" },
