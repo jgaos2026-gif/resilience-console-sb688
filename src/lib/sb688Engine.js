@@ -304,6 +304,7 @@ export function createInitialState() {
       { message: "System initialized. All components healthy. Baseline trusted record established.", timestamp: Date.now() },
     ],
     proofResults: [],
+    telemetryTick: 0,
     graphData: {
       resilienceTimeline: [100],
       routeTimeComparison: [12],
@@ -406,6 +407,38 @@ export function simulateProblem(state) {
       routeTimeComparison: [...state.graphData.routeTimeComparison, 28 + Math.floor(Math.random() * 15)],
       continuityOutcome: [...state.graphData.continuityOutcome, newContinuity],
       labels: [...state.graphData.labels, "Incident"],
+    },
+  };
+}
+
+export function streamTelemetryTick(state) {
+  const tick = (state.telemetryTick || 0) + 1;
+  const incidentActive = state.problemSimulated && !state.recoveryRun;
+  const pressure = incidentActive ? 14 + Math.floor(Math.random() * 12) : Math.floor(Math.random() * 5);
+  const resilience = Math.max(20, Math.min(100, state.resilienceScore + (incidentActive ? -Math.floor(Math.random() * 3) : Math.round(Math.random() * 4 - 1))));
+  const continuity = Math.max(30, Math.min(100, state.continuityScore + (incidentActive ? -Math.floor(Math.random() * 2) : Math.round(Math.random() * 3 - 1))));
+  const routeTime = Math.max(8, Math.min(60, state.routeTime + pressure - 2));
+  const label = new Date().toLocaleTimeString("en-US", { minute: "2-digit", second: "2-digit" });
+  const message = incidentActive
+    ? `Live telemetry: elevated path pressure detected. Route ${state.routeType} holding at ${routeTime}ms.`
+    : `Live telemetry: health packet accepted. Route stable at ${routeTime}ms.`;
+
+  return {
+    ...state,
+    telemetryTick: tick,
+    routeTime,
+    resilienceScore: resilience,
+    continuityScore: continuity,
+    operationalState: incidentActive ? state.operationalState : resilience >= 95 ? "Nominal" : "Nominal — Monitoring",
+    eventLog: [
+      { message, timestamp: Date.now() },
+      ...state.eventLog,
+    ].slice(0, 60),
+    graphData: {
+      resilienceTimeline: [...state.graphData.resilienceTimeline, resilience].slice(-16),
+      routeTimeComparison: [...state.graphData.routeTimeComparison, routeTime].slice(-16),
+      continuityOutcome: [...state.graphData.continuityOutcome, continuity].slice(-16),
+      labels: [...state.graphData.labels, label].slice(-16),
     },
   };
 }

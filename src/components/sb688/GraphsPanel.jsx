@@ -116,7 +116,7 @@ function drawChart(canvas, data, labels, title, color, suffix = "") {
   });
 }
 
-export default function GraphsPanel({ state }) {
+export default function GraphsPanel({ state, isLive = false }) {
   const resRef = useRef(null);
   const routeRef = useRef(null);
   const contRef = useRef(null);
@@ -136,6 +136,15 @@ export default function GraphsPanel({ state }) {
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <div>
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-primary">Live System Health Graphs</h3>
+          <p className="text-[11px] text-muted-foreground">Updates from workspace telemetry events, separate from AI analysis.</p>
+        </div>
+        <span className={`text-[9px] px-2 py-1 rounded-full border font-semibold ${isLive ? "text-teal-400 border-teal-500/30 bg-teal-500/10" : "text-muted-foreground border-border bg-secondary/40"}`}>
+          {isLive ? "● Streaming" : "Paused"}
+        </span>
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="bg-card border border-border rounded-xl p-4">
           <canvas ref={resRef} className="w-full" style={{ height: 200 }} />

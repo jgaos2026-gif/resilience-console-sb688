@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { INDUSTRIES, createInitialState, loadScenario, simulateProblem, runRecovery, runProofSuite, factoryReset } from "@/lib/sb688Engine";
+import { INDUSTRIES, createInitialState, loadScenario, simulateProblem, runRecovery, runProofSuite, factoryReset, streamTelemetryTick } from "@/lib/sb688Engine";
 // AI communications are handled via base44.integrations.Core.InvokeLLM — no external API keys needed.
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -28,6 +28,7 @@ import GovernanceReportPanel from "@/components/sb688/GovernanceReportPanel";
 import WarriorCrest, { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 import PolicySandboxTab from "@/components/sb688/PolicySandboxTab";
 import LiveCapabilityDemo from "@/components/sb688/LiveCapabilityDemo";
+import LiveStreamControl from "@/components/sb688/LiveStreamControl";
 import SecurityPosturePanel from "@/components/sb688/SecurityPosturePanel";
 import GhostNodePanel from "@/components/sb688/GhostNodePanel";
 import QuarantinePanel from "@/components/sb688/QuarantinePanel";
@@ -72,6 +73,7 @@ export default function Console() {
   const [copied, setCopied] = useState(false);
   const [observerMode, setObserverMode] = useState(false);
   const [snapshots, setSnapshots] = useState([]);
+  const [liveStream, setLiveStream] = useState(false);
 
   // Auto-capture snapshot on meaningful state changes
   const prevStateRef = useRef(null);
@@ -90,6 +92,14 @@ export default function Console() {
       prevStateRef.current = state;
     }
   }, [state.resilienceScore, state.continuityScore, state.operationalState, state.proofRun, state.recoveryRun, state.problemSimulated, state.industry]);
+
+  useEffect(() => {
+    if (!liveStream || activeTab !== "workspace") return;
+    const id = setInterval(() => {
+      setState((prev) => streamTelemetryTick(prev));
+    }, 1500);
+    return () => clearInterval(id);
+  }, [liveStream, activeTab]);
 
   const handleCopyObserverLink = () => {
     const url = `${window.location.origin}/observe`;
@@ -135,6 +145,7 @@ export default function Console() {
   const handleReset = useCallback(() => {
     setState(factoryReset());
     setSnapshots([]);
+    setLiveStream(false);
   }, []);
 
   const handleProof = useCallback(() => {
@@ -282,8 +293,13 @@ export default function Console() {
               onClear={handleClear}
             />
 
-            {/* AI Scenario Narrator — auto-generates plain-English mission narrative after state changes */}
-            <AIScenarioNarrator state={state} />
+            <LiveStreamControl
+              active={liveStream}
+              onToggle={() => setLiveStream(v => !v)}
+              latestEvent={state.eventLog[0]?.message}
+            />
+
+            <GraphsPanel state={state} isLive={liveStream} />
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-1 space-y-6">
@@ -332,8 +348,9 @@ export default function Console() {
 
         {activeTab === "ai" && (
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-            <div className="xl:col-span-2">
+            <div className="xl:col-span-2 space-y-6">
               <AIMissionAnalyst state={state} />
+              <AIScenarioNarrator state={state} />
             </div>
             <div className="xl:col-span-1 space-y-4">
               <div className="bg-card border border-border rounded-xl p-5 space-y-3">
