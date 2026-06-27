@@ -102,9 +102,13 @@ function RecoveryLog({ entries }) {
 
 export default function RecoveryCommandPanel() {
   const [activeSector, setActiveSector] = useState(null);
-  const [runningId, setRunningId] = useState(null);
+  const [runningIds, setRunningIds] = useState([]);
+  const [selectedIds, setSelectedIds] = useState([]);
   const [log, setLog] = useState([]);
   const [globalBeat, setGlobalBeat] = useState(true);
+
+  const selectedSectors = SECTORS.filter(s => selectedIds.includes(s.id));
+  const isRunningAny = runningIds.length > 0;
 
   // Global heartbeat sound
   useEffect(() => {
@@ -115,35 +119,52 @@ export default function RecoveryCommandPanel() {
 
   const addLog = (msg, color = "rgba(232,217,176,0.6)") => {
     const ts = new Date().toLocaleTimeString("en-US", { hour12: false });
-    setLog(p => [{ msg, color, ts }, ...p].slice(0, 40));
+    setLog(p => [{ msg, color, ts }, ...p].slice(0, 60));
   };
 
-  const triggerRecovery = async (sector) => {
-    if (runningId) return;
-    setRunningId(sector.id);
-    setActiveSector(sector);
-    playTone(sector.freq, 0.3, "sawtooth");
+  const toggleSector = (id) => {
+    if (isRunningAny) return;
+    setSelectedIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
 
-    const steps = [
-      { msg: `▶ [${sector.label}] RECOVERY SEQUENCE INITIATED`, color: sector.color, delay: 0 },
-      { msg: `  → Scanning sector state for anomalies…`, color: "#fbbf24", delay: 400 },
-      { msg: `  → Quarantine walls raised — isolating bad state…`, color: "#f87171", delay: 900 },
-      { msg: `  → Ghost checkpoint located — clean state confirmed…`, color: "#a78bfa", delay: 1500 },
-      { msg: `  → Rolling back to verified checkpoint…`, color: "#fbbf24", delay: 2100 },
-      { msg: `  → Re-verifying brick set — triple mark applied…`, color: "#60a5fa", delay: 2800 },
-      { msg: `  → Ledger updated — append-only entry sealed…`, color: "#4ade80", delay: 3400 },
-      { msg: `✓ [${sector.label}] RECOVERY COMPLETE — SECTOR CERTIFIED`, color: "#4ade80", delay: 3900 },
-    ];
+  const recoverySteps = (sector) => [
+    { msg: `▶ [${sector.label}] RECOVERY SEQUENCE INITIATED`, color: sector.color, delay: 0 },
+    { msg: `  → Scanning sector state for anomalies…`, color: "#fbbf24", delay: 400 },
+    { msg: `  → Quarantine walls raised — isolating bad state…`, color: "#f87171", delay: 900 },
+    { msg: `  → Ghost checkpoint located — clean state confirmed…`, color: "#a78bfa", delay: 1500 },
+    { msg: `  → Rolling back to verified checkpoint…`, color: "#fbbf24", delay: 2100 },
+    { msg: `  → Re-verifying brick set — triple mark applied…`, color: "#60a5fa", delay: 2800 },
+    { msg: `  → Ledger updated — append-only entry sealed…`, color: "#4ade80", delay: 3400 },
+    { msg: `✓ [${sector.label}] RECOVERY COMPLETE — SECTOR CERTIFIED`, color: "#4ade80", delay: 3900 },
+  ];
 
-    for (const step of steps) {
-      await new Promise(r => setTimeout(r, step.delay));
-      addLog(step.msg, step.color);
-      if (step.delay === 900) playTone(sector.freq * 0.8, 0.15);
-      if (step.delay === 3900) playTone(sector.freq * 1.2, 0.4, "triangle");
-    }
+  const triggerBulkRecovery = () => {
+    if (isRunningAny || selectedSectors.length === 0) return;
+    const ids = selectedSectors.map(s => s.id);
+    setRunningIds(ids);
+    setActiveSector({
+      label: selectedSectors.length === 1 ? selectedSectors[0].label : `${selectedSectors.length} SECTORS`,
+      color: selectedSectors.length === 1 ? selectedSectors[0].color : GOLD,
+      desc: selectedSectors.length === 1 ? selectedSectors[0].desc : "Bulk recovery sequence running across selected sectors simultaneously",
+    });
+    addLog(`⚡ BULK RECOVERY ARMED — ${selectedSectors.length} sector(s) selected`, GOLD);
 
-    await new Promise(r => setTimeout(r, 4200));
-    setRunningId(null);
+    selectedSectors.forEach((sector) => {
+      playTone(sector.freq, 0.25, "sawtooth");
+      recoverySteps(sector).forEach((step) => {
+        setTimeout(() => {
+          addLog(step.msg, step.color);
+          if (step.delay === 900) playTone(sector.freq * 0.8, 0.12);
+          if (step.delay === 3900) playTone(sector.freq * 1.2, 0.28, "triangle");
+        }, step.delay);
+      });
+    });
+
+    setTimeout(() => {
+      setRunningIds([]);
+      setSelectedIds([]);
+      addLog(`✓ BULK RECOVERY COMPLETE — ${selectedSectors.length} sector(s) certified`, "#4ade80");
+    }, 4300);
   };
 
   return (
@@ -176,31 +197,55 @@ export default function RecoveryCommandPanel() {
           <div className="text-[8px] uppercase tracking-widest font-bold mb-1" style={{ color: `${GOLD}50` }}>
             System Heartbeat — {activeSector ? activeSector.label : "All Sectors Nominal"}
           </div>
-          <HeartbeatLine bpm={runningId ? 110 : 72} color={activeSector ? activeSector.color : GOLD} />
+          <HeartbeatLine bpm={isRunningAny ? 110 : 72} color={activeSector ? activeSector.color : GOLD} />
         </div>
 
         {/* Sector Buttons */}
         <div className="p-6 space-y-4">
           <div className="text-[9px] uppercase tracking-[3px] font-bold text-center mb-4" style={{ color: `${GOLD}40` }}>
-            Select Sector · Trigger Recovery Sequence
+            Select Multiple Sectors · Trigger Bulk Recovery
           </div>
+
+          <div className="rounded-xl border p-3 flex flex-wrap items-center justify-between gap-3" style={{ background: "rgba(0,0,0,0.45)", borderColor: `${GOLD}18` }}>
+            <div className="text-[10px] font-bold" style={{ color: selectedIds.length ? GOLD : "rgba(255,255,255,0.35)" }}>
+              {selectedIds.length} sector(s) selected
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button disabled={isRunningAny} onClick={() => setSelectedIds(SECTORS.map(s => s.id))}
+                className="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-lg border disabled:opacity-30"
+                style={{ color: GOLD, borderColor: `${GOLD}35`, background: `${GOLD}08` }}>
+                Select All
+              </button>
+              <button disabled={isRunningAny || selectedIds.length === 0} onClick={() => setSelectedIds([])}
+                className="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-lg border disabled:opacity-30"
+                style={{ color: "rgba(255,255,255,0.55)", borderColor: "rgba(255,255,255,0.14)", background: "rgba(255,255,255,0.03)" }}>
+                Clear
+              </button>
+              <button disabled={isRunningAny || selectedIds.length === 0} onClick={triggerBulkRecovery}
+                className="text-[9px] font-black uppercase tracking-widest px-4 py-1 rounded-lg border disabled:opacity-30"
+                style={{ color: "#080808", borderColor: `${GOLD}60`, background: `linear-gradient(135deg, ${GOLD}, #8a6018)` }}>
+                Recover Selected
+              </button>
+            </div>
+          </div>
+
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {SECTORS.map(s => {
               const Icon = s.icon;
-              const isRunning = runningId === s.id;
-              const isDisabled = runningId && !isRunning;
+              const isRunning = runningIds.includes(s.id);
+              const isSelected = selectedIds.includes(s.id);
               return (
                 <button
                   key={s.id}
-                  disabled={!!isDisabled}
-                  onClick={() => triggerRecovery(s)}
+                  disabled={isRunningAny && !isRunning}
+                  onClick={() => toggleSector(s.id)}
                   className="relative overflow-hidden rounded-xl border p-4 text-left transition-all group"
                   style={{
-                    background: isRunning ? `${s.color}10` : "rgba(0,0,0,0.5)",
-                    borderColor: isRunning ? s.color : `${s.color}25`,
-                    boxShadow: isRunning ? `0 0 20px ${s.color}30, inset 0 0 20px ${s.color}06` : "none",
-                    opacity: isDisabled ? 0.3 : 1,
-                    cursor: isDisabled ? "not-allowed" : "pointer",
+                    background: isRunning ? `${s.color}14` : isSelected ? `${s.color}10` : "rgba(0,0,0,0.5)",
+                    borderColor: isRunning || isSelected ? s.color : `${s.color}25`,
+                    boxShadow: isRunning ? `0 0 20px ${s.color}30, inset 0 0 20px ${s.color}06` : isSelected ? `0 0 14px ${s.color}18` : "none",
+                    opacity: isRunningAny && !isRunning ? 0.3 : 1,
+                    cursor: isRunningAny && !isRunning ? "not-allowed" : "pointer",
                     transform: isRunning ? "scale(1.02)" : "scale(1)",
                   }}>
                   {/* Scan line animation when running */}
@@ -208,7 +253,11 @@ export default function RecoveryCommandPanel() {
                     <div className="absolute inset-x-0 top-0 h-0.5 animate-bounce"
                       style={{ background: `linear-gradient(90deg, transparent, ${s.color}, transparent)`, animationDuration: "0.8s" }} />
                   )}
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="absolute top-2 right-2 w-4 h-4 rounded border flex items-center justify-center"
+                    style={{ borderColor: isSelected || isRunning ? s.color : `${s.color}30`, background: isSelected || isRunning ? `${s.color}18` : "rgba(0,0,0,0.3)" }}>
+                    {(isSelected || isRunning) && <CheckCircle2 className="w-3 h-3" style={{ color: s.color }} />}
+                  </div>
+                  <div className="flex items-center gap-2 mb-2 pr-5">
                     <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
                       style={{ background: `${s.color}12`, border: `1px solid ${s.color}30` }}>
                       <Icon style={{ color: s.color, width: 14, height: 14 }} />
@@ -217,11 +266,11 @@ export default function RecoveryCommandPanel() {
                       <div className="w-2 h-2 rounded-full animate-pulse flex-shrink-0" style={{ background: s.color }} />
                     )}
                   </div>
-                  <div className="text-[10px] font-black leading-tight" style={{ color: isRunning ? s.color : "rgba(255,255,255,0.7)" }}>
+                  <div className="text-[10px] font-black leading-tight" style={{ color: isRunning || isSelected ? s.color : "rgba(255,255,255,0.7)" }}>
                     {s.label}
                   </div>
-                  <div className="text-[8px] mt-1 leading-relaxed" style={{ color: isRunning ? `${s.color}80` : "rgba(255,255,255,0.25)" }}>
-                    {isRunning ? "● RECOVERING…" : "TRIGGER →"}
+                  <div className="text-[8px] mt-1 leading-relaxed" style={{ color: isRunning || isSelected ? `${s.color}80` : "rgba(255,255,255,0.25)" }}>
+                    {isRunning ? "● RECOVERING…" : isSelected ? "SELECTED" : "TAP TO SELECT"}
                   </div>
                 </button>
               );
@@ -229,24 +278,24 @@ export default function RecoveryCommandPanel() {
           </div>
 
           {/* Active recovery status */}
-          {activeSector && runningId && (
+          {activeSector && isRunningAny && (
             <div className="rounded-xl border px-4 py-3 flex items-center gap-3"
               style={{ background: `${activeSector.color}06`, borderColor: `${activeSector.color}30` }}>
               <div className="w-3 h-3 rounded-full animate-pulse flex-shrink-0" style={{ background: activeSector.color }} />
               <div>
                 <div className="text-[10px] font-black" style={{ color: activeSector.color }}>
-                  RECOVERY IN PROGRESS: {activeSector.label}
+                  BULK RECOVERY IN PROGRESS: {activeSector.label}
                 </div>
                 <div className="text-[9px] text-muted-foreground">{activeSector.desc}</div>
               </div>
             </div>
           )}
-          {activeSector && !runningId && (
+          {activeSector && !isRunningAny && (
             <div className="rounded-xl border px-4 py-3 flex items-center gap-3"
               style={{ background: "rgba(74,222,128,0.05)", borderColor: "rgba(74,222,128,0.25)" }}>
               <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-green-400" />
               <div className="text-[10px] font-black text-green-400">
-                ✓ {activeSector.label} — SECTOR CERTIFIED · TRUSTED STATE RESTORED
+                ✓ {activeSector.label} — RECOVERY CERTIFIED · TRUSTED STATE RESTORED
               </div>
             </div>
           )}
