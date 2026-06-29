@@ -6,6 +6,7 @@ const NAV = [
   { path: "/", label: "Demo Council", icon: Shield },
   { path: "/executive-brief", label: "Executive Brief", icon: ClipboardList },
   { path: "/demo-arcade", label: "🎮 Demo Arcade", icon: Zap },
+  { path: "/ava", label: "AVA Control Room", icon: Brain },
   { path: "/system-spine", label: "System Spine", icon: Layers },
   { path: "/node-mesh", label: "Node Mesh", icon: LayoutGrid },
   { path: "/verification-gates", label: "Verification Gates", icon: CheckSquare },

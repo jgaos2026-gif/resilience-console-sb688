@@ -26,6 +26,7 @@ import DiamondHunterCore from './pages/jga/DiamondHunterCore';
 import ResilienceSimulator from './pages/jga/ResilienceSimulator';
 import DeepSpaceSim from './pages/jga/DeepSpaceSim';
 import BrandProofAssets from './pages/jga/BrandProofAssets';
+import AVAControlRoom from './pages/AVAControlRoom';
 import Console from './pages/Console';
 import SB688Console from './pages/SB688Console';
 import JGALive from './pages/JGALive';
@@ -93,6 +94,7 @@ const AuthenticatedApp = () => {
           <Route path="/resilience-sim" element={<ResilienceSimulator />} />
           <Route path="/deep-space-sim" element={<DeepSpaceSim />} />
           <Route path="/brand-proof" element={<BrandProofAssets />} />
+          <Route path="/ava" element={<AVAControlRoom />} />
         </Route>
         <Route path="/legacy-console" element={<Console />} />
         <Route path="/sb688" element={<SB688Console />} />
