@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Zap, Shield, RefreshCcw, Activity, Globe, DollarSign, Cpu, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { speakAVA } from "@/lib/avaVoice";
 
 const GOLD = "#C9A84C";
 
@@ -148,6 +149,7 @@ export default function RecoveryCommandPanel() {
       desc: selectedSectors.length === 1 ? selectedSectors[0].desc : "Bulk recovery sequence running across selected sectors simultaneously",
     });
     addLog(`⚡ BULK RECOVERY ARMED — ${selectedSectors.length} sector(s) selected`, GOLD);
+    speakAVA(`AVA alert. Bulk recovery armed across ${selectedSectors.length} selected sector${selectedSectors.length === 1 ? "" : "s"}. Phoenix sequence standing by.`, true);
 
     selectedSectors.forEach((sector) => {
       playTone(sector.freq, 0.25, "sawtooth");
@@ -164,6 +166,7 @@ export default function RecoveryCommandPanel() {
       setRunningIds([]);
       setSelectedIds([]);
       addLog(`✓ BULK RECOVERY COMPLETE — ${selectedSectors.length} sector(s) certified`, "#4ade80");
+      speakAVA(`Bulk recovery complete. ${selectedSectors.length} sector${selectedSectors.length === 1 ? "" : "s"} certified. Trusted state restored after verification.`, true);
     }, 4300);
   };
 

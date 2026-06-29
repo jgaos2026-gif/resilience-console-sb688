@@ -5,6 +5,7 @@ import AVAStatusGrid from "@/components/ava/AVAStatusGrid";
 import AVAChatPanel from "@/components/ava/AVAChatPanel";
 import AVAMemoryPanel from "@/components/ava/AVAMemoryPanel";
 import AVAProofPanel from "@/components/ava/AVAProofPanel";
+import AVAVoiceControls from "@/components/ava/AVAVoiceControls";
 import { addMemory, addProof, getMemories, getMode, getProofs, setMode, AVA_OWNER, AVA_LAW } from "@/lib/avaLocal";
 
 const GOLD = "#C9A84C";
@@ -28,7 +29,7 @@ export default function AVAControlRoom() {
         <div className="p-6 sm:p-8 space-y-4">
           <div className="flex items-center gap-3"><Crown className="w-8 h-8" style={{ color: GOLD }} /><div><p className="text-[10px] uppercase tracking-[0.35em]" style={{ color: `${GOLD}80` }}>Autonomous Virtual Authority</p><h1 className="text-3xl sm:text-5xl font-black font-cinzel gold-shimmer">AVA Control Room</h1></div></div>
           <p className="text-sm text-muted-foreground max-w-3xl">Owner recognized: <span style={{ color: GOLD }}>{AVA_OWNER}</span>. AVA is local-first, honest, JGA-branded, and governed by the primary law: {AVA_LAW}.</p>
-          <div className="flex flex-wrap gap-2">{["business","system","compliance","systemb","personal","prompt","proof","quiet"].map(m => <button key={m} onClick={() => changeMode(m)} className="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase border" style={mode === m ? { background: GOLD, color: "#080808", borderColor: GOLD } : { color: `${GOLD}90`, borderColor: `${GOLD}24`, background: "rgba(0,0,0,0.35)" }}>{m}</button>)}</div>
+          <div className="flex flex-wrap gap-2 items-center">{["business","system","compliance","systemb","personal","prompt","proof","quiet"].map(m => <button key={m} onClick={() => changeMode(m)} className="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase border" style={mode === m ? { background: GOLD, color: "#080808", borderColor: GOLD } : { color: `${GOLD}90`, borderColor: `${GOLD}24`, background: "rgba(0,0,0,0.35)" }}>{m}</button>)}<AVAVoiceControls /></div>
         </div>
       </div>
 

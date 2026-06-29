@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AlertTriangle, Play, RotateCcw, ShieldCheck, Zap } from "lucide-react";
+import { speakAVA } from "@/lib/avaVoice";
 
 const GOLD = "#C9A84C";
 const STAGES = { idle: "STABLE", corrupt: "CORRUPTION EVENT", healing: "PHOENIX 1 WAKE UP", recovered: "99.8% RECOVERED" };
@@ -23,7 +24,12 @@ function TriangleNode({ stage }) {
 
 export default function PhoenixBigScreen() {
   const [stage, setStage] = useState("idle");
-  const trigger = () => { setStage("corrupt"); setTimeout(() => setStage("healing"), 1800); setTimeout(() => setStage("recovered"), 4200); };
+  const trigger = () => {
+    setStage("corrupt");
+    speakAVA("Critical alert. Catastrophic braid corruption detected. Clip Brick isolation is active.", true);
+    setTimeout(() => { setStage("healing"); speakAVA("Phoenix one wake up. Recovery triangle is online. Rebuilding trusted braid.", true); }, 1800);
+    setTimeout(() => { setStage("recovered"); speakAVA("Recovery complete. Integrity restored to ninety nine point eight percent. Trusted state requires verification.", true); }, 4200);
+  };
   const isRed = stage === "corrupt";
 
   return (
