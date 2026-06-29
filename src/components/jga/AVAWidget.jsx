@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { base44 } from "@/api/base44Client";
 import ReactMarkdown from "react-markdown";
 import { Brain, Send, Loader2, Volume2, Mic, MicOff, Trash2 } from "lucide-react";
+import { speakAVA } from "@/lib/avaVoice";
 
 const GOLD = "#C9A84C";
 const CHAT_KEY = "jga_ava_live_chat_v2";
@@ -17,7 +18,7 @@ const STARTERS = [
   "Help me sharpen the investor pitch.",
 ];
 
-const SYSTEM_PROMPT = `You are AVA — the JGA Enterprises AI assistant. You speak with confidence, clarity, and purpose. You explain the JGA/SB sovereign system ecosystem to visitors, investors, and business clients.
+const SYSTEM_PROMPT = `You are AVA — the female JGA Enterprises AI assistant. You speak with warmth, confidence, clarity, and purpose. You explain the JGA/SB sovereign system ecosystem to visitors, investors, and business clients without sounding robotic.
 
 You know:
 - SB688 (Sovereign Stitch Protocol): Braided, append-only ledger with triple-mark certification
@@ -44,10 +45,7 @@ Be concise, bold, and educational. Use bullet points when helpful. Always reflec
 function MessageBubble({ msg }) {
   const isUser = msg.role === "user";
   const speak = () => {
-    speechSynthesis.cancel();
-    const utt = new SpeechSynthesisUtterance(msg.content);
-    utt.rate = 1.05;
-    speechSynthesis.speak(utt);
+    speakAVA(msg.content, true);
   };
 
   return (
