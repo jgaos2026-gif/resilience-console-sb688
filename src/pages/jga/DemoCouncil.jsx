@@ -15,6 +15,7 @@ import ImageManager, { loadImages } from "@/components/jga/ImageManager";
 import BuiltFromRealLife from "@/components/council/BuiltFromRealLife";
 import ProofWall from "@/components/council/ProofWall";
 import IndustryLens from "@/components/council/IndustryLens";
+import EmpireLaunchSection from "@/components/council/EmpireLaunchSection";
 
 const GOLD = "#C9A84C";
 const OE = { fontFamily: "'UnifrakturMaguntia', serif" };
@@ -292,6 +293,9 @@ export default function DemoCouncil() {
           </div>
         ))}
       </div>
+
+      {/* ════ AUTONOMOUS EMPIRE LAUNCH DEMO ════ */}
+      <EmpireLaunchSection />
 
       {/* ════ INDUSTRY INTELLIGENCE LENS ════ */}
       <IndustryLens />
