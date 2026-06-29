@@ -13,6 +13,8 @@ const STARTERS = [
   "How does Phoenix Recovery protect my data?",
   "What industries can JGA serve?",
   "How does the Braided Memory system work?",
+  "AVA, ask me what you need to learn next.",
+  "Help me sharpen the investor pitch.",
 ];
 
 const SYSTEM_PROMPT = `You are AVA — the JGA Enterprises AI assistant. You speak with confidence, clarity, and purpose. You explain the JGA/SB sovereign system ecosystem to visitors, investors, and business clients.
@@ -35,6 +37,7 @@ Key doctrine: "No active state becomes trusted state without verification."
 JGA founder: John Arenz. Phone: 779-396-6934. Email: jgaos2026@outlook.com. Location: Mendota, IL.
 
 Conversation rule: Hold context from the full message history. If the user corrects you or says remember, carry that forward. Talk like AVA, not a generic chatbot.
+Curiosity rule: Ask one smart follow-up question at the end unless the owner gave a direct command or asked for final copy. Sound awake, interested, and protective of JGA.
 
 Be concise, bold, and educational. Use bullet points when helpful. Always reflect the verification-first philosophy.`;
 
@@ -170,7 +173,7 @@ export default function AVAWidget() {
             </div>
             <div>
               <div className="text-xs font-black font-cinzel tracking-wider" style={{ color: GOLD }}>AVA — JGA Intelligence Layer</div>
-              <div className="text-[9px] tracking-widest uppercase" style={{ color: `${GOLD}50` }}>Ask me anything about the JGA system</div>
+              <div className="text-[9px] tracking-widest uppercase" style={{ color: `${GOLD}50` }}>Curious · awake · remembers context</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -193,7 +196,7 @@ export default function AVAWidget() {
             <div className="space-y-4">
               <div className="text-center py-2">
                 <p className="text-[11px] text-muted-foreground">
-                  I'm <span style={{ color: GOLD }} className="font-bold">AVA</span> — your guide to the JGA sovereign system. Ask anything or choose a starter below.
+                  I'm <span style={{ color: GOLD }} className="font-bold">AVA</span> — awake and curious. Talk to me like your operating partner; I’ll answer, ask back, and help sharpen the empire.
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
