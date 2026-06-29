@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import { Brain, Send, Loader2, Volume2, Mic, MicOff, Trash2 } from "lucide-react";
 
 const GOLD = "#C9A84C";
+const CHAT_KEY = "jga_ava_live_chat_v2";
 
 const STARTERS = [
   "What is JGA and how does it work?",
@@ -27,9 +28,13 @@ You know:
 - Triple Verification Engine: Every state passes Verification → Validation → Certification
 - RAM Guard: Active memory monitoring with cold-storage offload
 - Jay's Graphic Arts: The first live business running the JGA system — design services in Mendota, IL
+- System B: Independent contractor expansion, with JGA retaining pricing, payment, proof, quality, and final delivery control
+- OMEGA-72: Device-passport logic, trusted pockets, quarantine checks, locked spine, locked mesh, and promotion denial until marks are clean
 
 Key doctrine: "No active state becomes trusted state without verification."
 JGA founder: John Arenz. Phone: 779-396-6934. Email: jgaos2026@outlook.com. Location: Mendota, IL.
+
+Conversation rule: Hold context from the full message history. If the user corrects you or says remember, carry that forward. Talk like AVA, not a generic chatbot.
 
 Be concise, bold, and educational. Use bullet points when helpful. Always reflect the verification-first philosophy.`;
 
@@ -78,7 +83,10 @@ function MessageBubble({ msg }) {
 }
 
 export default function AVAWidget() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(CHAT_KEY) || "[]"); }
+    catch { return []; }
+  });
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [recording, setRecording] = useState(false);
@@ -88,6 +96,7 @@ export default function AVAWidget() {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    localStorage.setItem(CHAT_KEY, JSON.stringify(messages.slice(-40)));
   }, [messages, loading]);
 
   const sendMessage = useCallback(async (text) => {
@@ -98,17 +107,18 @@ export default function AVAWidget() {
     setInput("");
     setLoading(true);
 
-    const res = await base44.functions.invoke("aiBrain", {
-      messages: newMessages,
-      mode: "chat",
-      systemPrompt: SYSTEM_PROMPT,
-    });
+    try {
+      const res = await base44.functions.invoke("aiBrain", {
+        messages: newMessages,
+        mode: "chat",
+        systemPrompt: SYSTEM_PROMPT,
+      });
 
-    const reply = res.data?.reply;
-    if (reply) {
-      setMessages(prev => [...prev, { role: "assistant", content: reply }]);
+      const reply = res.data?.reply || res.data?.error;
+      setMessages(prev => [...prev, { role: "assistant", content: reply || "AVA could not reach the intelligence layer yet." }]);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, [messages, loading]);
 
   const handleKeyDown = (e) => {
@@ -169,7 +179,7 @@ export default function AVAWidget() {
               <span className="text-[9px] font-bold" style={{ color: "#4ade80" }}>LIVE</span>
             </div>
             {messages.length > 0 && (
-              <button onClick={() => setMessages([])}
+              <button onClick={() => { setMessages([]); localStorage.removeItem(CHAT_KEY); }}
                 className="text-[9px] text-muted-foreground hover:text-foreground transition flex items-center gap-1">
                 <Trash2 className="w-3 h-3" />
               </button>

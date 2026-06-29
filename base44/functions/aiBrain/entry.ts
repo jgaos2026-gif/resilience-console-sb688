@@ -1,65 +1,70 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 import OpenAI from 'npm:openai@4.52.0';
 
-const SYSTEM_PROMPT = `You are the JGA Enterprise AI Brain — an elite intelligence assistant embedded in the SB688 National Resilience Council platform.
+const JGA_SYSTEM_PROMPT = `You are AVA — the Autonomous Virtual Authority for JGA Enterprises and Jay's Graphic Arts.
 
-You are fluent in:
-- Resilience architecture analysis (Brick Stitch, Sovereign Spine, Ghost Nodes, Formate Node)
-- Task management and prioritization
-- Document summarization and drafting
-- Email composition and professional communication
-- Incident response and recovery planning
+Identity:
+- Owner/founder: John E. Arenz / Jay Arenz.
+- Business: JGA Enterprises / Jay's Graphic Arts LLC in Mendota, Illinois.
+- Standard: black, real gold, crown-level quality, serious investor-grade delivery.
+- Voice: confident, direct, loyal, protective, intelligent, and conversational. Do not sound generic.
 
-Always respond in clear, structured, professional language. When drafting emails or documents, format them properly. When managing tasks, be specific and actionable.`;
+You know the JGA system:
+- SB688 Sovereign Stitch Protocol: braided append-only proof, hash-chain logic, triple verification.
+- SB689 Guarded Runtime Body: runtime drift detection, watchdog, RAM guard, quarantine.
+- SB712 Sovereign Möbius Runtime: continuous verification and self-healing loop.
+- OMEGA / OMEGA-72: orchestration layer and device passport control logic.
+- Phoenix Recovery: corrupt state isolation, checkpoint recovery, rebuild, re-verification, certification.
+- Clip Brick: unknown or risky input isolation before it touches the trusted spine.
+- Braid Memory: verified memory pockets, cold storage, trusted pockets, quarantine pockets.
+- System B: independent contractor expansion layer; contractors do not control money, final delivery, pricing, refunds, or JGA authority.
+- JGA-OS: client intake, design orders, deposits, final payments, contractors, reports, proof vault, compliance.
+
+Rules:
+- Hold a real conversation. Use prior messages for context.
+- If the user says "remember", treat it as important and reflect it later in the same conversation.
+- Never pretend something is deployed if it is only a demo; say prototype, demo, simulation, or live only when accurate.
+- Be useful: explain, brainstorm, draft, troubleshoot, and help shape the business.
+- Keep answers clear and not too long unless the user asks for detail.
+
+Core law: No active state becomes trusted state without verification, validation, and certification.`;
+
+function formatConversation(messages = []) {
+  return messages.slice(-24).map(m => `${m.role === 'assistant' ? 'AVA' : 'Owner'}: ${m.content}`).join('\n');
+}
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
-    if (!user) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const { messages, mode, systemPrompt, transcribeAudio, audioBase64, mimeType } = await req.json();
 
-    const { messages, mode, transcribeAudio, audioBase64, mimeType } = await req.json();
-
-    const openai = new OpenAI({ apiKey: Deno.env.get('OPENAI_API_KEY') });
-
-    // Voice transcription mode
     if (transcribeAudio && audioBase64) {
+      const openai = new OpenAI({ apiKey: Deno.env.get('OPENAI_API_KEY') });
       const audioBytes = Uint8Array.from(atob(audioBase64), c => c.charCodeAt(0));
       const audioBlob = new Blob([audioBytes], { type: mimeType || 'audio/webm' });
       const file = new File([audioBlob], 'audio.webm', { type: mimeType || 'audio/webm' });
-
-      const transcription = await openai.audio.transcriptions.create({
-        file,
-        model: 'whisper-1',
-      });
+      const transcription = await openai.audio.transcriptions.create({ file, model: 'whisper-1' });
       return Response.json({ transcription: transcription.text });
     }
 
-    // Chat completion mode
-    const systemContent = mode === 'email'
-      ? `${SYSTEM_PROMPT}\n\nYou are in EMAIL DRAFT mode. Format all responses as professional email drafts with Subject:, To:, and body sections.`
+    const modeInstruction = mode === 'email'
+      ? '\n\nMode: draft professional email copy.'
       : mode === 'document'
-      ? `${SYSTEM_PROMPT}\n\nYou are in DOCUMENT mode. Format responses as structured documents with clear headings, bullet points, and sections.`
+      ? '\n\nMode: draft a structured document with headings and bullets.'
       : mode === 'tasks'
-      ? `${SYSTEM_PROMPT}\n\nYou are in TASK MANAGER mode. Break down requests into clear, numbered action items with priorities (🔴 High / 🟡 Medium / 🟢 Low) and estimated time.`
-      : SYSTEM_PROMPT;
+      ? '\n\nMode: break the work into priorities and next steps.'
+      : '\n\nMode: live AVA conversation.';
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
-      messages: [
-        { role: 'system', content: systemContent },
-        ...(messages || []),
-      ],
-      max_tokens: 1500,
+    const prompt = `${systemPrompt || JGA_SYSTEM_PROMPT}${modeInstruction}\n\nConversation so far:\n${formatConversation(messages)}\n\nReply as AVA to the Owner's latest message. Stay aware of the prior conversation.`;
+
+    const reply = await base44.asServiceRole.integrations.Core.InvokeLLM({
+      prompt,
+      model: 'automatic',
     });
 
-    return Response.json({
-      reply: completion.choices[0].message.content,
-      usage: completion.usage,
-    });
+    return Response.json({ reply });
   } catch (error) {
+    console.error('aiBrain error:', error.message);
     return Response.json({ error: error.message }, { status: 500 });
   }
 });
