@@ -4,6 +4,7 @@ import DemoScript from "@/components/sb688/DemoScript";
 import SovereignAuditPanel from "@/components/sb688/SovereignAuditPanel";
 import SpineArchitecturePanel from "@/components/sb688/SpineArchitecturePanel";
 import SovereignTerminal from "@/components/sb688/SovereignTerminal";
+import OasisSyncBridge from "@/components/sb688/OasisSyncBridge";
 
 // ── Topology data ─────────────────────────────────────────────────────────────
 const NODES = [
@@ -112,6 +113,41 @@ export default function SB688Console() {
   const healthPct = incident ? (isBricked ? "0.0%" : wiltProgress > 0.7 ? "62.1%" : "81.4%") : "99.8%";
   const routeStatus = incident && !isBricked && wiltProgress > 0.5 ? "Rerouted" : incident && !isBricked ? "Degraded" : isBricked ? "Offline" : "Online";
   const testScore = verified ? `${verifyResults.filter(r => r.pass).length}/${verifyResults.length}` : "0/0";
+  const oasisRecords = [
+    {
+      record_key: "sb688-live-state",
+      record_type: "console_state",
+      title: "SB688 Live Console State",
+      status: incident ? "warning" : "trusted",
+      verification_stage: verified ? "certified" : "verified",
+      content: `Health ${healthPct}; route ${routeStatus}; ledger v${ledgerVersion}; heal actions ${healCount}; test score ${testScore}; active incident ${incident ? incident.label : "none"}.`,
+      metadata: { nodeStates, isBricked, wiltProgress },
+    },
+    {
+      record_key: "sb688-spine-ledger",
+      record_type: "ledger",
+      title: "SB688 Spine Ledger",
+      status: "trusted",
+      verification_stage: "validated",
+      content: ledgerLog.map(l => `v${l.v}: ${l.msg}`).join("\n"),
+    },
+    {
+      record_key: "sb688-operations-log",
+      record_type: "operation_log",
+      title: "SB688 Operations Log",
+      status: incident ? "warning" : "trusted",
+      verification_stage: "verified",
+      content: opsLog.slice(0, 12).map(l => `${l.t} ${l.msg}`).join("\n"),
+    },
+    {
+      record_key: "sb688-verification-results",
+      record_type: "verification",
+      title: "SB688 Verification Results",
+      status: verified && verifyResults.every(r => r.pass) ? "certified" : "trusted",
+      verification_stage: verified ? "certified" : "mirrored",
+      content: verifyResults.length ? verifyResults.map(r => `${r.pass ? "PASS" : "FAIL"}: ${r.name}`).join("\n") : "Verification has not been run in this session yet.",
+    },
+  ];
 
   // ── Auth ────────────────────────────────────────────────────────────────────
   const unlock = () => {
@@ -394,6 +430,8 @@ export default function SB688Console() {
             </div>
           ))}
         </div>
+
+        <OasisSyncBridge records={oasisRecords} />
 
         {/* Core Features */}
         <div className="bg-[#0e1218] border border-[#2a2622] rounded-lg p-4">

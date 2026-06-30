@@ -1,0 +1,74 @@
+{
+  "name": "OasisRecord",
+  "type": "object",
+  "properties": {
+    "record_key": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "record_type": {
+      "type": "string",
+      "enum": [
+        "console_state",
+        "ledger",
+        "operation_log",
+        "verification",
+        "recovery",
+        "topology",
+        "proof",
+        "memory"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "linked_module": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "trusted",
+        "warning",
+        "quarantined",
+        "rejected",
+        "certified"
+      ],
+      "default": "trusted"
+    },
+    "verification_stage": {
+      "type": "string",
+      "enum": [
+        "mirrored",
+        "verified",
+        "validated",
+        "certified"
+      ],
+      "default": "mirrored"
+    },
+    "hash": {
+      "type": "string"
+    },
+    "last_synced": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "metadata": {
+      "type": "string",
+      "maxLength": 2000
+    }
+  },
+  "required": [
+    "record_key",
+    "source",
+    "record_type",
+    "title",
+    "content"
+  ]
+}

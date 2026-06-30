@@ -35,6 +35,12 @@ function formatConversation(messages = []) {
   return messages.slice(-24).map(m => `${m.role === 'assistant' ? 'AVA' : 'Owner'}: ${m.content}`).join('\n');
 }
 
+async function getOasisContext(base44) {
+  const records = await base44.asServiceRole.entities.OasisRecord.list('-updated_date', 12);
+  if (!records.length) return 'OASIS status: no synced records yet. Tell the owner to sync SB688 into OASIS first.';
+  return records.map(r => `- ${r.title} [${r.status}/${r.verification_stage}] hash:${String(r.hash || '').slice(0, 12)} source:${r.source}\n  ${r.content}`).join('\n');
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -57,7 +63,8 @@ Deno.serve(async (req) => {
       ? '\n\nMode: break the work into priorities and next steps.'
       : '\n\nMode: live AVA conversation.';
 
-    const prompt = `${systemPrompt || JGA_SYSTEM_PROMPT}${modeInstruction}\n\nConversation so far:\n${formatConversation(messages)}\n\nReply as AVA to the Owner's latest message. Stay aware of the prior conversation.`;
+    const oasisContext = await getOasisContext(base44);
+    const prompt = `${systemPrompt || JGA_SYSTEM_PROMPT}${modeInstruction}\n\nOASIS VERIFIED NETWORK RECORDS:\n${oasisContext}\n\nConversation so far:\n${formatConversation(messages)}\n\nReply as AVA to the Owner's latest message. Use OASIS records when they answer the question, and mention verification status when relevant.`;
 
     const reply = await base44.asServiceRole.integrations.Core.InvokeLLM({
       prompt,
