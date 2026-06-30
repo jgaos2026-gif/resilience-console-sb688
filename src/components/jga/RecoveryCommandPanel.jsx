@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Zap, Shield, RefreshCcw, Activity, Globe, DollarSign, Cpu, AlertTriangle, CheckCircle2 } from "lucide-react";
-import { speakAVA } from "@/lib/avaVoice";
+import { alertAVA } from "@/lib/avaVoice";
+import OASISVoiceBridge from "@/components/jga/OASISVoiceBridge";
 
 const GOLD = "#C9A84C";
 
@@ -148,15 +149,19 @@ export default function RecoveryCommandPanel() {
       color: selectedSectors.length === 1 ? selectedSectors[0].color : GOLD,
       desc: selectedSectors.length === 1 ? selectedSectors[0].desc : "Bulk recovery sequence running across selected sectors simultaneously",
     });
-    addLog(`⚡ BULK RECOVERY ARMED — ${selectedSectors.length} sector(s) selected`, GOLD);
-    speakAVA(`AVA alert. Bulk recovery armed across ${selectedSectors.length} selected sector${selectedSectors.length === 1 ? "" : "s"}. Phoenix sequence standing by.`, true);
+    addLog(`⚡ OASIS LINK ACTIVE — BULK RECOVERY ARMED — ${selectedSectors.length} sector(s) selected`, GOLD);
+    alertAVA("armed", `Bulk recovery is active across ${selectedSectors.length} selected sector${selectedSectors.length === 1 ? "" : "s"}. Phoenix sequence standing by.`);
 
     selectedSectors.forEach((sector) => {
       playTone(sector.freq, 0.25, "sawtooth");
       recoverySteps(sector).forEach((step) => {
         setTimeout(() => {
           addLog(step.msg, step.color);
-          if (step.delay === 900) playTone(sector.freq * 0.8, 0.12);
+          if (step.delay === 900) {
+            playTone(sector.freq * 0.8, 0.12);
+            alertAVA("quarantine", `${sector.label} is isolated.`);
+          }
+          if (step.delay === 1500) alertAVA("checkpoint", `${sector.label} has a clean rollback point.`);
           if (step.delay === 3900) playTone(sector.freq * 1.2, 0.28, "triangle");
         }, step.delay);
       });
@@ -165,8 +170,8 @@ export default function RecoveryCommandPanel() {
     setTimeout(() => {
       setRunningIds([]);
       setSelectedIds([]);
-      addLog(`✓ BULK RECOVERY COMPLETE — ${selectedSectors.length} sector(s) certified`, "#4ade80");
-      speakAVA(`Bulk recovery complete. ${selectedSectors.length} sector${selectedSectors.length === 1 ? "" : "s"} certified. Trusted state restored after verification.`, true);
+      addLog(`✓ OASIS CONFIRMED — BULK RECOVERY COMPLETE — ${selectedSectors.length} sector(s) certified`, "#4ade80");
+      alertAVA("certified", `${selectedSectors.length} sector${selectedSectors.length === 1 ? "" : "s"} certified.`);
     }, 4300);
   };
 
@@ -208,6 +213,8 @@ export default function RecoveryCommandPanel() {
           <div className="text-[9px] uppercase tracking-[3px] font-bold text-center mb-4" style={{ color: `${GOLD}40` }}>
             Select Multiple Sectors · Trigger Bulk Recovery
           </div>
+
+          <OASISVoiceBridge />
 
           <div className="rounded-xl border p-3 flex flex-wrap items-center justify-between gap-3" style={{ background: "rgba(0,0,0,0.45)", borderColor: `${GOLD}18` }}>
             <div className="text-[10px] font-bold" style={{ color: selectedIds.length ? GOLD : "rgba(255,255,255,0.35)" }}>
