@@ -15,23 +15,8 @@ export default function DailyReports() {
   const { data: reports = [] } = useQuery({ queryKey: ["dailyReports"], queryFn: () => base44.entities.DailyReport.list("-created_date") });
 
   const generateReport = useMutation({
-    mutationFn: (type) => base44.entities.DailyReport.create({
-      report_date: new Date().toISOString().split("T")[0],
-      report_type: type,
-      system_health: "healthy",
-      node_status_summary: "All 24 nodes active. 0 quarantined.",
-      ledger_status: "Intact — 0 breaks detected",
-      memory_pockets_checked: 12,
-      ram_guard_status: "Active — within tolerance",
-      business_activity: "3 new orders, 2 proofs sent, 1 payment received",
-      failed_states: 0,
-      recovery_actions: 0,
-      proof_vault_additions: 2,
-      compliance_warnings: 0,
-      next_actions: "Review pending contractor submissions. Run system doctor.",
-      notes: `Auto-generated ${type} report.`,
-    }),
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["dailyReports"] }); toast.success("Report generated"); },
+    mutationFn: (type) => base44.functions.invoke("dailySystemReport", { report_type: type }),
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["dailyReports"] }); toast.success("AVA briefing generated"); },
   });
 
   return (

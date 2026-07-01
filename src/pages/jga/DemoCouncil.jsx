@@ -11,6 +11,7 @@ import ProofBadge from "@/components/jga/ProofBadge";
 import VerifiedBusinessProof from "@/components/jga/VerifiedBusinessProof";
 import RecoveryCommandPanel from "@/components/jga/RecoveryCommandPanel";
 import AVAWidget from "@/components/jga/AVAWidget";
+import AVADailyBriefingPanel from "@/components/jga/AVADailyBriefingPanel";
 import ImageManager, { loadImages } from "@/components/jga/ImageManager";
 import BuiltFromRealLife from "@/components/council/BuiltFromRealLife";
 import ProofWall from "@/components/council/ProofWall";
@@ -376,6 +377,9 @@ export default function DemoCouncil() {
           </div>
         </div>
       </div>
+
+      {/* ════ AVA DAILY BRIEFING ════ */}
+      <AVADailyBriefingPanel />
 
       {/* ════ AVA AI ASSISTANT ════ */}
       <AVAWidget />

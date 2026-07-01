@@ -1,171 +1,87 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 
-async function graphRequest(accessToken, path, options = {}) {
-  const res = await fetch(`https://graph.microsoft.com/v1.0${path}`, {
-    ...options,
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-      ...(options.headers || {}),
-    },
-  });
-  if (!res.ok) throw new Error(`Graph API error: ${res.status} ${await res.text()}`);
-  const text = await res.text();
-  return text ? JSON.parse(text) : null;
+function clip(value, max = 1800) {
+  const text = typeof value === 'string' ? value : JSON.stringify(value || {});
+  return text.length > max ? `${text.slice(0, max)}...` : text;
 }
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-
+    const payload = await req.json().catch(() => ({}));
+    const reportType = payload.report_type || 'daily';
     const now = new Date();
-    const dateStr = now.toLocaleDateString("en-US", {
-      weekday: "long", year: "numeric", month: "long", day: "numeric",
-      timeZone: "America/Chicago"
-    });
-    const timeStr = now.toLocaleTimeString("en-US", {
-      hour: "2-digit", minute: "2-digit", timeZone: "America/Chicago"
-    });
+    const reportDate = now.toISOString().split('T')[0];
+    const localTime = now.toLocaleString('en-US', { timeZone: 'America/Chicago', dateStyle: 'full', timeStyle: 'short' });
 
-    // AI-generated system health summary
-    const aiReport = await base44.asServiceRole.integrations.Core.InvokeLLM({
-      prompt: `You are the SB688 Sovereign System AI for JGA Enterprise, owned by John E. Arenz, NODE: MENDOTA-IL.
+    const [nodes, simulations, oasisRecords, logs, payments, orders] = await Promise.all([
+      base44.asServiceRole.entities.Node.list('-updated_date', 30),
+      base44.asServiceRole.entities.HealingSimulation.list('-updated_date', 20),
+      base44.asServiceRole.entities.OasisRecord.list('-updated_date', 12),
+      base44.asServiceRole.entities.SystemLog.list('-created_date', 20),
+      base44.asServiceRole.entities.PaymentRecord.list('-created_date', 20),
+      base44.asServiceRole.entities.DesignOrder.list('-created_date', 20),
+    ]);
 
-Generate a daily executive system health briefing for ${dateStr} at ${timeStr} CST.
+    const warningNodes = nodes.filter(n => ['warning', 'quarantined', 'repairing'].includes(n.status));
+    const criticalLogs = logs.filter(l => ['critical', 'error', 'warning'].includes(l.level));
+    const failedPayments = payments.filter(p => ['failed', 'pending'].includes(p.status));
+    const activeRecoveries = simulations.filter(s => !['healthy', 'recovered', 'certified'].includes(s.status));
 
-Active system: SB688 v2.1 — Day Zero Production (BSS-2026-PROD-01)
-Node: MENDOTA-IL — Production Ready
-Protocols active: 20 sealed protocols across CORE, GOV, IND, SVRN, OPS namespaces
-
-Write a concise, professional report in PLAIN TEXT (no markdown, no asterisks, no bullet symbols) covering:
-1. SYSTEM STATUS - Overall health in 1-2 sentences
-2. ACTIVE PROTOCOLS - Top 5 most important with status
-3. INTEGRITY METRICS - Resilience %, Data Loss %, Ghost Node, Braid Status
-4. SECURITY POSTURE - HMAC, Ledger, Quarantine readiness
-5. TODAY'S PRIORITY - One key action or watch item for the operator
-6. ARCHITECT'S NOTE - A brief motivational note from the system to John E. Arenz
-
-Keep the total under 350 words. Use ALL CAPS for section headers. Be direct and factual.`,
-    });
-
-    const reportText = typeof aiReport === "string" ? aiReport : JSON.stringify(aiReport);
-
-    const htmlBody = `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"></head>
-<body style="margin:0;padding:0;background:#000;font-family:'Courier New',monospace;">
-<div style="max-width:680px;margin:0 auto;background:#000;border:1px solid #FFD700;border-radius:8px;overflow:hidden;">
-
-  <!-- Header -->
-  <div style="background:#0a0a0a;border-bottom:2px solid #FFD700;padding:20px 24px;">
-    <div style="font-size:11px;letter-spacing:4px;color:rgba(255,215,0,0.5);text-transform:uppercase;margin-bottom:4px;">
-      JGA Enterprise · NODE: MENDOTA-IL
-    </div>
-    <div style="font-size:20px;font-weight:900;color:#FFD700;letter-spacing:2px;">
-      SB688 DAILY SYSTEM REPORT
-    </div>
-    <div style="font-size:11px;color:rgba(255,215,0,0.6);margin-top:6px;">
-      ${dateStr} &nbsp;·&nbsp; ${timeStr} CST &nbsp;·&nbsp; BSS-2026-PROD-01
-    </div>
-  </div>
-
-  <!-- AI Report -->
-  <div style="padding:24px;border-bottom:1px solid rgba(255,215,0,0.15);">
-    <pre style="margin:0;white-space:pre-wrap;word-wrap:break-word;font-family:'Courier New',monospace;font-size:13px;line-height:1.75;color:rgba(255,215,0,0.85);">${reportText}</pre>
-  </div>
-
-  <!-- White Paper Status -->
-  <div style="padding:20px 24px;border-bottom:1px solid rgba(255,215,0,0.1);">
-    <div style="font-size:10px;letter-spacing:3px;color:rgba(255,215,0,0.4);text-transform:uppercase;margin-bottom:12px;">
-      WHITE PAPER STATUS
-    </div>
-    <table style="width:100%;border-collapse:collapse;font-size:12px;font-family:'Courier New',monospace;">
-      <tr><td style="color:rgba(255,215,0,0.5);padding:3px 0;">Active Document</td><td style="color:#FFD700;text-align:right;">BSS-2026-PROD-01</td></tr>
-      <tr><td style="color:rgba(255,215,0,0.5);padding:3px 0;">Architecture Doc</td><td style="color:#FFD700;text-align:right;">BSS-2026-ARCH-01</td></tr>
-      <tr><td style="color:rgba(255,215,0,0.5);padding:3px 0;">Current Version</td><td style="color:#FFD700;text-align:right;">v2.1 — Day Zero Production</td></tr>
-      <tr><td style="color:rgba(255,215,0,0.5);padding:3px 0;">Archived Versions</td><td style="color:#FFD700;text-align:right;">6 total (v0.1 Alpha → v2.1)</td></tr>
-      <tr><td style="color:rgba(255,215,0,0.5);padding:3px 0;">Sealed Protocols</td><td style="color:#22c55e;text-align:right;">20 ACTIVE</td></tr>
-    </table>
-  </div>
-
-  <!-- Protocol Namespaces -->
-  <div style="padding:20px 24px;border-bottom:1px solid rgba(255,215,0,0.1);">
-    <div style="font-size:10px;letter-spacing:3px;color:rgba(255,215,0,0.4);text-transform:uppercase;margin-bottom:10px;">
-      PROTOCOL NAMESPACES
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px;font-family:'Courier New',monospace;">
-      ${[
-        ["SB688-CORE", "Resilience Engine, HMAC, Merkle Stitch, Ghost Node, Quarantine"],
-        ["SB688-GOV",  "Governance Reports, Proof Suite, Policy DSL, Industry Layer"],
-        ["SB688-SVRN", "1211 Auth, Triple-Braid, Clipping, Ledger, Kill/Resurrect"],
-        ["SB688-OPS",  "Daily Report, Observer Mode, White Paper Archive, Prod Seal"],
-      ].map(([ns, desc]) => `
-        <div style="background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.12);border-radius:6px;padding:10px;">
-          <div style="color:#FFD700;font-weight:bold;margin-bottom:4px;">${ns}</div>
-          <div style="color:rgba(255,215,0,0.45);font-size:10px;line-height:1.5;">${desc}</div>
-        </div>
-      `).join("")}
-    </div>
-  </div>
-
-  <!-- Ledger -->
-  <div style="padding:20px 24px;border-bottom:1px solid rgba(255,215,0,0.1);">
-    <div style="font-size:10px;letter-spacing:3px;color:rgba(255,215,0,0.4);text-transform:uppercase;margin-bottom:10px;">
-      LEDGER INTEGRITY
-    </div>
-    <div style="font-size:12px;font-family:'Courier New',monospace;color:rgba(255,215,0,0.7);line-height:1.8;">
-      Type: Immutable · Append-Only · Read-Only<br>
-      Day Zero: April 27, 2026 — NODE: MENDOTA-IL<br>
-      Genesis Hash: Sealed · SHA3-256 authenticated<br>
-      Unauthorized Writes: 0 detected<br>
-      Status: <span style="color:#22c55e;font-weight:bold;">NOMINAL</span>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <div style="padding:20px 24px;text-align:center;">
-    <div style="font-size:13px;font-style:italic;color:#FFD700;margin-bottom:8px;line-height:1.6;">
-      "Don't ever let anyone tell you that you can't,<br>when you know damn well you can."
-    </div>
-    <div style="font-size:10px;color:rgba(255,215,0,0.35);">— John E. Arenz · JGA Enterprise · Markham to Mendota · 1981 → ∞</div>
-    <div style="margin-top:14px;font-size:9px;color:rgba(255,215,0,0.2);letter-spacing:2px;text-transform:uppercase;">
-      Automated by SB688 Sovereign Reporting Engine · Daily 7:00 AM CST
-    </div>
-  </div>
-
-</div>
-</body>
-</html>`;
-
-    // Send via Microsoft Graph using authorized Outlook connector
-    const { accessToken } = await base44.asServiceRole.connectors.getConnection("outlook");
-
-    const message = {
-      subject: `SB688 Daily Report — ${dateStr} · NODE: MENDOTA-IL`,
-      body: {
-        contentType: "HTML",
-        content: htmlBody,
-      },
-      toRecipients: [
-        { emailAddress: { address: "jaysgraphicarts@outlook.com" } }
-      ],
+    const systemSnapshot = {
+      generated_at: localTime,
+      node_count: nodes.length,
+      warning_nodes: warningNodes.map(n => ({ name: n.name, status: n.status, trust_level: n.trust_level, recent_log: n.recent_log })),
+      active_recovery_events: activeRecoveries.map(s => ({ name: s.name, status: s.status, result: s.result, description: s.description })),
+      critical_logs: criticalLogs.slice(0, 8).map(l => ({ level: l.level, module: l.module, message: l.message, details: l.details })),
+      oasis_verified_records: oasisRecords.map(r => ({ title: r.title, status: r.status, stage: r.verification_stage, hash: String(r.hash || '').slice(0, 12), content: r.content })),
+      business_orders: orders.slice(0, 10).map(o => ({ title: o.title, client: o.client_name, status: o.status, deposit_status: o.deposit_status, final_payment_status: o.final_payment_status, deadline: o.deadline })),
+      payment_watch: failedPayments.slice(0, 10).map(p => ({ type: p.payment_type, amount: p.amount, status: p.status, client: p.client_name, order: p.order_title })),
     };
 
-    await graphRequest(accessToken, "/me/sendMail", {
-      method: "POST",
-      body: JSON.stringify({ message, saveToSentItems: true }),
+    const briefing = await base44.asServiceRole.integrations.Core.InvokeLLM({
+      prompt: `You are AVA, JGA's intelligent command-room partner. Generate today's operator briefing for John.
+
+Current snapshot:
+${clip(systemSnapshot, 8000)}
+
+Write like a sharp young-adult strategic partner: warm, direct, protective, and useful. Do not sound generic. Highlight what needs immediate attention first. Treat OASIS records as verified context and mention their verification when relevant.`,
+      response_json_schema: {
+        type: 'object',
+        properties: {
+          briefing_title: { type: 'string' },
+          system_health: { type: 'string', enum: ['healthy', 'degraded', 'critical'] },
+          executive_summary: { type: 'string' },
+          immediate_attention: { type: 'array', items: { type: 'string' } },
+          critical_events: { type: 'array', items: { type: 'string' } },
+          oasis_context: { type: 'string' },
+          next_actions: { type: 'array', items: { type: 'string' } },
+          ava_note: { type: 'string' }
+        },
+        required: ['briefing_title', 'system_health', 'executive_summary', 'immediate_attention', 'critical_events', 'oasis_context', 'next_actions', 'ava_note']
+      }
     });
 
-    return Response.json({
-      success: true,
-      sent_to: "jaysgraphicarts@outlook.com",
-      report_date: dateStr,
-      report_time: timeStr,
-      node: "MENDOTA-IL",
+    const report = await base44.asServiceRole.entities.DailyReport.create({
+      report_date: reportDate,
+      report_type: reportType,
+      system_health: briefing.system_health,
+      node_status_summary: `${nodes.length} nodes scanned; ${warningNodes.length} need attention.`,
+      ledger_status: oasisRecords.length ? `${oasisRecords.length} OASIS record(s) mirrored and hash-marked.` : 'No OASIS records synced yet.',
+      memory_pockets_checked: oasisRecords.length,
+      ram_guard_status: warningNodes.some(n => n.node_type === 'ram_guard') ? 'Attention needed' : 'Nominal',
+      business_activity: `${orders.length} recent order(s); ${failedPayments.length} payment item(s) on watch.`,
+      failed_states: activeRecoveries.length + warningNodes.length,
+      recovery_actions: activeRecoveries.length,
+      proof_vault_additions: oasisRecords.length,
+      compliance_warnings: criticalLogs.length,
+      next_actions: briefing.next_actions.join(' | '),
+      notes: `AVA DAILY BRIEFING\n\n${briefing.executive_summary}\n\nIMMEDIATE ATTENTION\n${briefing.immediate_attention.join('\n')}\n\nCRITICAL EVENTS\n${briefing.critical_events.join('\n')}\n\nOASIS\n${briefing.oasis_context}\n\nAVA NOTE\n${briefing.ava_note}`,
     });
 
+    return Response.json({ success: true, briefing, report });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('dailySystemReport error:', error.message);
+    return Response.json({ success: false, error: error.message }, { status: 500 });
   }
 });
