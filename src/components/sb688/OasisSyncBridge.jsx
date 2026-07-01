@@ -8,8 +8,12 @@ export default function OasisSyncBridge({ records }) {
 
   const sync = async () => {
     setSyncing(true);
-    const res = await base44.functions.invoke("oasisSync", { source: "SB688 Command Console", records });
-    setStatus(res.data?.success ? `${res.data.count} verified record(s) synced to OASIS.` : "OASIS sync did not complete.");
+    try {
+      const res = await base44.functions.invoke("oasisSync", { source: "SB688 Command Console", records });
+      setStatus(res.data?.success ? `${res.data.count} secure, hash-verified record(s) synced to OASIS.` : "OASIS sync did not complete.");
+    } catch (error) {
+      setStatus(error.response?.data?.error || "OASIS sync requires an admin session.");
+    }
     setSyncing(false);
   };
 
@@ -20,7 +24,7 @@ export default function OasisSyncBridge({ records }) {
           <Database className="w-4 h-4 text-[#c4a350]" />
         </div>
         <div>
-          <div className="text-[10px] text-[#c4a350] uppercase tracking-widest font-bold">OASIS Network Bridge</div>
+          <div className="text-[10px] text-[#c4a350] uppercase tracking-widest font-bold">Secure OASIS Network Bridge</div>
           <div className="text-[10px] text-[#6b6558] mt-1">{status}</div>
         </div>
       </div>

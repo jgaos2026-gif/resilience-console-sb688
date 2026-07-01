@@ -35,10 +35,22 @@ function formatConversation(messages = []) {
   return messages.slice(-24).map(m => `${m.role === 'assistant' ? 'AVA' : 'Owner'}: ${m.content}`).join('\n');
 }
 
+async function sha256(text) {
+  const data = new TextEncoder().encode(text);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 async function getOasisContext(base44) {
   const records = await base44.asServiceRole.entities.OasisRecord.list('-updated_date', 12);
   if (!records.length) return 'OASIS status: no synced records yet. Tell the owner to sync SB688 into OASIS first.';
-  return records.map(r => `- ${r.title} [${r.status}/${r.verification_stage}] hash:${String(r.hash || '').slice(0, 12)} source:${r.source}\n  ${r.content}`).join('\n');
+  const lines = [];
+  for (const r of records) {
+    const expectedHash = await sha256(`${r.record_key}|${r.content}|${r.status}`);
+    const hashVerified = expectedHash === r.hash;
+    lines.push(`- ${r.title} [${r.status}/${r.verification_stage}] OASIS_HASH:${hashVerified ? 'VERIFIED' : 'MISMATCH_DO_NOT_TRUST'} hash:${String(r.hash || '').slice(0, 12)} source:${r.source}\n  ${hashVerified ? r.content : 'Record content withheld because the OASIS hash did not verify.'}`);
+  }
+  return lines.join('\n');
 }
 
 Deno.serve(async (req) => {
