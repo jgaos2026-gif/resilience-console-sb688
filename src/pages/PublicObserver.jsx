@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Shield, Eye, Lock, Radio, Zap, CheckCircle2, RotateCcw,
-  ChevronDown, ChevronUp, Activity, Download,
+  Shield, Eye, Lock, Radio, Zap, CheckCircle2, RotateCcw, Activity, Download,
   Tv2, Youtube, Instagram, Twitter, Share2, BookOpen, Wifi
 } from "lucide-react";
 import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";

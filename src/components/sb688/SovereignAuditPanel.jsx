@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import {
-  ChevronDown, ChevronUp, Shield, CheckCircle2, XCircle, Loader2,
-  Radio, Link2, GitBranch, Database, Tv2, Zap, Lock, AlertTriangle, RefreshCw
+  ChevronDown, ChevronUp, Shield, CheckCircle2, Loader2,
+  Radio, GitBranch, Database, Tv2, Zap, Lock, AlertTriangle, RefreshCw
 } from "lucide-react";
 
 const GOLD   = "#c4a350";

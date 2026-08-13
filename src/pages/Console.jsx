@@ -25,7 +25,7 @@ import RecoveryArchitectureTab from "@/components/sb688/RecoveryArchitectureTab"
 import EventTimeline from "@/components/sb688/EventTimeline";
 import ResilienceDashboard from "@/components/sb688/ResilienceDashboard";
 import GovernanceReportPanel from "@/components/sb688/GovernanceReportPanel";
-import WarriorCrest, { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
+import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 import PolicySandboxTab from "@/components/sb688/PolicySandboxTab";
 import LiveCapabilityDemo from "@/components/sb688/LiveCapabilityDemo";
 import LiveStreamControl from "@/components/sb688/LiveStreamControl";

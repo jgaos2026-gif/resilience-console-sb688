@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Settings, Shield, Users } from "lucide-react";
+import { Settings, Users } from "lucide-react";
 
 const GOLD = "#C9A84C";
 

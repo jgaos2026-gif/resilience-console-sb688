@@ -1,11 +1,8 @@
 import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Shield, Brain, Radio, LayoutDashboard, Layers, Lock,
-  GitBranch, Activity, CheckCircle2
+import { Radio, LayoutDashboard, Layers
 } from "lucide-react";
 import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 import MasterControlPanel from "@/components/council/MasterControlPanel";

@@ -7,7 +7,7 @@ import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 import ReactMarkdown from "react-markdown";
 import {
   Brain, Mic, MicOff, Send, Loader2, FileText, Mail,
-  ListChecks, MessageSquare, Copy, Trash2, ChevronDown, Volume2
+  ListChecks, MessageSquare, Copy, Trash2, Volume2
 } from "lucide-react";
 
 const GOLD = "#C9A84C";

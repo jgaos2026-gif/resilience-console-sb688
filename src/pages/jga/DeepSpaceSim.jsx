@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import NodeMeshCanvas from "@/components/jga/sim/NodeMeshCanvas";
 import SpaceEventPanel from "@/components/jga/sim/SpaceEventPanel";
 import NodePairViewer from "@/components/jga/sim/NodePairViewer";

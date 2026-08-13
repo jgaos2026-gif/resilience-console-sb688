@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useRef } from "react";
-import { INDUSTRIES, SCENARIOS } from "@/lib/sb688Engine";
+import React, { useState, useCallback } from "react";
+import { INDUSTRIES } from "@/lib/sb688Engine";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Play, RotateCcw, BookOpen, CheckCircle2, XCircle, AlertTriangle, Lightbulb } from "lucide-react";
+import { Play, RotateCcw, BookOpen, CheckCircle2, AlertTriangle, Lightbulb } from "lucide-react";
 
 // ── DSL Reference ─────────────────────────────────────────────────────────────
 const DSL_REFERENCE = [

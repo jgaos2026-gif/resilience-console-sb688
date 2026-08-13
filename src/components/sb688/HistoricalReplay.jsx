@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
 import {
-  Play, Pause, RotateCcw, ChevronRight, ChevronLeft,
-  Clock, Shield, Zap, Radio, Lock, CheckCircle2, AlertTriangle,
-  FastForward, SkipBack, Activity
+  Play, Pause, ChevronRight, ChevronLeft,
+  Clock, Shield, Zap, Radio, Lock, CheckCircle2, SkipBack, Activity
 } from "lucide-react";
 
 const GOLD   = "#C9A84C";

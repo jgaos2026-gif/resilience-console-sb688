@@ -1,7 +1,7 @@
 import React from "react";
-import { Shield, Zap, FileCheck, Globe, Clock, Lock, CheckCircle2, ArrowRight, Eye, XOctagon, Database, AlertTriangle } from "lucide-react";
+import { Shield, Zap, FileCheck, Globe, Clock, Lock, CheckCircle2, ArrowRight, XOctagon, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import WarriorCrest, { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
+import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 
 const capabilities = [
   { icon: Zap, title: "Detects & Contains Fast", desc: "Continuous health monitoring identifies degradation before it cascades. Suspicious activity is surfaced by ghost-node sensors at mesh boundaries." },

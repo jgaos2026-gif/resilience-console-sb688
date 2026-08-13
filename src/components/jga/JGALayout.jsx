@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
 import {
-  Shield, Layers, LayoutGrid, CheckSquare, Brain,
-  Heart, Archive, FileText, AlertTriangle, Settings, Menu, X,
-  Activity, Lock, LogOut, RotateCcw
+  Shield, Layers, LayoutGrid, CheckSquare, Brain, Archive, FileText, AlertTriangle, Settings, Menu, X,
+  Activity, LogOut, RotateCcw
 } from "lucide-react";
 
 const NAV = [

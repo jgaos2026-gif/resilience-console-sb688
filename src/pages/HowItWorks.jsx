@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, ChevronUp, Shield, Zap, Radio, Lock, Layers, Activity, Cpu, BookOpen } from "lucide-react";
+import { ChevronDown, ChevronUp, Shield, Radio, Lock, Layers, Activity, Cpu, BookOpen } from "lucide-react";
 import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 
 const GOLD = "#C9A84C";

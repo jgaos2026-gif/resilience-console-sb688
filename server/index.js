@@ -88,7 +88,7 @@ app.use('/api/recovery',     recoveryRoutes);
 // ── 404 + error handlers ──────────────────────────────────────────────────────
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
 
-// eslint-disable-next-line no-unused-vars
+ 
 app.use((err, req, res, _next) => {
   console.error('[server error]', err);
   writeAudit('server_error', req.user?.id || 'anonymous', { message: err.message, path: req.path });

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { base44 } from "@/api/base44Client";
-import { DollarSign, TrendingUp, FileText, Heart, Loader2, ChevronDown, ChevronUp, Landmark, PiggyBank, ReceiptText, Scale } from "lucide-react";
+import { DollarSign, TrendingUp, Heart, Loader2, ChevronDown, ChevronUp, Landmark, ReceiptText, Scale } from "lucide-react";
 
 const GOLD = "#C9A84C";
 

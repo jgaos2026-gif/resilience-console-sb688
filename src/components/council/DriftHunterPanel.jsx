@@ -2,8 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Radio, AlertTriangle, CheckCircle2, Activity, Zap,
-  Eye, Shield, RefreshCw, TrendingUp, TrendingDown
+  Radio, Activity, Zap
 } from "lucide-react";
 import moment from "moment";
 

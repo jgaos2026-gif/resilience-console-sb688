@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { ChevronDown, ChevronUp, Shield, Zap, Lock, Activity, CheckCircle2, XCircle, Loader2, Radio, AlertTriangle, Cpu, GitBranch } from "lucide-react";
+import { ChevronDown, ChevronUp, Shield, Zap, Lock, CheckCircle2, Loader2, Radio, Cpu } from "lucide-react";
 
 const GOLD   = "#c4a350";
 const GREEN  = "#22c55e";

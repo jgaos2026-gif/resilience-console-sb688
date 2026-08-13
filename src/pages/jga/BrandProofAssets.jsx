@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Eye, Lock, Clock, ChevronDown, ChevronUp } from "lucide-react";
+import { Shield, Eye, Lock, ChevronDown, ChevronUp } from "lucide-react";
 import BrandProofCard from "@/components/jga/BrandProofCard";
 
 const GOLD = "#C9A84C";

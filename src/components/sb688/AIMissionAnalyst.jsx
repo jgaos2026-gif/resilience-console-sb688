@@ -2,8 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { base44 } from "@/api/base44Client";
 import { INDUSTRIES, SCENARIOS } from "@/lib/sb688Engine";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageSquare, Send, Loader2, Bot, User, Zap } from "lucide-react";
+import { Send, Loader2, Bot, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 const SYSTEM_CONTEXT = `You are the SB688 Mission Analyst — an AI embedded in the SB688 Universal Resilience Console.

@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, AlertTriangle, Map, Trophy, RotateCcw, Zap } from "lucide-react";
+import { CheckCircle2, AlertTriangle, Map, Trophy, RotateCcw } from "lucide-react";
 
 const GOLD = "#C9A84C";
 

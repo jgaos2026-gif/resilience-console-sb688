@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Terminal, Send, Zap, Lock, Cpu, Radio, Plus, CheckCircle2, Loader2, Trash2 } from "lucide-react";
+import { Terminal, Send, Zap, Lock, Cpu, Radio, CheckCircle2, Loader2, Trash2 } from "lucide-react";
 
 const GOLD   = "#c4a350";
 const GREEN  = "#22c55e";

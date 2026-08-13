@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileText, Download, Shield, CheckCircle2, Lock, Activity, Zap, Radio } from "lucide-react";
+import { FileText, Download, Shield, CheckCircle2, Activity, Zap } from "lucide-react";
 
 const GOLD = "#FFD700";
 

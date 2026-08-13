@@ -6,7 +6,7 @@ import React, { useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Brain, Database, Lock, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 import api from "@/api/apiClient";
 
 const GOLD = "#C9A84C";

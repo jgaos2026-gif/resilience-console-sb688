@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Crown, Play, Map, Mail, Zap } from "lucide-react";
+import { Play, Map, Mail, Zap } from "lucide-react";
 
 const GOLD = "#C9A84C";
 

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { INDUSTRIES } from "@/lib/sb688Engine";
 
 // Fixed node positions (normalized 0-1)

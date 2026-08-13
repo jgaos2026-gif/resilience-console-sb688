@@ -5,7 +5,7 @@ import { INDUSTRIES, SCENARIOS } from "@/lib/sb688Engine";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  ShieldCheck, Activity, Zap, AlertTriangle, CheckCircle2,
+  ShieldCheck, Activity, Zap, CheckCircle2,
   XCircle, Clock, Loader2, RefreshCw, GitBranch, Eye, Database, FileDown
 } from "lucide-react";
 

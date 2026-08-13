@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Shield, Zap, Radio, Lock, AlertTriangle, CheckCircle2, Activity, Cpu, BatteryCharging, Network, Key, Plus } from "lucide-react";
+import { Shield, Zap, Radio, Lock, CheckCircle2, Activity, Cpu, BatteryCharging, Network, Key, Plus } from "lucide-react";
 import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 import GovernanceReportGenerator from "@/components/sb688/GovernanceReportGenerator";
 

@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 import {
-  Zap, Shield, Brain, Clock, CheckCircle2, XCircle, Lock,
-  Unlock, Link2, AlertTriangle, Activity, ChevronRight, Copy, Check
+  Zap, Shield, Brain, Clock, CheckCircle2, Lock,
+  Unlock, Link2, Activity, ChevronRight, Copy, Check
 } from "lucide-react";
 import moment from "moment";
 

@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle2, Clock, Upload, FileText, Shield } from "lucide-react";
+import { Upload, Shield } from "lucide-react";
 
 const GOLD = "#C9A84C";
 const STATUS_COLORS = {

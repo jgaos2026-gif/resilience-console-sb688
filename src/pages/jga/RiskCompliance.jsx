@@ -3,8 +3,7 @@
  */
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, CheckCircle2, Shield, Lock, Eye } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Shield, Lock } from "lucide-react";
 import api from "@/api/apiClient";
 
 const GOLD = "#C9A84C";

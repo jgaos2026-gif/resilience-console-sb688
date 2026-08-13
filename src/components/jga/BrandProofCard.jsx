@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Eye, EyeOff, ExternalLink } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 
 const GOLD = "#C9A84C";
 

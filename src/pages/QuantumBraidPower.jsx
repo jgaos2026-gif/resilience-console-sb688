@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Cpu, Zap, Globe, Activity, Shield, CheckCircle2, ArrowRight,
-  Play, RotateCcw, Radio, Layers, Brain, Lock, AlertTriangle,
-  TrendingDown, TrendingUp, Minus, Database, Atom
+  Cpu, Zap, Shield, CheckCircle2,
+  Play, RotateCcw, Layers, AlertTriangle, Database, Atom
 } from "lucide-react";
 import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 import { base44 } from "@/api/base44Client";

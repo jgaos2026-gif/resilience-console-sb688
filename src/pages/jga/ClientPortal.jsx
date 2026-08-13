@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { base44 } from "@/api/base44Client";
 import { useMutation } from "@tanstack/react-query";
-import { Users, CheckCircle2, Upload, FileText, Shield, Phone, Mail, MessageSquare } from "lucide-react";
+import { CheckCircle2, Shield, Phone, Mail, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 
 const GOLD = "#C9A84C";

@@ -5,7 +5,7 @@ import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Shield, Lock, CheckCircle2, AlertTriangle, Database, Activity, Eye, RotateCcw, Zap } from "lucide-react";
+import { Shield, Lock, Database, Activity, Zap } from "lucide-react";
 import api from "@/api/apiClient";
 
 const GOLD = "#C9A84C";
