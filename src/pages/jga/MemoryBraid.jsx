@@ -129,7 +129,7 @@ export default function MemoryBraid() {
         </div>
         {isLoading
           ? <p className="text-xs text-muted-foreground font-mono py-8 text-center">Fetching braid chain…</p>
-          : <BraidCanvas chain={memNode?.strands ? [] : chain} />
+          : <BraidCanvas chain={chain} />
         }
         <div className="flex gap-2 flex-wrap">
           {STRAND_COLORS.map((c, i) => (

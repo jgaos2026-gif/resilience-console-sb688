@@ -16,7 +16,7 @@ const LOG_FILE = path.join(LOG_DIR, 'audit.jsonl');
 if (!fs.existsSync(LOG_DIR)) fs.mkdirSync(LOG_DIR, { recursive: true });
 
 /**
- * Write an audit entry (append-only).
+ * Write an audit entry (append-only, non-blocking).
  */
 export function writeAudit(action, actorId, data = {}) {
   const entry = JSON.stringify({
@@ -25,7 +25,9 @@ export function writeAudit(action, actorId, data = {}) {
     actorId,
     ...data,
   });
-  fs.appendFileSync(LOG_FILE, entry + '\n', 'utf8');
+  fs.appendFile(LOG_FILE, entry + '\n', 'utf8', (err) => {
+    if (err) console.error('[audit] write error:', err.message);
+  });
 }
 
 /**

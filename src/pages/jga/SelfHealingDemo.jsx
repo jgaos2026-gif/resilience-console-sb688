@@ -1,5 +1,5 @@
 /**
- * SelfHealingPanel.jsx — Wired to real /api/recovery
+ * SelfHealingDemo.jsx — Wired to real /api/recovery
  */
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";

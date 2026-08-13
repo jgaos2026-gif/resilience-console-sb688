@@ -6,16 +6,23 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+const IS_DEV = process.env.NODE_ENV !== 'production';
+
 if (!JWT_SECRET) {
-  console.warn('[auth] WARNING: JWT_SECRET not set. Authentication disabled in dev mode.');
+  if (!IS_DEV) {
+    console.error('[auth] FATAL: JWT_SECRET not set in production. Refusing to start.');
+    process.exit(1);
+  }
+  console.warn('[auth] WARNING: JWT_SECRET not set. Dev-mode auth bypass active. DO NOT use in production.');
 }
 
 /**
- * requireAuth — Express middleware that verifies a ******
- * In development (no JWT_SECRET) it allows all requests and sets req.user to { id: 'dev', role: 'admin' }.
+ * requireAuth — Express middleware that verifies a JWT ******
+ * In development only (NODE_ENV != production, no JWT_SECRET) it allows all requests
+ * with a synthetic dev user. In production, JWT_SECRET absence causes process exit at startup.
  */
 export function requireAuth(req, res, next) {
-  if (!JWT_SECRET) {
+  if (!JWT_SECRET && IS_DEV) {
     req.user = { id: 'dev', role: 'admin' };
     return next();
   }
