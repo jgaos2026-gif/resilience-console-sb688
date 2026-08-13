@@ -1,86 +1,80 @@
+/**
+ * DailyReports.jsx — Wired to real /api/reports
+ */
 import React from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { FileText, Plus, Download } from "lucide-react";
+import { FileText, Plus, Activity, Lock, Database } from "lucide-react";
 import { toast } from "sonner";
-import moment from "moment";
+import api from "@/api/apiClient";
 
 const GOLD = "#C9A84C";
-const HEALTH_COLORS = { healthy: "#4ade80", degraded: "#fbbf24", critical: "#ef4444" };
 
 export default function DailyReports() {
-  const queryClient = useQueryClient();
-  const { data: reports = [] } = useQuery({ queryKey: ["dailyReports"], queryFn: () => base44.entities.DailyReport.list("-created_date") });
+  const qc = useQueryClient();
+  const { data: reports = [], isLoading } = useQuery({
+    queryKey: ["dailyReports"],
+    queryFn:  () => api.get("/api/reports"),
+    refetchInterval: 60000,
+  });
 
-  const generateReport = useMutation({
-    mutationFn: (type) => base44.functions.invoke("dailySystemReport", { report_type: type }),
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["dailyReports"] }); toast.success("AVA briefing generated"); },
+  const generateMutation = useMutation({
+    mutationFn: () => api.post("/api/reports/generate"),
+    onSuccess: (data) => { qc.invalidateQueries({ queryKey: ["dailyReports"] }); toast.success(`Report generated — ${data.date}`); },
+    onError: err => toast.error(err.message),
   });
 
   return (
-    <div className="p-4 sm:p-6 max-w-6xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-xl font-bold font-cinzel" style={{ color: GOLD }}>Daily Reports</h1>
-        <p className="text-xs text-muted-foreground">System health, business activity, and compliance reports</p>
+    <div className="p-4 sm:p-6 max-w-5xl mx-auto space-y-6">
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h1 className="text-xl font-bold font-mono" style={{ color: GOLD }}>Daily Reports</h1>
+          <p className="text-xs text-muted-foreground">Automated system snapshots with braid invariant records</p>
+        </div>
+        <Button onClick={() => generateMutation.mutate()} disabled={generateMutation.isPending}
+          className="text-xs font-bold font-mono"
+          style={{ background: "rgba(201,168,76,0.12)", color: GOLD, border: "1px solid rgba(201,168,76,0.3)" }}>
+          <Plus className="w-3.5 h-3.5 mr-1" /> Generate Report
+        </Button>
       </div>
 
-      {/* Generate Buttons */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { type: "daily", label: "Daily Report", color: "#4ade80" },
-          { type: "council", label: "Council Report", color: GOLD },
-          { type: "investor", label: "Investor Snapshot", color: "#a78bfa" },
-          { type: "pilot", label: "Illinois Pilot Report", color: "#60a5fa" },
-        ].map(r => (
-          <Button key={r.type} onClick={() => generateReport.mutate(r.type)} disabled={generateReport.isPending}
-            className="h-auto py-3 flex flex-col items-center gap-1 text-xs font-bold"
-            style={{ background: `${r.color}10`, color: r.color, border: `1px solid ${r.color}30` }}>
-            <Plus className="w-4 h-4" />
-            {r.label}
-          </Button>
-        ))}
-      </div>
+      {isLoading && <p className="text-xs text-muted-foreground font-mono">Loading reports…</p>}
 
-      {/* Reports List */}
       <div className="space-y-3">
-        {reports.map(report => {
-          const hc = HEALTH_COLORS[report.system_health] || "#94a3b8";
-          return (
-            <div key={report.id} className="rounded-xl border border-border p-5 space-y-3" style={{ background: "hsl(220,18%,7%)" }}>
-              <div className="flex items-center justify-between flex-wrap gap-2">
-                <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4" style={{ color: GOLD }} />
-                  <h3 className="text-sm font-semibold text-foreground">{report.report_date}</h3>
-                  <Badge className="text-[8px] border font-bold uppercase" style={{ background: "rgba(201,168,76,0.06)", color: GOLD, borderColor: "rgba(201,168,76,0.2)" }}>
-                    {report.report_type}
-                  </Badge>
-                </div>
-                <Badge className="text-[8px] border font-bold" style={{ background: `${hc}15`, color: hc, borderColor: `${hc}40` }}>
-                  {report.system_health}
-                </Badge>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[10px]">
-                <div><span className="text-muted-foreground">Nodes: </span><span className="text-foreground">{report.node_status_summary}</span></div>
-                <div><span className="text-muted-foreground">Ledger: </span><span className="text-foreground">{report.ledger_status}</span></div>
-                <div><span className="text-muted-foreground">Pockets Checked: </span><span className="text-foreground">{report.memory_pockets_checked}</span></div>
-                <div><span className="text-muted-foreground">RAM Guard: </span><span className="text-foreground">{report.ram_guard_status}</span></div>
-                <div><span className="text-muted-foreground">Business: </span><span className="text-foreground">{report.business_activity}</span></div>
-                <div><span className="text-muted-foreground">Failed States: </span><span style={{ color: report.failed_states > 0 ? "#f87171" : "#4ade80" }}>{report.failed_states}</span></div>
-                <div><span className="text-muted-foreground">Recovery Actions: </span><span className="text-foreground">{report.recovery_actions}</span></div>
-                <div><span className="text-muted-foreground">Proof Additions: </span><span className="text-foreground">{report.proof_vault_additions}</span></div>
-              </div>
-              {report.next_actions && (
-                <div className="text-[10px]"><span className="text-muted-foreground">Next Actions: </span><span className="text-foreground">{report.next_actions}</span></div>
-              )}
+        {reports.map(r => (
+          <div key={r.id} className="rounded-xl border border-border p-5 space-y-3" style={{ background: "hsl(220,18%,7%)" }}>
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <h3 className="text-sm font-bold font-mono" style={{ color: GOLD }}>{r.report_date}</h3>
+              <Badge className="text-[9px] font-mono border"
+                style={{ background: "rgba(74,222,128,0.1)", color: "#4ade80", borderColor: "rgba(74,222,128,0.3)" }}>
+                RECORDED
+              </Badge>
             </div>
-          );
-        })}
-        {reports.length === 0 && (
-          <div className="text-center py-12 text-muted-foreground text-sm rounded-xl border border-border" style={{ background: "hsl(220,18%,7%)" }}>
-            No reports generated yet. Use the buttons above to create your first report.
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {[
+                { label: "Spine Health",   value: `${r.spine_health}%`,    color: r.spine_health >= 100 ? "#4ade80" : "#fbbf24" },
+                { label: "Integrity",      value: `${r.integrity_pct}%`,   color: r.integrity_pct >= 100 ? "#4ade80" : "#fbbf24" },
+                { label: "Active Nodes",   value: `${r.nodes_active}/${r.nodes_total}`, color: GOLD },
+                { label: "Chain Blocks",   value: r.chain_length,           color: "#60a5fa" },
+                { label: "Trusted Items",  value: r.trusted_states,         color: "#4ade80" },
+                { label: "Rejected",       value: r.rejected_states,        color: "#f87171" },
+                { label: "Recoveries",     value: r.recovery_count,         color: "#a78bfa" },
+                { label: "tr₀.₃",          value: r.invariant?.trace03?.toFixed(4) ?? "—", color: "#94a3b8" },
+              ].map(s => (
+                <div key={s.label} className="rounded-lg border border-border/40 p-2" style={{ background: "hsl(220,20%,6%)" }}>
+                  <p className="text-[9px] text-muted-foreground uppercase tracking-widest">{s.label}</p>
+                  <p className="text-sm font-bold font-mono mt-0.5" style={{ color: s.color }}>{s.value}</p>
+                </div>
+              ))}
+            </div>
+
+            {r.summary && <p className="text-[10px] text-muted-foreground font-mono">{r.summary}</p>}
           </div>
+        ))}
+        {reports.length === 0 && !isLoading && (
+          <p className="text-xs text-muted-foreground font-mono text-center py-8">No reports yet. Generate the first snapshot above.</p>
         )}
       </div>
     </div>
