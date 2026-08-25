@@ -15,13 +15,18 @@ const LEGACY_ITEMS = [
   ["Adapters", "Offline stubs only", WifiOff, "#94a3b8"],
 ];
 
-export default function AVAStatusGrid() {
-  const registryItems = SYSTEM_COMPONENTS.map((component) => [
-    component.name,
-    `${component.status} · ${component.role}`,
-    Network,
-    component.status === "connected" ? "#4ade80" : "#f59e0b",
-  ]);
+export default function AVAStatusGrid({ health = {} }) {
+  const registryItems = SYSTEM_COMPONENTS.map((component) => {
+    const live = health[component.id];
+    const state = live?.status || component.status;
+    const detail = live?.note || component.role;
+    return [
+      component.name,
+      `${state} · ${detail}`,
+      Network,
+      state === "registered" || state === "connected" ? "#4ade80" : "#f59e0b",
+    ];
+  });
   const items = [...registryItems, ...LEGACY_ITEMS];
 
   return (
