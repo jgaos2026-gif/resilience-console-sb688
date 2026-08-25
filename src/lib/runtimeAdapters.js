@@ -1,30 +1,24 @@
 import { SYSTEM_COMPONENTS } from "@/lib/systemRegistry";
 
-const ADAPTER_KEY = "jga_ava_runtime_adapters_v1";
+const ADAPTER_KEY = "jga_ava_runtime_adapters_v2";
+const FAILURE_KEY = "jga_ava_runtime_failures_v1";
 
-const DEFAULT_ADAPTERS = {
-  oasis: { kind: "http", baseUrl: "", healthPath: "/health", commandPath: "/api/ava/command", enabled: false },
-  stitch: { kind: "http", baseUrl: "", healthPath: "/health", commandPath: "/api/ava/command", enabled: false },
-  sb688: { kind: "http", baseUrl: "", healthPath: "/health", commandPath: "/api/ava/command", enabled: false },
-  powershell: { kind: "local-bridge", baseUrl: "http://127.0.0.1:6888", healthPath: "/health", commandPath: "/command", enabled: false },
-};
-
-function read() {
-  try { return { ...DEFAULT_ADAPTERS, ...(JSON.parse(localStorage.getItem(ADAPTER_KEY) || "{}")) }; }
-  catch { return { ...DEFAULT_ADAPTERS }; }
+function readJSON(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+  catch { return fallback; }
 }
 
-function write(value) {
-  localStorage.setItem(ADAPTER_KEY, JSON.stringify(value));
+function writeJSON(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
 }
 
-export function getRuntimeAdapters() { return read(); }
+function preserveFailure(entry) {
+  const failures = readJSON(FAILURE_KEY, []);
+  writeJSON(FAILURE_KEY, [entry, ...failures].slice(0, 500));
+}
 
-export function configureRuntimeAdapter(id, patch) {
-  const adapters = read();
-  adapters[id] = { ...(adapters[id] || {}), ...patch };
-  write(adapters);
-  return adapters[id];
+function newCorrelationId() {
+  return crypto.randomUUID();
 }
 
 function timeoutSignal(ms = 4500) {
@@ -34,97 +28,115 @@ function timeoutSignal(ms = 4500) {
   return controller.signal;
 }
 
-export async function checkRuntimeAdapter(id) {
-  const adapter = read()[id];
+export function getRuntimeAdapters() {
+  return readJSON(ADAPTER_KEY, {});
+}
+
+export function getRuntimeFailures() {
+  return readJSON(FAILURE_KEY, []);
+}
+
+export function registerVerifiedRuntimeAdapter(id, discovery) {
+  if (!discovery?.verifiedByRealRequest) throw new Error("Adapter registration requires a successful real HTTP verification request.");
+  if (!discovery?.baseUrl || !discovery?.statusPath) throw new Error("Verified baseUrl and statusPath are required.");
+  if (!Array.isArray(discovery?.allowedReadOnlyActions) || discovery.allowedReadOnlyActions.length === 0) throw new Error("At least one source-confirmed read-only action is required.");
+
+  const adapters = getRuntimeAdapters();
+  const adapter = {
+    id,
+    baseUrl: discovery.baseUrl,
+    statusPath: discovery.statusPath,
+    healthPath: discovery.healthPath || discovery.statusPath,
+    allowedReadOnlyActions: discovery.allowedReadOnlyActions,
+    auth: discovery.auth || null,
+    sourceEvidence: discovery.sourceEvidence,
+    verificationEvidence: discovery.verificationEvidence,
+    enabled: true,
+    configured_at: new Date().toISOString(),
+  };
+  adapters[id] = adapter;
+  writeJSON(ADAPTER_KEY, adapters);
+  return adapter;
+}
+
+export function blockRuntimeAdapter(id, reason = "blocked_no_runtime_interface") {
+  const adapters = getRuntimeAdapters();
+  adapters[id] = { id, enabled: false, state: reason, blocked_at: new Date().toISOString() };
+  writeJSON(ADAPTER_KEY, adapters);
+  return adapters[id];
+}
+
+function buildHeaders(adapter, correlationId) {
+  const headers = {
+    Accept: "application/json",
+    "X-AVA-Correlation-ID": correlationId,
+  };
+  if (adapter.auth?.type === "bearer" && adapter.auth?.token) headers.Authorization = `Bearer ${adapter.auth.token}`;
+  if (adapter.auth?.type === "header" && adapter.auth?.name && adapter.auth?.value) headers[adapter.auth.name] = adapter.auth.value;
+  return headers;
+}
+
+export async function readRuntimeStatus(id, addProof) {
+  const adapter = getRuntimeAdapters()[id];
   const component = SYSTEM_COMPONENTS.find(x => x.id === id);
-  if (!adapter) return { ok: false, id, state: "missing-adapter", verified: false };
-  if (!adapter.enabled) return { ok: false, id, state: "disabled", verified: false };
-  if (!adapter.baseUrl) return { ok: false, id, state: "unconfigured", verified: false };
+  const correlationId = newCorrelationId();
+  const startedAt = new Date().toISOString();
+
+  if (!adapter?.enabled || !adapter?.baseUrl || !adapter?.statusPath) {
+    const failure = { id, correlationId, started_at: startedAt, state: adapter?.state || "blocked_no_runtime_interface", preserved: true };
+    preserveFailure(failure);
+    addProof?.("RUNTIME_BLOCK", `AVA blocked read-only status request for ${component?.name || id}`, failure);
+    return { configured: false, live: false, tested: false, verified: false, ...failure };
+  }
 
   try {
-    const response = await fetch(`${adapter.baseUrl}${adapter.healthPath || "/health"}`, {
+    const url = `${adapter.baseUrl}${adapter.statusPath}`;
+    const response = await fetch(url, {
       method: "GET",
-      headers: { Accept: "application/json" },
+      headers: buildHeaders(adapter, correlationId),
+      cache: "no-store",
       signal: timeoutSignal(),
     });
     const text = await response.text();
     let data = null;
-    try { data = text ? JSON.parse(text) : null; } catch { data = { raw: text.slice(0, 500) }; }
-    return {
-      ok: response.ok,
+    try { data = text ? JSON.parse(text) : null; } catch { data = { raw: text.slice(0, 2000) }; }
+
+    if (!response.ok) {
+      const failure = { id, correlationId, url, status: response.status, body: data, state: `http_${response.status}`, preserved: true, completed_at: new Date().toISOString() };
+      preserveFailure(failure);
+      addProof?.("RUNTIME_FAILURE", `AVA read-only status failed for ${component?.name || id}`, failure);
+      return { configured: true, live: true, tested: true, verified: false, ...failure };
+    }
+
+    const evidence = {
       id,
-      name: component?.name || id,
-      state: response.ok ? "verified-live" : `http-${response.status}`,
-      verified: response.ok,
+      correlationId,
+      url,
       status: response.status,
-      data,
-      checked_at: new Date().toISOString(),
-    };
-  } catch (error) {
-    return {
-      ok: false,
-      id,
-      name: component?.name || id,
-      state: "unreachable",
-      verified: false,
-      error: String(error?.message || error),
-      checked_at: new Date().toISOString(),
-    };
-  }
-}
-
-export async function executeRuntimeCommand(id, command, addProof) {
-  const adapter = read()[id];
-  const component = SYSTEM_COMPONENTS.find(x => x.id === id);
-  if (!adapter?.enabled || !adapter?.baseUrl) {
-    const result = { ok: false, executed: false, verified: false, id, state: "adapter-not-enabled" };
-    addProof?.("RUNTIME_BLOCK", `AVA blocked ${component?.name || id} command: runtime adapter not enabled`, { command, ...result });
-    return result;
-  }
-
-  const health = await checkRuntimeAdapter(id);
-  if (!health.verified) {
-    const result = { ok: false, executed: false, verified: false, id, state: "health-verification-failed", health };
-    addProof?.("RUNTIME_BLOCK", `AVA blocked ${component?.name || id} command: health verification failed`, { command, ...result });
-    return result;
-  }
-
-  try {
-    const response = await fetch(`${adapter.baseUrl}${adapter.commandPath || "/api/ava/command"}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ command, source: "AVA Digital Organism Room", issued_at: new Date().toISOString() }),
-      signal: timeoutSignal(10000),
-    });
-    const text = await response.text();
-    let data = null;
-    try { data = text ? JSON.parse(text) : null; } catch { data = { raw: text.slice(0, 1000) }; }
-    const result = {
-      ok: response.ok,
-      executed: response.ok,
-      verified: response.ok,
-      id,
-      status: response.status,
-      state: response.ok ? "executed-verified" : `http-${response.status}`,
-      data,
+      response: data,
+      sourceEvidence: adapter.sourceEvidence,
+      verificationEvidence: adapter.verificationEvidence,
       completed_at: new Date().toISOString(),
     };
-    addProof?.(response.ok ? "RUNTIME_EXECUTION" : "RUNTIME_FAILURE", `AVA ${response.ok ? "executed" : "failed"} ${component?.name || id} command`, { command, ...result });
-    return result;
+    addProof?.("RUNTIME_READ_VERIFIED", `AVA verified read-only runtime status for ${component?.name || id}`, evidence);
+    return { configured: true, live: true, tested: true, verified: true, state: "verified_read_only", ...evidence };
   } catch (error) {
-    const result = { ok: false, executed: false, verified: false, id, state: "execution-error", error: String(error?.message || error) };
-    addProof?.("RUNTIME_FAILURE", `AVA runtime command failed for ${component?.name || id}`, { command, ...result });
-    return result;
+    const failure = { id, correlationId, state: "request_failed", error: String(error?.message || error), preserved: true, completed_at: new Date().toISOString() };
+    preserveFailure(failure);
+    addProof?.("RUNTIME_FAILURE", `AVA read-only status request failed for ${component?.name || id}`, failure);
+    return { configured: true, live: false, tested: true, verified: false, ...failure };
   }
 }
 
-export async function sweepRuntimeAdapters(addProof) {
-  const adapters = read();
-  const ids = Object.keys(adapters);
-  const results = await Promise.all(ids.map(checkRuntimeAdapter));
-  addProof?.("RUNTIME_SWEEP", "AVA completed runtime-adapter verification sweep", {
-    verified: results.filter(x => x.verified).map(x => x.id),
-    unavailable: results.filter(x => !x.verified).map(x => ({ id: x.id, state: x.state })),
+export async function independentVerifyRuntimeStatus(id, priorResult, addProof) {
+  if (!priorResult?.verified) return { configured: !!priorResult?.configured, live: !!priorResult?.live, tested: !!priorResult?.tested, verified: false, state: "prior_request_not_verified" };
+  const second = await readRuntimeStatus(id, addProof);
+  const verified = second.verified && second.correlationId !== priorResult.correlationId;
+  const result = { ...second, verified, independent_verification: verified };
+  addProof?.(verified ? "RUNTIME_INDEPENDENT_VERIFY" : "RUNTIME_INDEPENDENT_VERIFY_FAILED", `Independent status verification for ${id}`, {
+    firstCorrelationId: priorResult.correlationId,
+    secondCorrelationId: second.correlationId,
+    verified,
   });
-  return results;
+  return result;
 }
