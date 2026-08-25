@@ -23,13 +23,14 @@ export default function AVAControlRoom() {
   const addLocalProof = (type, summary, data = {}) => { const proof = addProof(type, summary, data); setProofs(getProofs()); return proof; };
   const changeMode = (next) => { setMode(next); setLocalMode(next); addLocalProof("MODE", `AVA mode changed to ${next}`); };
   const healthSummary = () => {
-    const registered = Object.values(health).filter(item => item.status === "registered").length;
-    const pending = Object.values(health).filter(item => item.status === "pending-access").length;
-    return `AVA system registry: ${SYSTEM_COMPONENTS.length} components. Last local sweep shows ${registered} registered and ${pending} pending-access. Runtime execution is only claimed when a configured adapter proves it.`;
+    const rows = Object.values(health);
+    const verified = rows.filter(item => item.configured && item.live && item.tested && item.verified).length;
+    const blocked = rows.filter(item => String(item.status || "").startsWith("blocked_")).length;
+    return `AVA system inventory: ${SYSTEM_COMPONENTS.length} components. ${verified} have configured+live+tested+verified runtime status; ${blocked} are blocked. No system is promoted from source declarations alone.`;
   };
   const sweep = () => {
     runSystemHealthSweep(addLocalProof).then(next => setHealth(next));
-    return "AVA health sweep started locally. Registry state will be proof-logged; external runtimes are not claimed live without adapters.";
+    return "AVA is running real read-only runtime verification. OASIS must answer two independent HTTP requests before it can turn verified; all other systems remain blocked without a discovered runtime interface.";
   };
   const route = (command) => routeSystemCommand(command, addLocalProof);
   const helpers = useMemo(() => ({
@@ -49,8 +50,8 @@ export default function AVAControlRoom() {
       <div className="rounded-3xl border overflow-hidden" style={{ background: "linear-gradient(135deg,#080808,#111,#0e0c00)", borderColor: `${GOLD}32` }}>
         <div className="p-6 sm:p-8 space-y-4">
           <div className="flex items-center gap-3"><Crown className="w-8 h-8" style={{ color: GOLD }} /><div><p className="text-[10px] uppercase tracking-[0.35em]" style={{ color: `${GOLD}80` }}>Autonomous Virtual Authority</p><h1 className="text-3xl sm:text-5xl font-black font-cinzel gold-shimmer">AVA Digital Organism Room</h1></div></div>
-          <p className="text-sm text-muted-foreground max-w-3xl">Owner recognized: <span style={{ color: GOLD }}>{AVA_OWNER}</span>. AVA is local-first, honest, JGA-branded, and governed by the primary law: {AVA_LAW}.</p>
-          <div className="flex flex-wrap gap-2 items-center">{["business","system","compliance","systemb","personal","prompt","proof","quiet"].map(m => <button key={m} onClick={() => changeMode(m)} className="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase border" style={mode === m ? { background: GOLD, color: "#080808", borderColor: GOLD } : { color: `${GOLD}90`, borderColor: `${GOLD}24`, background: "rgba(0,0,0,0.35)" }}>{m}</button>)}<button onClick={sweep} className="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase border" style={{ color: GOLD, borderColor: `${GOLD}35`, background: "rgba(0,0,0,0.35)" }}>Health Sweep</button><AVAVoiceControls /></div>
+          <p className="text-sm text-muted-foreground max-w-3xl">Owner recognized: <span style={{ color: GOLD }}>{AVA_OWNER}</span>. AVA is local-first, proof-first, and governed by the primary law: {AVA_LAW}.</p>
+          <div className="flex flex-wrap gap-2 items-center">{["business","system","compliance","systemb","personal","prompt","proof","quiet"].map(m => <button key={m} onClick={() => changeMode(m)} className="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase border" style={mode === m ? { background: GOLD, color: "#080808", borderColor: GOLD } : { color: `${GOLD}90`, borderColor: `${GOLD}24`, background: "rgba(0,0,0,0.35)" }}>{m}</button>)}<button onClick={sweep} className="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase border" style={{ color: GOLD, borderColor: `${GOLD}35`, background: "rgba(0,0,0,0.35)" }}>Verify Runtimes</button><AVAVoiceControls /></div>
         </div>
       </div>
 
