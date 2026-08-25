@@ -1,0 +1,28 @@
+{
+  "kind": "ava_runtime_discovery_checkpoint",
+  "checkpoint_branch": "checkpoint/connect-ava-system-5d097627",
+  "checkpoint_head": "5d09762751730beaaf3992fd3dd4ceda7cf383ea",
+  "prechange_blobs": {
+    "src/lib/systemRegistry.js": "a2f822b206d291c93fb09c05b94edd261d2957b8",
+    "src/lib/runtimeAdapters.js": "41a5df42215abcd02d12db8a3161e012dd22e374"
+  },
+  "probe_evidence_sha256": "1cf181fb0d743728473dacbe458c417d25d264aa7fd6594e68ebee5effc1fccc",
+  "active_listener_probe": {
+    "8770": {"listener": false, "http_request": "connection_failed"},
+    "8771": {"listener": false, "http_request": "connection_failed"},
+    "8772": {"listener": false, "http_request": "connection_failed"},
+    "8780": {"listener": false, "http_request": "connection_failed"}
+  },
+  "source_discovery": {
+    "oasis": {
+      "source_file": "jgaos2026-gif/oasis:runtime/Start-OASISControlRoom.ps1",
+      "source_blob_sha": "a791e4f44b828a2aa9400123728fff7286ff7821",
+      "listener": "http://127.0.0.1:7888/",
+      "read_only_routes": ["GET /api/status", "GET /api/supabase/status"],
+      "write_auth": "X-OASIS-Token generated at listener startup",
+      "write_routes": ["POST /api/supabase/push", "POST /api/patrol", "POST /api/quickscan", "POST /api/checkpoint"],
+      "phoenix": "HTTP route explicitly denied; elevated oasisctl owner confirmation required"
+    }
+  },
+  "decision": "No adapter enabled without a successful real listener and route verification request."
+}
