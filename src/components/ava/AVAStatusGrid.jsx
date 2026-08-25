@@ -1,45 +1,38 @@
 import React from "react";
-import { Shield, Brain, Scale, RefreshCcw, Box, Users, Mic, WifiOff, Network } from "lucide-react";
+import { Network } from "lucide-react";
 import { SYSTEM_COMPONENTS } from "@/lib/systemRegistry";
 
-const GOLD = "#C9A84C";
-const LEGACY_ITEMS = [
-  ["AVA", "Local shell active", Brain, "#4ade80"],
-  ["OASIS", "Room-door model mapped", Shield, GOLD],
-  ["SB-712", "Verification law loaded", Shield, "#60a5fa"],
-  ["Phoenix", "Recovery hooks local", RefreshCcw, "#a78bfa"],
-  ["Clip Brick", "Isolation lane ready", Box, "#fb923c"],
-  ["System B", "Contractor rules loaded", Users, "#f472b6"],
-  ["Compliance", "State-silo doctrine active", Scale, "#4ade80"],
-  ["Voice", "Visible launch only", Mic, GOLD],
-  ["Adapters", "Offline stubs only", WifiOff, "#94a3b8"],
-];
+const COLORS = {
+  verified_runtime: "#4ade80",
+  local_ui: "#60a5fa",
+  blocked_listener_unverified: "#f59e0b",
+  blocked_no_runtime_interface: "#ef4444",
+};
 
 export default function AVAStatusGrid({ health = {} }) {
-  const registryItems = SYSTEM_COMPONENTS.map((component) => {
-    const live = health[component.id];
-    const state = live?.status || component.status;
-    const detail = live?.note || component.role;
-    return [
-      component.name,
-      `${state} · ${detail}`,
-      Network,
-      state === "registered" || state === "connected" ? "#4ade80" : "#f59e0b",
-    ];
+  const items = SYSTEM_COMPONENTS.map((component) => {
+    const observed = health[component.id];
+    const state = observed?.status || component.status;
+    return {
+      name: component.name,
+      status: state,
+      detail: component.role,
+      color: COLORS[state] || "#94a3b8",
+    };
   });
-  const items = [...registryItems, ...LEGACY_ITEMS];
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-      {items.map(([name, status, Icon, color]) => (
-        <div key={`${name}-${status}`} className="rounded-xl border p-4" style={{ background: "rgba(0,0,0,0.45)", borderColor: `${color}28` }}>
+      {items.map(({ name, status, detail, color }) => (
+        <div key={name} className="rounded-xl border p-4" style={{ background: "rgba(0,0,0,0.45)", borderColor: `${color}28` }}>
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: `${color}12`, border: `1px solid ${color}30` }}>
-              <Icon className="w-4 h-4" style={{ color }} />
+              <Network className="w-4 h-4" style={{ color }} />
             </div>
             <div>
               <div className="text-xs font-black" style={{ color }}>{name}</div>
               <div className="text-[10px] text-muted-foreground">{status}</div>
+              <div className="text-[10px] text-muted-foreground mt-1">{detail}</div>
             </div>
           </div>
         </div>
