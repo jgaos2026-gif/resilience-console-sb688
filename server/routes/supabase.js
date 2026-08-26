@@ -48,6 +48,7 @@ router.get('/http-test-readiness', requireAuth, requireRole('admin', 'operator')
       actorId: req.user.id,
       actorRole: req.user.role,
       liveWrite: false,
+      status,
     });
 
     const ready = Boolean(status.verified && simulations.passed);

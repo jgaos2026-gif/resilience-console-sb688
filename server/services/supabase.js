@@ -139,9 +139,9 @@ export async function pushSupabaseEvent({ eventType, actorId, actorRole, source,
   };
 }
 
-export async function runSupabaseFieldSimulations({ actorId, actorRole, liveWrite = false }) {
+export async function runSupabaseFieldSimulations({ actorId, actorRole, liveWrite = false, status: initialStatus }) {
   const results = [];
-  const status = await getSupabaseStatus();
+  const status = initialStatus || await getSupabaseStatus();
 
   const oversizedPayload = { chunk: 'x'.repeat(MAX_DATA_BYTES + 1) };
   results.push({
