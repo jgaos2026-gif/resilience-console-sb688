@@ -1,0 +1,13 @@
+{"ts":"2026-08-26T08:38:01.456Z","action":"admin_password_set","actorId":"system","source":"env"}
+{"ts":"2026-08-26T08:38:13.293Z","action":"login_success","actorId":"admin","ip":"::ffff:127.0.0.1","role":"admin"}
+{"ts":"2026-08-26T08:38:13.296Z","action":"http","actorId":"anonymous","method":"POST","path":"/login","status":200,"ms":329,"ip":"::ffff:127.0.0.1"}
+{"ts":"2026-08-26T08:38:13.299Z","action":"http","actorId":"anonymous","method":"GET","path":"/status","status":401,"ms":1,"ip":"::ffff:127.0.0.1"}
+{"ts":"2026-08-26T08:38:18.410Z","action":"login_success","actorId":"admin","ip":"::ffff:127.0.0.1","role":"admin"}
+{"ts":"2026-08-26T08:38:18.411Z","action":"http","actorId":"anonymous","method":"POST","path":"/login","status":200,"ms":319,"ip":"::ffff:127.0.0.1"}
+{"ts":"2026-08-26T08:38:18.413Z","action":"http","actorId":"anonymous","method":"GET","path":"/status","status":401,"ms":1,"ip":"::ffff:127.0.0.1"}
+{"ts":"2026-08-26T08:38:23.864Z","action":"login_success","actorId":"admin","ip":"::ffff:127.0.0.1","role":"admin"}
+{"ts":"2026-08-26T08:38:23.865Z","action":"http","actorId":"anonymous","method":"POST","path":"/login","status":200,"ms":321,"ip":"::ffff:127.0.0.1"}
+{"ts":"2026-08-26T08:38:23.867Z","action":"supabase_status_checked","actorId":1,"configured":false,"verified":false}
+{"ts":"2026-08-26T08:38:23.868Z","action":"http","actorId":1,"method":"GET","path":"/status","status":200,"ms":2,"ip":"::ffff:127.0.0.1"}
+{"ts":"2026-08-26T08:38:23.871Z","action":"server_error","actorId":1,"message":"Supabase backend is not configured.","path":"/api/supabase/push"}
+{"ts":"2026-08-26T08:38:23.871Z","action":"http","actorId":1,"method":"POST","path":"/api/supabase/push","status":503,"ms":2,"ip":"::ffff:127.0.0.1"}

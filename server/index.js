@@ -12,8 +12,6 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 import { initDb, getDb } from './db/database.js';
 import { config } from './config.js';
@@ -29,8 +27,6 @@ import proofRoutes      from './routes/proof.js';
 import reportsRoutes    from './routes/reports.js';
 import recoveryRoutes   from './routes/recovery.js';
 import supabaseRoutes   from './routes/supabase.js';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT      = config.port;
 const DB_PATH   = config.dbPath;
 const ORIGIN    = config.frontendOrigin;
@@ -100,7 +96,12 @@ app.use((req, res) => res.status(404).json({ error: 'Not found' }));
 app.use((err, req, res, _next) => {
   console.error('[server error]', err);
   writeAudit('server_error', req.user?.id || 'anonymous', { message: err.message, path: req.path });
-  res.status(err.statusCode || 500).json({ error: err.message || 'Internal server error' });
+  const statusCode = err.statusCode || 500;
+  const isExposed = statusCode < 500 || statusCode === 503;
+  res.status(statusCode).json({
+    error: isExposed ? (err.message || 'Request failed') : 'Internal server error',
+    code: err.code || undefined,
+  });
 });
 
 // ── Start ─────────────────────────────────────────────────────────────────────
