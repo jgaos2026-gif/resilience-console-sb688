@@ -50,7 +50,9 @@ export function addProof(type, summary, data = {}) {
 export function generateAVAReply(input, helpers) {
   const text = input.toLowerCase().trim();
   if (text.includes("who are you")) return "I am AVA — Autonomous Virtual Authority for JGA Enterprise OS. Jay / John Arenz is owner and final authority. I operate local-first, proof-first, and I will not fake live systems.";
-  if (text === "status" || text.includes("ava status")) return "AVA local shell is unleashed. OASIS, SB-712, Phoenix, Clip Brick, System B, compliance, voice, sync, and adapters are represented as honest local control modules. Live integrations remain stubs until configured and tested.";
+  if (text === "status" || text.includes("ava status")) return helpers.systemHealth ? helpers.systemHealth() : "AVA local shell is active. Live integration state is not available in this session.";
+  if (text.startsWith("system ") && helpers.routeSystemCommand) return helpers.routeSystemCommand(input.slice(7)).message;
+  if ((text.includes("health") || text.includes("sweep")) && helpers.runSystemHealthSweep) return helpers.runSystemHealthSweep();
   if (text.startsWith("remember ")) { const memory = helpers.addMemory(input.slice(9), "owner-chat"); return `Saved locally for the owner. Memory hash: ${memory.hash}`; }
   if (text.startsWith("find ")) { const q = input.slice(5).toLowerCase(); const hits = helpers.getMemories().filter(m => m.text.toLowerCase().includes(q)).slice(0, 5); return hits.length ? `Found ${hits.length} local memory item(s):\n${hits.map(h => `- ${h.text}`).join("\n")}` : "I did not find that in local memory yet."; }
   if (text.startsWith("mode ")) { const mode = text.replace("mode ", "").trim(); helpers.setMode(mode); return `Mode set to ${mode}. I will keep responses aligned with that operating lane.`; }
@@ -58,7 +60,7 @@ export function generateAVAReply(input, helpers) {
   if (text.includes("final") || text.includes("delivery")) return "Release gate: clean final files stay locked until the remaining 65% final payment is cleared through JGA-controlled payment records.";
   if (text.includes("contractor") || text.includes("system b")) return "System B rule: contractors cannot bind JGA, change pricing, promise refunds, handle money, receive cash, or deliver final files. Commission stays proof-gated.";
   if (text.includes("compliance") || text.includes("tax")) return "Compliance rule: records must be state-tagged, siloed, retained, and audit-ready. I will not delete compliance records inside retention windows.";
-  if (text.includes("phoenix")) return "Phoenix is the recovery lane: checkpoint first, restore proof second, no destructive restore without backup.";
+  if (text.includes("phoenix")) return helpers.routeSystemCommand ? helpers.routeSystemCommand("system phoenix recovery").message : "Phoenix is the recovery lane: checkpoint first, restore proof second, no destructive restore without backup.";
   if (text.includes("clip") || text.includes("unknown")) return "Unknown data belongs in Clip Brick isolation first. Nothing unverified touches the Spine.";
   helpers.addProof("FOLLOW_UP", "AVA did not know the answer and logged a follow-up", { input });
   return "I do not know that yet, Owner. I logged it as a local follow-up instead of guessing.";
