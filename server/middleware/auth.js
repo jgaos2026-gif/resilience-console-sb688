@@ -3,17 +3,10 @@
  */
 
 import jwt from 'jsonwebtoken';
+import { config } from '../config.js';
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
-const IS_DEV = process.env.NODE_ENV !== 'production';
-
-if (!JWT_SECRET) {
-  if (!IS_DEV) {
-    console.error('[auth] FATAL: JWT_SECRET not set in production. Refusing to start.');
-    process.exit(1);
-  }
-  console.warn('[auth] WARNING: JWT_SECRET not set. Dev-mode auth bypass active. DO NOT use in production.');
+if (!config.jwtSecret && config.allowDevAuthBypass) {
+  console.warn('[auth] WARNING: explicit development auth bypass is active. DO NOT use in production.');
 }
 
 /**
@@ -22,8 +15,8 @@ if (!JWT_SECRET) {
  * with a synthetic dev user. In production, JWT_SECRET absence causes process exit at startup.
  */
 export function requireAuth(req, res, next) {
-  if (!JWT_SECRET && IS_DEV) {
-    req.user = { id: 'dev', role: 'admin' };
+  if (!config.jwtSecret && config.allowDevAuthBypass) {
+    req.user = { id: 'dev', username: 'dev', role: 'admin' };
     return next();
   }
 
@@ -35,7 +28,7 @@ export function requireAuth(req, res, next) {
   }
 
   try {
-    const payload = jwt.verify(token, JWT_SECRET);
+    const payload = jwt.verify(token, config.jwtSecret);
     req.user = payload;
     next();
   } catch (err) {
@@ -63,6 +56,6 @@ export function requireRole(...roles) {
  * Sign a JWT token for a user payload.
  */
 export function signToken(payload, expiresIn = '8h') {
-  if (!JWT_SECRET) return 'dev-token';
-  return jwt.sign(payload, JWT_SECRET, { expiresIn });
+  if (!config.jwtSecret) return 'dev-token';
+  return jwt.sign(payload, config.jwtSecret, { expiresIn });
 }

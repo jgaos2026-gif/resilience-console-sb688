@@ -16,6 +16,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import { initDb, getDb } from './db/database.js';
+import { config } from './config.js';
 import { auditMiddleware, writeAudit } from './middleware/audit.js';
 import { apiLimiter } from './middleware/rateLimit.js';
 
@@ -27,17 +28,18 @@ import verifyRoutes     from './routes/verification.js';
 import proofRoutes      from './routes/proof.js';
 import reportsRoutes    from './routes/reports.js';
 import recoveryRoutes   from './routes/recovery.js';
+import supabaseRoutes   from './routes/supabase.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PORT      = process.env.PORT || 3001;
-const DB_PATH   = process.env.DB_PATH || path.resolve(__dirname, '../data/resilience.db');
-const ORIGIN    = process.env.FRONTEND_ORIGIN || 'http://localhost:5173';
+const PORT      = config.port;
+const DB_PATH   = config.dbPath;
+const ORIGIN    = config.frontendOrigin;
 
 // ── Initialize DB ─────────────────────────────────────────────────────────────
 initDb(DB_PATH);
 
 // ── Set admin password on first boot if provided ──────────────────────────────
-const adminPass = process.env.ADMIN_PASSWORD;
+const adminPass = config.adminPassword;
 if (adminPass) {
   const db   = getDb();
   const user = db.prepare("SELECT * FROM users WHERE username = 'admin'").get();
@@ -51,6 +53,8 @@ if (adminPass) {
 
 // ── Express app ───────────────────────────────────────────────────────────────
 const app = express();
+app.disable('x-powered-by');
+app.set('trust proxy', false);
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -65,13 +69,16 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: ORIGIN,
+  origin(origin, callback) {
+    if (!origin || origin === ORIGIN) return callback(null, true);
+    return callback(null, false);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-app.use(express.json({ limit: '256kb' }));
+app.use(express.json({ limit: '128kb', strict: true, type: 'application/json' }));
 app.use(apiLimiter);
 app.use(auditMiddleware);
 
@@ -84,6 +91,7 @@ app.use('/api/verification', verifyRoutes);
 app.use('/api/proof',        proofRoutes);
 app.use('/api/reports',      reportsRoutes);
 app.use('/api/recovery',     recoveryRoutes);
+app.use('/api/supabase',     supabaseRoutes);
 
 // ── 404 + error handlers ──────────────────────────────────────────────────────
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
@@ -92,7 +100,7 @@ app.use((req, res) => res.status(404).json({ error: 'Not found' }));
 app.use((err, req, res, _next) => {
   console.error('[server error]', err);
   writeAudit('server_error', req.user?.id || 'anonymous', { message: err.message, path: req.path });
-  res.status(500).json({ error: 'Internal server error' });
+  res.status(err.statusCode || 500).json({ error: err.message || 'Internal server error' });
 });
 
 // ── Start ─────────────────────────────────────────────────────────────────────
@@ -100,6 +108,7 @@ app.listen(PORT, () => {
   console.log(`[SB688] Resilience Console backend — port ${PORT}`);
   console.log(`[SB688] DB: ${DB_PATH}`);
   console.log(`[SB688] CORS origin: ${ORIGIN}`);
+  console.log(`[SB688] Supabase: ${config.supabase.enabled ? `${config.supabase.schema}.${config.supabase.eventsTable}` : 'disabled'}`);
   console.log(`[SB688] Braided topology engine: B₇ (7 strands, SHA-256, Alexander invariant)`);
 });
 

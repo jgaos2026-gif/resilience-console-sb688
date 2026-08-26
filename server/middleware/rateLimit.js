@@ -30,3 +30,12 @@ export const proofLimiter = rateLimit({
   legacyHeaders: false,
   message: { error: 'Proof rate limit exceeded. Max 20 per minute.' },
 });
+
+/** Tight limiter for upstream sync operations */
+export const supabaseWriteLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Supabase sync rate limit exceeded. Max 30 per minute.' },
+});
