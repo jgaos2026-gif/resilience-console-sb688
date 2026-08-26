@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, AlertTriangle, Shield, Database, Archive, Ghost, Zap, Clock, FileX, ChevronDown, ChevronUp } from "lucide-react";
+import { CheckCircle2, AlertTriangle, Shield, Database, Archive, Zap, ChevronDown, ChevronUp } from "lucide-react";
 
 const GOLD = "#C9A84C";
 const DIAMOND = "#a5f3fc"; // cyan-200

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Shield, CheckCircle2, AlertTriangle, Activity, Lock, Zap, RotateCcw } from "lucide-react";
+import { Activity, Lock, RotateCcw } from "lucide-react";
 
 // ── Node layout: 5 rows × offset cols, Brick Stitch 1/2 geometry ─────────────
 const COLS = 7;

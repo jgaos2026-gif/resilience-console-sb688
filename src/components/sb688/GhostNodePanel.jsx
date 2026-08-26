@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Eye, AlertTriangle, CheckCircle2, Radio, Shield, Clock } from "lucide-react";
+import { Eye, AlertTriangle, CheckCircle2, Radio } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 

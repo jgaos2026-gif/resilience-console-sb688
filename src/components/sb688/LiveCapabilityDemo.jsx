@@ -2,8 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Play, RotateCcw, Eye, Shield, Zap, CheckCircle2, XCircle,
-  AlertTriangle, Radio, Lock, ArrowRight, Activity, Clock
+  Play, RotateCcw, Eye, Shield, CheckCircle2, XCircle, Radio, Activity, Clock
 } from "lucide-react";
 
 // ─── DEMO SCENARIOS ───────────────────────────────────────────────────────────

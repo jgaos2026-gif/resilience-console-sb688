@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { CrownIcon } from "@/components/sb688/WarriorCrest";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronDown, ChevronUp, FileText, GitBranch, Shield, Zap, Lock, Cpu, Activity, CheckCircle2 } from "lucide-react";

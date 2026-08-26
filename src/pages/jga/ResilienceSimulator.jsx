@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import BraidCanvas from "@/components/jga/BraidCanvas";
 import ScenarioPanel from "@/components/jga/ScenarioPanel";
 import SimLog from "@/components/jga/SimLog";

@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { XOctagon, RotateCcw, CheckCircle2, AlertTriangle, Shield, Play, Clock, GitBranch } from "lucide-react";
+import { XOctagon, RotateCcw, CheckCircle2, AlertTriangle, Shield, Play, GitBranch } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { INDUSTRIES } from "@/lib/sb688Engine";

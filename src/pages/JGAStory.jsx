@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 import { Badge } from "@/components/ui/badge";
 import {
-  ChevronDown, ChevronUp, Music, Globe, Zap, Star,
+  ChevronDown, ChevronUp, Zap, Star,
   BookOpen, Calendar, Heart, Hammer, AlertTriangle, Cpu
 } from "lucide-react";
 import { Link } from "react-router-dom";

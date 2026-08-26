@@ -1,5 +1,5 @@
 import React from "react";
-import { User, Shield, Layers, Zap, Brain, AlertTriangle, Award, GitBranch } from "lucide-react";
+import { Shield, Layers, Zap, Brain, AlertTriangle, Award } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 

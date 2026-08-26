@@ -2,8 +2,8 @@ import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Layers, RefreshCw, CheckCircle2, AlertTriangle, Lock, Shield,
-  Camera, RotateCcw, Zap, GitBranch, Archive, Wrench
+  Layers, RefreshCw, CheckCircle2, AlertTriangle,
+  Camera, Zap, GitBranch, Wrench
 } from "lucide-react";
 import moment from "moment";
 

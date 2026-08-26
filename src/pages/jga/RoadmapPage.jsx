@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Map, CheckCircle2, Clock, Circle, Star } from "lucide-react";
+import { CheckCircle2, Clock, Circle, Star } from "lucide-react";
 
 const GOLD = "#C9A84C";
 const PHASES = [

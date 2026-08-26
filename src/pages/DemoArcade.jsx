@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import ArcadeHero from "@/components/arcade/ArcadeHero";
 import SystemMap from "@/components/arcade/SystemMap";

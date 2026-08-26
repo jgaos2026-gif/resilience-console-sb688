@@ -1,90 +1,81 @@
+/**
+ * NodeMesh.jsx — Wired to real /api/nodes
+ */
 import React, { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
-import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
-import { Activity, Search, Filter } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import NodeVerificationEngine from "@/components/jga/NodeVerificationEngine";
-import IndustryApplications from "@/components/jga/IndustryApplications";
+import { Search } from "lucide-react";
+import api from "@/api/apiClient";
 
 const GOLD = "#C9A84C";
 const STATUS_COLORS = {
-  active: { bg: "rgba(34,197,94,0.1)", color: "#4ade80", border: "rgba(34,197,94,0.3)" },
-  warning: { bg: "rgba(251,191,36,0.1)", color: "#fbbf24", border: "rgba(251,191,36,0.3)" },
-  quarantined: { bg: "rgba(239,68,68,0.1)", color: "#f87171", border: "rgba(239,68,68,0.3)" },
-  sleeping: { bg: "rgba(148,163,184,0.1)", color: "#94a3b8", border: "rgba(148,163,184,0.3)" },
-  repairing: { bg: "rgba(167,139,250,0.1)", color: "#a78bfa", border: "rgba(167,139,250,0.3)" },
+  active:      { bg: "rgba(34,197,94,0.1)",   color: "#4ade80", border: "rgba(34,197,94,0.3)" },
+  warning:     { bg: "rgba(251,191,36,0.1)",  color: "#fbbf24", border: "rgba(251,191,36,0.3)" },
+  quarantined: { bg: "rgba(239,68,68,0.1)",   color: "#f87171", border: "rgba(239,68,68,0.3)" },
+  critical:    { bg: "rgba(239,68,68,0.1)",   color: "#f87171", border: "rgba(239,68,68,0.3)" },
+  sleeping:    { bg: "rgba(148,163,184,0.1)", color: "#94a3b8", border: "rgba(148,163,184,0.3)" },
+  repairing:   { bg: "rgba(167,139,250,0.1)", color: "#a78bfa", border: "rgba(167,139,250,0.3)" },
 };
-const CATEGORIES = ["all", "security", "business", "memory", "recovery", "compliance", "demo"];
 
 export default function NodeMesh() {
-  const [filter, setFilter] = useState("all");
+  const qc = useQueryClient();
   const [search, setSearch] = useState("");
+  const [catFilter, setCatFilter] = useState("all");
   const [pulse, setPulse] = useState(true);
 
-  const { data: nodes = [] } = useQuery({
+  const { data: nodes = [], isLoading } = useQuery({
     queryKey: ["nodes"],
-    queryFn: () => base44.entities.Node.list(),
+    queryFn:  () => api.get("/api/nodes"),
+    refetchInterval: 15000,
   });
 
-  // Heartbeat animation
   useEffect(() => {
     const t = setInterval(() => setPulse(p => !p), 1500);
     return () => clearInterval(t);
   }, []);
 
+  const appendMutation = useMutation({
+    mutationFn: ({ id }) => api.post(`/api/nodes/${id}/append`, { data: `HEARTBEAT:${Date.now()}` }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["nodes"] }),
+  });
+
+  const cats = ["all", ...new Set(nodes.map(n => n.category).filter(Boolean))];
   const filtered = nodes.filter(n => {
-    if (filter !== "all" && n.category !== filter) return false;
+    if (catFilter !== "all" && n.category !== catFilter) return false;
     if (search && !n.name.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
   return (
     <div className="p-4 sm:p-6 max-w-6xl mx-auto space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-xl font-bold font-cinzel" style={{ color: GOLD }}>Node Mesh</h1>
-          <p className="text-xs text-muted-foreground">{nodes.length} nodes · System heartbeat {pulse ? "●" : "○"}</p>
+          <h1 className="text-xl font-bold font-mono" style={{ color: GOLD }}>Node Mesh</h1>
+          <p className="text-xs text-muted-foreground">{nodes.length} nodes · Heartbeat {pulse ? "●" : "○"}</p>
         </div>
-        <Badge className="text-[10px] border font-bold flex items-center gap-1.5"
+        <Badge className="text-[10px] border font-bold font-mono flex items-center gap-1.5"
           style={{ background: "rgba(34,197,94,0.1)", color: "#4ade80", borderColor: "rgba(34,197,94,0.3)" }}>
           <span className={`w-2 h-2 rounded-full bg-green-400 ${pulse ? "animate-pulse" : ""}`} />
           MESH ACTIVE
         </Badge>
       </div>
 
-      {/* Verification Engine */}
-      <NodeVerificationEngine nodes={nodes} />
-
-      {/* Heartbeat Rhythm */}
-      <div className="rounded-xl border border-border p-4 flex items-center gap-3 overflow-hidden" style={{ background: "hsl(220,18%,7%)" }}>
-        <Activity className="w-5 h-5 flex-shrink-0" style={{ color: GOLD }} />
-        <div className="flex gap-1 flex-1 overflow-hidden">
-          {Array.from({ length: 40 }).map((_, i) => (
-            <div key={i} className="flex-shrink-0 w-1.5 rounded-full transition-all duration-700"
-              style={{
-                height: `${Math.sin((i + (pulse ? 5 : 0)) * 0.5) * 12 + 16}px`,
-                background: i % 5 === 0 ? GOLD : "rgba(201,168,76,0.3)",
-                opacity: pulse ? 1 : 0.5
-              }} />
-          ))}
-        </div>
-        <span className="text-[10px] font-mono text-muted-foreground flex-shrink-0">Heartbeat Rhythm</span>
-      </div>
-
       {/* Filters */}
       <div className="flex items-center gap-3 flex-wrap">
-        <div className="relative flex-1 min-w-[200px]">
+        <div className="relative flex-1 min-w-[180px]">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-          <Input placeholder="Search nodes..." value={search} onChange={e => setSearch(e.target.value)}
-            className="pl-9 h-9 text-xs bg-secondary border-border" />
+          <Input placeholder="Search nodes…" value={search} onChange={e => setSearch(e.target.value)}
+            className="pl-9 h-9 text-xs bg-secondary border-border font-mono" />
         </div>
         <div className="flex gap-1 flex-wrap">
-          {CATEGORIES.map(c => (
-            <button key={c} onClick={() => setFilter(c)}
-              className="px-3 py-1.5 rounded-md text-[10px] font-semibold uppercase tracking-wider transition-all"
-              style={filter === c ? { background: "rgba(201,168,76,0.15)", color: GOLD } : { color: "rgba(255,255,255,0.35)" }}>
+          {cats.map(c => (
+            <button key={c} onClick={() => setCatFilter(c)}
+              className="px-2.5 py-1 rounded-lg text-[10px] font-bold font-mono uppercase border transition-all"
+              style={catFilter === c
+                ? { background: "rgba(201,168,76,0.15)", color: GOLD, borderColor: "rgba(201,168,76,0.4)" }
+                : { background: "transparent", color: "rgba(232,217,176,0.4)", borderColor: "rgba(232,217,176,0.1)" }}>
               {c}
             </button>
           ))}
@@ -92,49 +83,53 @@ export default function NodeMesh() {
       </div>
 
       {/* Node Grid */}
+      {isLoading && <p className="text-xs text-muted-foreground font-mono">Loading live node data…</p>}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {filtered.map(node => {
-          const sc = STATUS_COLORS[node.status] || STATUS_COLORS.active;
+        {filtered.map(n => {
+          const sc = STATUS_COLORS[n.status] || STATUS_COLORS.sleeping;
           return (
-            <div key={node.id} className="rounded-xl border p-4 space-y-2.5 hover:border-primary/30 transition-all"
-              style={{ background: "hsl(220,18%,7%)", borderColor: "rgba(201,168,76,0.1)" }}>
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-foreground">{node.name}</h3>
-                <Badge className="text-[8px] border font-bold uppercase" style={{ background: sc.bg, color: sc.color, borderColor: sc.border }}>
-                  {node.status}
-                </Badge>
-              </div>
-              <p className="text-[10px] text-muted-foreground">{node.purpose}</p>
-              <div className="flex items-center justify-between text-[9px]">
-                <span className="text-muted-foreground">Trust: <span className="font-bold" style={{ color: node.trust_level >= 80 ? "#4ade80" : "#fbbf24" }}>{node.trust_level}%</span></span>
-                <span className="text-muted-foreground">{node.connected_module}</span>
-              </div>
-              {node.recent_log && (
-                <div className="text-[9px] font-mono px-2 py-1 rounded" style={{ background: "rgba(0,0,0,0.3)", color: "rgba(201,168,76,0.5)" }}>
-                  {node.recent_log}
+            <div key={n.id} className="rounded-xl border p-4 space-y-3"
+              style={{ background: "hsl(220,18%,7%)", borderColor: sc.border }}>
+              <div className="flex items-start justify-between gap-2">
+                <div className="space-y-0.5">
+                  <p className="text-xs font-bold font-mono">{n.name}</p>
+                  <p className="text-[10px] text-muted-foreground capitalize">{n.category}</p>
                 </div>
-              )}
-              <div className="flex items-center justify-between">
-                <Badge className="text-[8px] border" style={{ background: "rgba(201,168,76,0.06)", color: "rgba(201,168,76,0.5)", borderColor: "rgba(201,168,76,0.15)" }}>
-                  {node.node_type?.replace(/_/g, " ")}
+                <Badge className="text-[9px] font-mono border flex-shrink-0"
+                  style={{ background: sc.bg, color: sc.color, borderColor: sc.border }}>
+                  {n.status?.toUpperCase()}
                 </Badge>
-                <span className="flex items-center gap-1 text-[9px] text-muted-foreground">
-                  <span className={`w-1.5 h-1.5 rounded-full ${node.status === "active" ? "bg-green-400 animate-pulse" : "bg-yellow-400"}`} />
-                  {node.category}
-                </span>
               </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div className="rounded-lg border border-border/40 p-2 space-y-0.5" style={{ background: "hsl(220,20%,6%)" }}>
+                  <p className="text-[9px] text-muted-foreground uppercase tracking-widest">Blocks</p>
+                  <p className="text-sm font-bold font-mono" style={{ color: GOLD }}>{n.chainLength ?? "—"}</p>
+                </div>
+                <div className="rounded-lg border border-border/40 p-2 space-y-0.5" style={{ background: "hsl(220,20%,6%)" }}>
+                  <p className="text-[9px] text-muted-foreground uppercase tracking-widest">Integrity</p>
+                  <p className="text-sm font-bold font-mono" style={{ color: n.integrityPct >= 100 ? "#4ade80" : "#fbbf24" }}>
+                    {n.integrityPct != null ? `${n.integrityPct}%` : "—"}
+                  </p>
+                </div>
+              </div>
+
+              {n.invariant && (
+                <p className="text-[9px] font-mono text-muted-foreground">
+                  tr₀.₃={n.invariant.trace03?.toFixed(3)} · tr₀.₇={n.invariant.trace07?.toFixed(3)}
+                </p>
+              )}
+
+              <Button size="sm" disabled={appendMutation.isPending}
+                className="w-full text-[10px] h-7 font-mono"
+                style={{ background: "rgba(201,168,76,0.08)", color: GOLD, border: "1px solid rgba(201,168,76,0.2)" }}
+                onClick={() => appendMutation.mutate({ id: n.id })}>
+                ↯ Heartbeat
+              </Button>
             </div>
           );
         })}
       </div>
-
-      {filtered.length === 0 && (
-        <div className="text-center py-12 text-muted-foreground text-sm">
-          No nodes found. {nodes.length === 0 ? "Seed data to populate the mesh." : "Try adjusting filters."}
-        </div>
-      )}
-
-      <IndustryApplications />
     </div>
   );
 }

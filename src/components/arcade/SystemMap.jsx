@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { X, Shield, Eye, Layers, Cpu, Zap, Box, Lock, GitBranch, Infinity, Palette } from "lucide-react";
+import { X, Shield, Eye, Layers, Cpu, Zap, Box, Lock, GitBranch, Infinity } from "lucide-react";
 
 const GOLD = "#C9A84C";
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Activity, Zap, Brain, FlaskConical, Clock, TrendingUp, CheckCircle2, AlertTriangle, Lock, Cpu, Globe, HeartPulse, Layers } from "lucide-react";
+import { Shield, Brain, FlaskConical, TrendingUp, AlertTriangle, Lock, Cpu, Globe, HeartPulse, Layers } from "lucide-react";
 
 const GOLD = "#C9A84C";
 

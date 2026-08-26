@@ -1,7 +1,7 @@
 import React from "react";
 import { INDUSTRIES } from "@/lib/sb688Engine";
 import { Badge } from "@/components/ui/badge";
-import { CircleDot, AlertTriangle, XOctagon, CheckCircle2 } from "lucide-react";
+import { AlertTriangle, XOctagon, CheckCircle2 } from "lucide-react";
 
 const statusConfig = {
   healthy: { label: "Healthy", color: "bg-teal-500/20 text-teal-400 border-teal-500/30", icon: CheckCircle2 },

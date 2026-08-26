@@ -1,53 +1,38 @@
 import React, { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Shield, Layers, LayoutGrid, CheckSquare, Brain, Heart, Building2, Users, Wrench as HardHat, Archive, FileText, AlertTriangle, Map, Settings, Menu, X, Star, Gem, Zap, BarChart2, ClipboardList } from "lucide-react";
+import { useAuth } from "@/lib/AuthContext";
+import {
+  Shield, Layers, LayoutGrid, CheckSquare, Brain, Archive, FileText, AlertTriangle, Settings, Menu, X,
+  Activity, LogOut, RotateCcw
+} from "lucide-react";
 
 const NAV = [
-  { path: "/", label: "Demo Council", icon: Shield },
-  { path: "/executive-brief", label: "Executive Brief", icon: ClipboardList },
-  { path: "/demo-arcade", label: "🎮 Demo Arcade", icon: Zap },
-  { path: "/ava", label: "AVA Control Room", icon: Brain },
-  { path: "/system-spine", label: "System Spine", icon: Layers },
-  { path: "/node-mesh", label: "Node Mesh", icon: LayoutGrid },
-  { path: "/verification-gates", label: "Verification Gates", icon: CheckSquare },
-  { path: "/memory-braid", label: "Memory Braid", icon: Brain },
-  { path: "/self-healing", label: "Self-Healing Demo", icon: Heart },
-  { path: "/business-os", label: "JGA Business OS", icon: Building2 },
-  { path: "/client-portal", label: "Client Portal", icon: Users },
-  { path: "/contractor-portal", label: "Contractor Portal", icon: HardHat },
-  { path: "/proof-vault", label: "Proof Vault", icon: Archive },
-  { path: "/daily-reports", label: "Daily Reports", icon: FileText },
-  { path: "/risk-compliance", label: "Risk / Compliance", icon: AlertTriangle },
-  { path: "/roadmap", label: "Roadmap", icon: Map },
-  { path: "/jga-settings", label: "Settings", icon: Settings },
-  { path: "/jga-about", label: "About JGA", icon: Star },
-  { path: "/diamond-hunter", label: "Diamond Hunter Core", icon: Gem },
-  { path: "/resilience-sim", label: "Resilience Simulator", icon: Zap },
-  { path: "/deep-space-sim", label: "Deep Space Sim", icon: Star },
-  { path: "/brand-proof", label: "Brand Proof Assets", icon: Gem },
-  { path: "/industry-impact", label: "Industry Impact", icon: BarChart2 },
+  { path: "/",                    label: "Operations Center",   icon: Activity },
+  { path: "/system-spine",        label: "System Spine",        icon: Layers },
+  { path: "/node-mesh",           label: "Node Mesh",           icon: LayoutGrid },
+  { path: "/verification-gates",  label: "Verification Gates",  icon: CheckSquare },
+  { path: "/memory-braid",        label: "Memory Braid",        icon: Brain },
+  { path: "/self-healing",        label: "Self-Healing",        icon: RotateCcw },
+  { path: "/proof-vault",         label: "Proof Vault",         icon: Archive },
+  { path: "/daily-reports",       label: "Daily Reports",       icon: FileText },
+  { path: "/risk-compliance",     label: "Risk / Compliance",   icon: AlertTriangle },
+  { path: "/ava",                 label: "AVA Control Room",    icon: Brain },
+  { path: "/sb688",               label: "SB688 Console",       icon: Shield },
+  { path: "/jga-settings",        label: "Settings",            icon: Settings },
 ];
 
 const GOLD = "#C9A84C";
 
 export default function JGALayout() {
   const location = useLocation();
+  const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-foreground font-inter">
-      {/* Top Banner */}
-      <div className="warrior-divider" />
-      <div className="border-b border-border px-4 py-2 text-center" style={{ background: "hsl(220,22%,5%)" }}>
-        <span className="text-[10px] sm:text-xs tracking-widest uppercase font-bold" style={{ color: GOLD }}>
-          JGA Demo Council · Verification-First Business Automation &amp; Sovereign Runtime Architecture
-        </span>
-      </div>
-      <div className="warrior-divider" />
-
       {/* Mobile toggle */}
       <button
-        className="lg:hidden fixed top-20 left-3 z-50 p-2 rounded-lg bg-card border border-border shadow-lg"
+        className="lg:hidden fixed top-4 left-3 z-50 p-2 rounded-lg bg-card border border-border shadow-lg"
         onClick={() => setOpen(!open)}
       >
         {open ? <X className="w-5 h-5" style={{ color: GOLD }} /> : <Menu className="w-5 h-5" style={{ color: GOLD }} />}
@@ -56,71 +41,67 @@ export default function JGALayout() {
       <div className="flex">
         {/* Sidebar */}
         <aside
-          className={`fixed lg:sticky top-0 left-0 h-screen w-60 border-r border-border z-40 overflow-y-auto flex-shrink-0 transition-transform duration-200 ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
+          className={`fixed lg:sticky top-0 left-0 h-screen w-56 border-r border-border z-40 overflow-y-auto flex-shrink-0 transition-transform duration-200 ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
           style={{ background: "hsl(220,22%,5%)" }}
         >
-          <div className="p-4 border-b border-border space-y-2">
+          <div className="p-4 border-b border-border space-y-1">
             <div className="flex items-center gap-2">
-              <img src="https://media.base44.com/images/public/69d5af52688205fc104c687c/a27bf93c0_IMG_0843_Original_Original.jpeg" alt="JGA Logo" className="w-8 h-8 rounded object-cover flex-shrink-0" />
+              <Shield className="w-6 h-6 flex-shrink-0" style={{ color: GOLD }} />
               <div>
-                <h2 className="text-xs font-bold gold-shimmer" style={{ fontFamily: "'Cinzel', serif" }}>JGA Enterprises</h2>
-                <p className="text-[8px] text-muted-foreground">Jay's Graphic Arts</p>
+                <h2 className="text-xs font-bold font-mono" style={{ color: GOLD }}>SB688 CONSOLE</h2>
+                <p className="text-[8px] text-muted-foreground font-mono">Braided Topology Runtime</p>
               </div>
             </div>
-            <p className="text-[8px] text-muted-foreground">SB688 / SB689 / SB712 / Omega</p>
+            {user && (
+              <p className="text-[8px] text-muted-foreground font-mono truncate">
+                ● {user.username} ({user.role})
+              </p>
+            )}
           </div>
+
           <nav className="p-2 space-y-0.5">
             {NAV.map(item => {
-              const Icon = item.icon;
+              const Icon   = item.icon;
               const active = location.pathname === item.path;
               return (
                 <Link
                   key={item.path}
                   to={item.path}
                   onClick={() => setOpen(false)}
-                  className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${active ? "font-bold" : "hover:bg-secondary/50"}`}
-                  style={active ? { background: "rgba(201,168,76,0.12)", color: GOLD } : { color: "rgba(232,217,176,0.6)" }}
+                  className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all font-mono ${active ? "font-bold" : "hover:bg-secondary/50"}`}
+                  style={active
+                    ? { background: "rgba(201,168,76,0.12)", color: GOLD }
+                    : { color: "rgba(232,217,176,0.55)" }}
                 >
-                  <Icon className="w-4 h-4 flex-shrink-0" />
+                  <Icon className="w-3.5 h-3.5 flex-shrink-0" />
                   {item.label}
                 </Link>
               );
             })}
           </nav>
+
           <div className="p-3 mt-4 border-t border-border">
-            <Link to="/sb688" className="text-[9px] block text-muted-foreground hover:text-primary transition">
-              → Legacy SB688 Console
-            </Link>
+            <button
+              onClick={logout}
+              className="flex items-center gap-2 text-[10px] font-mono text-muted-foreground hover:text-red-400 transition-colors w-full"
+            >
+              <LogOut className="w-3 h-3" />
+              Sign out
+            </button>
           </div>
         </aside>
 
         {/* Main */}
         <main className="flex-1 min-h-screen">
           <Outlet />
-          {/* Footer */}
-          <footer className="border-t border-border mt-8" style={{ background: "hsl(220,20%,4%)" }}>
-            <div className="warrior-divider" />
-            <div className="max-w-6xl mx-auto px-6 py-4 text-center space-y-1">
-              <p className="text-[10px] text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-                Proof over promises. Every trusted state earns its mark. Features labeled SIMULATION or DEMO VISUALIZATION show system logic — not live production events. Business policies are working templates and require legal review. Expansion projections are founder estimates, not guaranteed outcomes. Real deployment requires legal, security, payment, and operational review.
-              </p>
-              <p className="text-[9px] text-muted-foreground/50">
-                © 2026 JGA Enterprises / Jay's Graphic Arts ·{" "}
-                <a href="https://jgaenterprise.org" target="_blank" rel="noopener noreferrer" className="hover:underline">jgaenterprise.org</a>
-                {" · "}
-                <a href="/about" className="hover:underline">About</a>
-                {" · "}
-                <a href="/contact" className="hover:underline">Contact</a>
-              </p>
-              <p className="text-[9px] italic" style={{ color: "rgba(201,168,76,0.4)" }}>
-                "Verification first. Design bolder. Systems built to earn trust."
-              </p>
-            </div>
+          <footer className="border-t border-border mt-8 py-3 px-6 text-center" style={{ background: "hsl(220,20%,4%)" }}>
+            <p className="text-[9px] text-muted-foreground/40 font-mono">
+              SB688 · Braid group B₇ · SHA-256 · Alexander polynomial invariants · Append-only audit ledger
+            </p>
           </footer>
         </main>
       </div>
 
-      {/* Mobile overlay */}
       {open && <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={() => setOpen(false)} />}
     </div>
   );

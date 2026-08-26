@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
-  Shield, Activity, Eye, CheckCircle2, Zap, Star, ArrowRight,
+  Shield, Activity, Eye, CheckCircle2, Zap, ArrowRight,
   Lock, Layers, Brain, Heart, Database, Radio, Award,
   ChevronDown, ChevronUp, Building2, Info
 } from "lucide-react";

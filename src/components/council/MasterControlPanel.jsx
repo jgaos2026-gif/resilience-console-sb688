@@ -2,9 +2,7 @@ import React, { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Shield, Activity, Lock, CheckCircle2, AlertTriangle, XCircle,
-  RefreshCw, Database, GitBranch, Layers, Cpu, Eye, FileText,
-  Play, RotateCcw, Zap, Radio, Download
+  Shield, Activity, Lock, CheckCircle2, XCircle, Database, Layers, Cpu, Eye, RotateCcw, Radio, Download
 } from "lucide-react";
 import moment from "moment";
 import { generateCouncilPDF } from "@/components/council/CouncilPDFReport";

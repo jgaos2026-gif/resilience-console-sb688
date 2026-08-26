@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { FileText, Download, Loader2 } from "lucide-react";
+import { Download, Loader2 } from "lucide-react";
 import jsPDF from "jspdf";
 
 const GOLD = "#C9A84C";

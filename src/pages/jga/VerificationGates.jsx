@@ -1,148 +1,149 @@
-import React from "react";
+/**
+ * VerificationGates.jsx — Wired to real /api/verification
+ */
+import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle2, XCircle, Clock, Shield, AlertTriangle, ArrowRight } from "lucide-react";
-import LiveProofEngine from "@/components/jga/LiveProofEngine";
+import { Input } from "@/components/ui/input";
+import { CheckCircle2, XCircle, Plus } from "lucide-react";
+import { toast } from "sonner";
+import api from "@/api/apiClient";
 
 const GOLD = "#C9A84C";
-const STAGES = ["input", "quarantine", "verification", "validation", "certification", "trusted", "rejected", "rollback"];
 const STAGE_COLORS = {
   input: "#94a3b8", quarantine: "#f59e0b", verification: "#60a5fa", validation: "#a78bfa",
   certification: "#4ade80", trusted: GOLD, rejected: "#ef4444", rollback: "#f97316",
 };
 
 export default function VerificationGates() {
-  const queryClient = useQueryClient();
-  const { data: items = [] } = useQuery({ queryKey: ["stateItems"], queryFn: () => base44.entities.StateItem.list() });
+  const qc = useQueryClient();
+  const [newData,   setNewData]   = useState("");
+  const [riskScore, setRiskScore] = useState(0);
 
-  const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.StateItem.update(id, data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["stateItems"] }),
+  const { data: items = [], isLoading } = useQuery({
+    queryKey: ["stateItems"],
+    queryFn:  () => api.get("/api/verification"),
+    refetchInterval: 10000,
   });
 
-  const advanceStage = (item) => {
-    const idx = STAGES.indexOf(item.current_stage);
-    if (idx >= 0 && idx < 5) {
-      updateMutation.mutate({ id: item.id, data: { current_stage: STAGES[idx + 1], gate_result: idx >= 4 ? "pass" : "pending" } });
-    }
-  };
+  const createMutation = useMutation({
+    mutationFn: () => api.post("/api/verification", { data: newData, source: "operator", risk_score: Number(riskScore) }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["stateItems"] }); setNewData(""); setRiskScore(0); toast.success("State item created"); },
+    onError: err => toast.error(err.message),
+  });
 
-  const rejectItem = (item) => {
-    updateMutation.mutate({ id: item.id, data: { current_stage: "rejected", gate_result: "fail", action: "reject" } });
-  };
+  const advanceMutation = useMutation({
+    mutationFn: id => api.post(`/api/verification/${id}/advance`),
+    onSuccess: r => { qc.invalidateQueries({ queryKey: ["stateItems"] }); toast.success(`→ ${r.nextStage}`); },
+    onError: err => toast.error(err.message),
+  });
 
-  const total = items.length;
-  const trusted = items.filter(i => i.current_stage === "trusted").length;
-  const rejected = items.filter(i => i.current_stage === "rejected").length;
-  const quarantined = items.filter(i => i.current_stage === "quarantine").length;
-  const highRisk = items.filter(i => i.risk_score > 50).length;
-  const allPassed = items.filter(i => i.gate_result === "pass").length;
+  const rejectMutation = useMutation({
+    mutationFn: id => api.post(`/api/verification/${id}/reject`),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["stateItems"] }); toast.info("Item rejected"); },
+  });
 
-  const vgChecks = [
-    { id: "items_present",  gate: "Gate 1 — Pipeline Load",   label: "State items loaded into pipeline",     pass: total > 0,                     detail: `${total} state items in pipeline`,                    critical: true },
-    { id: "no_high_risk",   gate: "Gate 1 — Pipeline Load",   label: "No unreviewed high-risk items (>50)",  pass: highRisk === 0,                detail: highRisk === 0 ? "All items within risk threshold" : `${highRisk} high-risk item(s) need review`, critical: false },
-    { id: "quarantine_ok",  gate: "Gate 2 — Gate Health",     label: "Quarantine zone functioning",          pass: true,                          detail: `${quarantined} item(s) currently quarantined`,        critical: true },
-    { id: "pipeline_flow",  gate: "Gate 2 — Gate Health",     label: "7-stage pipeline stages defined",      pass: true,                          detail: "Input→Quarantine→Verify→Validate→Certify→Trusted→Rejected", critical: true },
-    { id: "trusted_exists", gate: "Gate 3 — Certification",   label: "At least one item reached trusted",    pass: total === 0 || trusted > 0,    detail: `${trusted}/${total} items reached TRUSTED state`,     critical: false },
-    { id: "no_stuck",       gate: "Gate 3 — Certification",   label: "Rejection rate below 50%",             pass: total === 0 || rejected / total < 0.5, detail: `${rejected} rejected of ${total} total`,          critical: false },
-    { id: "pass_results",   gate: "Gate 3 — Certification",   label: "Gate pass results recorded",           pass: total === 0 || allPassed > 0,  detail: `${allPassed} items with PASS gate result`,            critical: false },
-  ];
+  const trusted    = items.filter(i => i.current_stage === "trusted").length;
+  const rejected   = items.filter(i => i.current_stage === "rejected").length;
+  const quarantine = items.filter(i => i.current_stage === "quarantine").length;
 
   return (
     <div className="p-4 sm:p-6 max-w-6xl mx-auto space-y-6">
       <div>
-        <h1 className="text-xl font-bold font-cinzel" style={{ color: GOLD }}>Verification Gates</h1>
-        <p className="text-xs text-muted-foreground">Triple-mark verification pipeline — every state must pass three gates</p>
+        <h1 className="text-xl font-bold font-mono" style={{ color: GOLD }}>Verification Gates</h1>
+        <p className="text-xs text-muted-foreground">Triple-mark pipeline — Structure · Policy · Braid topology</p>
       </div>
 
-      {/* Visual Pipeline */}
-      <div className="rounded-xl border border-border p-5 overflow-x-auto" style={{ background: "hsl(220,18%,7%)" }}>
-        <div className="flex items-center gap-2 min-w-max">
-          {["Input", "Quarantine", "Verification ✓", "Validation ✓", "Certification ✓", "Trusted State", "Spine"].map((s, i) => (
-            <React.Fragment key={i}>
-              <div className="flex flex-col items-center gap-1">
-                <div className="w-20 h-12 rounded-lg border flex items-center justify-center text-[9px] font-bold text-center"
-                  style={{ borderColor: STAGE_COLORS[STAGES[Math.min(i, 5)]] || GOLD, color: STAGE_COLORS[STAGES[Math.min(i, 5)]] || GOLD, background: `${STAGE_COLORS[STAGES[Math.min(i, 5)]] || GOLD}10` }}>
-                  {s}
+      {/* Stats */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { label: "Total Items",  value: items.length, color: "#60a5fa" },
+          { label: "Trusted",      value: trusted,      color: "#4ade80" },
+          { label: "Quarantined",  value: quarantine,   color: "#fbbf24" },
+          { label: "Rejected",     value: rejected,     color: "#f87171" },
+        ].map(s => (
+          <div key={s.label} className="rounded-xl border border-border p-4" style={{ background: "hsl(220,18%,7%)" }}>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-widest">{s.label}</p>
+            <p className="text-2xl font-bold font-mono mt-1" style={{ color: s.color }}>{s.value}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Create Item */}
+      <div className="rounded-xl border border-border p-5 space-y-3" style={{ background: "hsl(220,18%,7%)" }}>
+        <h2 className="text-sm font-bold font-mono" style={{ color: GOLD }}>Inject State Item</h2>
+        <div className="flex gap-2 flex-wrap">
+          <Input placeholder="State data…" value={newData} onChange={e => setNewData(e.target.value)}
+            className="flex-1 min-w-[200px] h-9 text-xs bg-secondary border-border font-mono" />
+          <Input type="number" placeholder="Risk 0-100" value={riskScore} onChange={e => setRiskScore(e.target.value)}
+            min={0} max={100} className="w-28 h-9 text-xs bg-secondary border-border font-mono" />
+          <Button onClick={() => createMutation.mutate()} disabled={!newData || createMutation.isPending}
+            className="h-9 text-xs font-bold font-mono"
+            style={{ background: "rgba(201,168,76,0.12)", color: GOLD, border: "1px solid rgba(201,168,76,0.3)" }}>
+            <Plus className="w-3.5 h-3.5 mr-1" /> Inject
+          </Button>
+        </div>
+      </div>
+
+      {/* Items Pipeline */}
+      {isLoading && <p className="text-xs text-muted-foreground font-mono">Loading pipeline…</p>}
+      <div className="space-y-2">
+        {items.map(item => {
+          const stageColor = STAGE_COLORS[item.current_stage] || "#94a3b8";
+          const errors = item.mark_errors || [];
+          return (
+            <div key={item.id} className="rounded-xl border border-border p-4 space-y-3" style={{ background: "hsl(220,18%,7%)" }}>
+              <div className="flex items-start justify-between gap-2 flex-wrap">
+                <div className="space-y-0.5 flex-1 min-w-0">
+                  <p className="text-xs font-mono truncate">{item.data}</p>
+                  <p className="text-[9px] text-muted-foreground font-mono">
+                    risk={item.risk_score} · src={item.source} · blocks={item.braid_chain?.length ?? 0}
+                  </p>
                 </div>
+                <Badge className="text-[9px] font-mono border flex-shrink-0"
+                  style={{ background: `${stageColor}18`, color: stageColor, borderColor: `${stageColor}30` }}>
+                  {item.current_stage?.toUpperCase()}
+                </Badge>
               </div>
-              {i < 6 && <ArrowRight className="w-4 h-4 flex-shrink-0 text-muted-foreground" />}
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
 
-      {/* State Items Table */}
-      <div className="rounded-xl border border-border overflow-hidden" style={{ background: "hsl(220,18%,7%)" }}>
-        <div className="p-4 border-b border-border">
-          <h2 className="text-sm font-bold font-cinzel" style={{ color: GOLD }}>Incoming States</h2>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-border text-muted-foreground">
-                <th className="text-left p-3">Name</th>
-                <th className="text-left p-3">Type</th>
-                <th className="text-left p-3">Stage</th>
-                <th className="text-left p-3">Risk</th>
-                <th className="text-left p-3">Result</th>
-                <th className="text-left p-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map(item => {
-                const stageColor = STAGE_COLORS[item.current_stage] || "#94a3b8";
-                return (
-                  <tr key={item.id} className="border-b border-border/30 hover:bg-secondary/20">
-                    <td className="p-3 font-semibold text-foreground">{item.name}</td>
-                    <td className="p-3 text-muted-foreground">{item.item_type?.replace(/_/g, " ")}</td>
-                    <td className="p-3">
-                      <Badge className="text-[8px] border font-bold" style={{ background: `${stageColor}15`, color: stageColor, borderColor: `${stageColor}40` }}>
-                        {item.current_stage?.replace(/_/g, " ")}
-                      </Badge>
-                    </td>
-                    <td className="p-3">
-                      <span className="font-mono" style={{ color: item.risk_score > 50 ? "#f87171" : item.risk_score > 25 ? "#fbbf24" : "#4ade80" }}>
-                        {item.risk_score}
-                      </span>
-                    </td>
-                    <td className="p-3">
-                      {item.gate_result === "pass" && <CheckCircle2 className="w-4 h-4 text-green-400" />}
-                      {item.gate_result === "fail" && <XCircle className="w-4 h-4 text-red-400" />}
-                      {item.gate_result === "pending" && <Clock className="w-4 h-4 text-yellow-400" />}
-                      {item.gate_result === "hold" && <AlertTriangle className="w-4 h-4 text-orange-400" />}
-                    </td>
-                    <td className="p-3">
-                      <div className="flex gap-1">
-                        {item.current_stage !== "trusted" && item.current_stage !== "rejected" && (
-                          <Button size="sm" className="text-[9px] h-6 px-2" style={{ background: "rgba(34,197,94,0.1)", color: "#4ade80", border: "1px solid rgba(34,197,94,0.3)" }}
-                            onClick={() => advanceStage(item)}>Advance</Button>
-                        )}
-                        {item.current_stage !== "rejected" && item.current_stage !== "trusted" && (
-                          <Button size="sm" className="text-[9px] h-6 px-2" style={{ background: "rgba(239,68,68,0.1)", color: "#f87171", border: "1px solid rgba(239,68,68,0.3)" }}
-                            onClick={() => rejectItem(item)}>Reject</Button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        {items.length === 0 && (
-          <div className="text-center py-12 text-muted-foreground text-sm">No state items. Seed data to populate the verification pipeline.</div>
-        )}
-      </div>
+              {/* Mark results */}
+              {item.marks_passed && item.marks_passed.length > 0 && (
+                <div className="flex gap-2">
+                  {item.marks_passed.map((m, i) => (
+                    <div key={i} className="flex items-center gap-1 text-[9px] font-mono"
+                      style={{ color: m.passed ? "#4ade80" : "#f87171" }}>
+                      {m.passed ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
+                      M{m.mark}
+                    </div>
+                  ))}
+                </div>
+              )}
 
-      <LiveProofEngine
-        title="Gate Pipeline Verification Engine"
-        checks={vgChecks}
-        hashPayload={items.map(i => `${i.id}:${i.current_stage}:${i.gate_result}:${i.risk_score}`).join("|")}
-        proofLabel="PIPELINE CERTIFIED"
-      />
+              {errors.length > 0 && (
+                <div className="text-[9px] text-red-400 font-mono space-y-0.5">
+                  {errors.slice(0, 3).map((e, i) => <p key={i}>⚠ {e}</p>)}
+                </div>
+              )}
+
+              <div className="flex gap-2">
+                <Button size="sm" disabled={["trusted","rejected"].includes(item.current_stage) || advanceMutation.isPending}
+                  className="h-7 text-[10px] font-mono"
+                  style={{ background: "rgba(74,222,128,0.08)", color: "#4ade80", border: "1px solid rgba(74,222,128,0.2)" }}
+                  onClick={() => advanceMutation.mutate(item.id)}>
+                  Advance →
+                </Button>
+                <Button size="sm" disabled={item.current_stage === "rejected" || rejectMutation.isPending}
+                  className="h-7 text-[10px] font-mono"
+                  style={{ background: "rgba(239,68,68,0.08)", color: "#f87171", border: "1px solid rgba(239,68,68,0.2)" }}
+                  onClick={() => rejectMutation.mutate(item.id)}>
+                  Reject ✕
+                </Button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

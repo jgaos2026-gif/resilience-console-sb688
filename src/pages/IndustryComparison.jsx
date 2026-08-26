@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   Shield, Zap, Heart, Plane, Building2, Cpu, Globe, Landmark,
   ChevronDown, ChevronUp, CheckCircle2, XCircle, ArrowRight, TrendingUp, AlertTriangle,
-  Monitor, Tablet, Smartphone, Link2, Rocket, Radio, Bot, Car
+  Monitor, Tablet, Smartphone, Link2, Rocket, Radio, Car
 } from "lucide-react";
 import { CrownIcon, LionIcon } from "@/components/sb688/WarriorCrest";
 

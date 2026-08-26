@@ -3,8 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Brain, TrendingUp, Shield, BookOpen, Loader2, AlertTriangle,
-  CheckCircle2, ArrowRight, Zap, Clock, RefreshCw, ChevronDown, ChevronUp
+  Brain, TrendingUp, Shield, BookOpen, Loader2, ArrowRight, Zap, Clock, RefreshCw, ChevronDown, ChevronUp
 } from "lucide-react";
 import { INDUSTRIES } from "@/lib/sb688Engine";
 

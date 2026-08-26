@@ -3,8 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Play, Pause, SkipBack, SkipForward, Camera, Trash2,
-  Activity, Shield, Clock, Zap, CheckCircle2, AlertTriangle,
-  Radio, TrendingUp, TrendingDown, Minus
+  Activity, CheckCircle2, TrendingUp, TrendingDown, Minus
 } from "lucide-react";
 import { INDUSTRIES } from "@/lib/sb688Engine";
 import moment from "moment";

@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Activity, Play, Pause, SkipBack, SkipForward, Zap, Lock, Cpu, BatteryCharging, Network, Radio, ChevronLeft } from "lucide-react";
+import { Activity, Play, Pause, SkipBack, SkipForward, ChevronLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CrownIcon } from "@/components/sb688/WarriorCrest";
 

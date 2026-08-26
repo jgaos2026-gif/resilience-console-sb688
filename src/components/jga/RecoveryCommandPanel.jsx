@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Zap, Shield, RefreshCcw, Activity, Globe, DollarSign, Cpu, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Shield, RefreshCcw, Activity, Globe, DollarSign, Cpu, CheckCircle2 } from "lucide-react";
 import { alertAVA } from "@/lib/avaVoice";
 import OASISVoiceBridge from "@/components/jga/OASISVoiceBridge";
 
