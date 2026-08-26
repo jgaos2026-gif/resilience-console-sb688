@@ -86,6 +86,8 @@ docker compose up --build
 | GET  /api/recovery/scan | ✓ | Detect braid anomalies |
 | POST /api/recovery/run | ✓ (operator+) | Phoenix recovery |
 | GET  /api/supabase/status | ✓ | Verify hardened Supabase connectivity |
+| GET  /api/supabase/http-test-readiness | ✓ (operator+) | Check whether hard HTTP readiness gates have passed |
+| POST /api/supabase/field-simulations | ✓ (operator+) | Run hard field simulations before declaring readiness |
 | POST /api/supabase/push | ✓ (operator+) | Push a controlled sync event to Supabase |
 
 ## Braided Computational Topology
@@ -130,6 +132,8 @@ All events are appended to `server/logs/audit.jsonl` — never overwritten, neve
 The backend can verify and push controlled sync events into Supabase when the service-role credentials are configured.
 
 - `GET /api/supabase/status` checks whether the configured schema and table are reachable
+- `GET /api/supabase/http-test-readiness` combines upstream verification with hard dry-run guard checks
+- `POST /api/supabase/field-simulations` runs hard simulations, including oversized-payload and system-field tamper attempts
 - `POST /api/supabase/push` writes a bounded JSON payload through the backend after auth, role checks, and rate limiting
 - If either Supabase credential is missing, the integration fails closed and reports `configured: false`
 
