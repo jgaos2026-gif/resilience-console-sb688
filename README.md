@@ -136,6 +136,7 @@ The backend can verify and push controlled sync events into Supabase when the se
 - `POST /api/supabase/field-simulations` runs hard simulations, including oversized-payload and system-field tamper attempts
 - `POST /api/supabase/push` writes a bounded JSON payload through the backend after auth, role checks, and rate limiting
 - If either Supabase credential is missing, the integration fails closed and reports `configured: false`
+- Browser requests remain pinned to `FRONTEND_ORIGIN`; origin-less requests are intentionally allowed for authenticated server-to-server and CLI readiness checks
 
 Recommended Supabase table:
 
