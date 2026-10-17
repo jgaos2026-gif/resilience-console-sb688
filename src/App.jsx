@@ -20,6 +20,7 @@ import DailyReports     from './pages/jga/DailyReports';
 import RiskCompliance   from './pages/jga/RiskCompliance';
 import JGASettings      from './pages/jga/JGASettings';
 import AVAControlRoom   from './pages/AVAControlRoom';
+import AVADigitalOrganism from './pages/jga/AVADigitalOrganism';
 import SB688Console     from './pages/SB688Console';
 
 const AuthenticatedApp = () => {
@@ -50,6 +51,7 @@ const AuthenticatedApp = () => {
           <Route path="/risk-compliance"     element={<RiskCompliance />} />
           <Route path="/jga-settings"        element={<JGASettings />} />
           <Route path="/ava"                 element={<AVAControlRoom />} />
+          <Route path="/ava-organism"        element={<AVADigitalOrganism />} />
         </Route>
         <Route path="/sb688" element={<SB688Console />} />
         <Route path="*"      element={<PageNotFound />} />

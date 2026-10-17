@@ -3,7 +3,7 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
 import {
   Shield, Layers, LayoutGrid, CheckSquare, Brain, Archive, FileText, AlertTriangle, Settings, Menu, X,
-  Activity, LogOut, RotateCcw
+  Activity, LogOut, RotateCcw, Sparkles
 } from "lucide-react";
 
 const NAV = [
@@ -16,6 +16,7 @@ const NAV = [
   { path: "/proof-vault",         label: "Proof Vault",         icon: Archive },
   { path: "/daily-reports",       label: "Daily Reports",       icon: FileText },
   { path: "/risk-compliance",     label: "Risk / Compliance",   icon: AlertTriangle },
+  { path: "/ava-organism",       label: "AVA Organism",        icon: Sparkles },
   { path: "/ava",                 label: "AVA Control Room",    icon: Brain },
   { path: "/sb688",               label: "SB688 Console",       icon: Shield },
   { path: "/jga-settings",        label: "Settings",            icon: Settings },
