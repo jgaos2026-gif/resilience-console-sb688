@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Zap } from "lucide-react";
 import api from "@/api/apiClient";
+import Braid66Topology from "@/components/jga/Braid66Topology";
 
 const GOLD = "#C9A84C";
 const STRAND_COLORS = ["#C9A84C","#f59e0b","#fcd34d","#a78bfa","#60a5fa","#ec4899","#4ade80"];
@@ -120,6 +121,9 @@ export default function MemoryBraid() {
         <h1 className="text-xl font-bold font-mono" style={{ color: GOLD }}>Memory Braid</h1>
         <p className="text-xs text-muted-foreground">Braid group B₇ — crossing events animate the topology</p>
       </div>
+
+      {/* BCT-66 Live Topology + Dashboard */}
+      <Braid66Topology />
 
       {/* Braid Canvas */}
       <div className="rounded-xl border border-border p-4 space-y-3" style={{ background: "hsl(220,18%,7%)" }}>
