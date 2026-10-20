@@ -3,8 +3,8 @@ import { z } from 'zod';
 import { getDb } from '../db/database.js';
 import { requireAuth } from '../middleware/auth.js';
 import { proofLimiter } from '../middleware/rateLimit.js';
-import { sha256, alexanderFingerprint } from '../services/braidEngine.js';
-import { verifyTrustLedger } from '../services/trustLedger.js';
+import { alexanderFingerprint } from '../services/braidEngine.js';
+import { generateEvidenceSnapshot } from '../services/proofEngine.js';
 import { writeAudit } from '../middleware/audit.js';
 const router=Router();
 
@@ -14,15 +14,10 @@ const schema=z.object({title:z.string().min(1).max(256).optional(),category:z.st
 /** Generates an evidence snapshot only. Generation is NOT certification. */
 router.post('/generate',requireAuth,proofLimiter,(req,res)=>{
   const parsed=schema.safeParse(req.body); if(!parsed.success)return res.status(400).json({error:'Invalid input',details:parsed.error.issues});
-  const {title,category,visibility,notes}=parsed.data,db=getDb();
-  const nodes=db.prepare('SELECT * FROM node_states').all();
-  const combinedWord=nodes.flatMap(n=>{try{return JSON.parse(n.braid_chain||'[]').map(b=>({i:b.generator,sign:b.sign}))}catch(_){return[]}});
-  const invariant=alexanderFingerprint(combinedWord),chainIndex=combinedWord.length,ledger=verifyTrustLedger();
-  const proofData=JSON.stringify({invariant,chainIndex,category,trustLedgerHead:ledger.head,trustLedgerValid:ledger.valid,ts:new Date().toISOString()});
-  const hash=`sha256:${sha256(proofData)}`,proofTitle=title||`Evidence Snapshot - ${new Date().toLocaleDateString()}`;
-  const info=db.prepare(`INSERT INTO proof_records(title,category,status,hash,chain_index,invariant,visibility,notes) VALUES (?,?,'evidence-only',?,?,?,?,?)`).run(proofTitle,category,hash,chainIndex,JSON.stringify(invariant),visibility,notes||null);
-  writeAudit('proof_evidence_generated',req.user.id,{proofId:info.lastInsertRowid,hash,status:'evidence-only'});
-  res.json({ok:true,id:info.lastInsertRowid,hash,invariant,chainIndex,status:'evidence-only',certified:false,trustLedger:ledger});
+  const {title,category,visibility,notes}=parsed.data;
+  const snap=generateEvidenceSnapshot({title,category,visibility,notes});
+  writeAudit('proof_evidence_generated',req.user.id,{proofId:snap.id,hash:snap.hash,status:'evidence-only'});
+  res.json({ok:true,id:snap.id,hash:snap.hash,invariant:snap.invariant,chainIndex:snap.chainIndex,status:snap.status,certified:snap.certified,trustLedger:snap.trustLedger});
 });
 
 router.get('/:id/verify',requireAuth,(req,res)=>{

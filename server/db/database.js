@@ -77,6 +77,20 @@ export function initDb(dbPath) {
       password_hash TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'operator',
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    -- AVA control surface. The AI may set these, so every row records who set it.
+    CREATE TABLE IF NOT EXISTS ava_control (
+      key TEXT PRIMARY KEY, value TEXT NOT NULL,
+      updated_by TEXT NOT NULL DEFAULT 'system',
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    -- AVA durable memory. Entries are archived, never deleted — evidence is not erased.
+    CREATE TABLE IF NOT EXISTS ava_memory (
+      id INTEGER PRIMARY KEY AUTOINCREMENT, text TEXT NOT NULL,
+      source TEXT NOT NULL DEFAULT 'owner', actor_id TEXT NOT NULL DEFAULT 'owner',
+      status TEXT NOT NULL DEFAULT 'active', hash TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
   seed(_db);
   return _db;

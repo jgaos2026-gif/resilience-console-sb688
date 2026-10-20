@@ -125,7 +125,7 @@ function timeoutSignal(ms) {
  * Perform a real chat-completions call.
  * Returns a structured result — never throws for provider-side problems.
  */
-export async function chatCompletion({ messages = [], temperature = 0.3, maxTokens = 900, retries = 1 } = {}) {
+export async function chatCompletion({ messages = [], temperature = 0.3, maxTokens = 900, retries = 1, tools = null, toolChoice = null } = {}) {
   const provider = resolveProvider();
   const correlationId = randomUUID();
   const startedAt = Date.now();
@@ -148,6 +148,11 @@ export async function chatCompletion({ messages = [], temperature = 0.3, maxToke
   const url = `${provider.baseUrl}/chat/completions`;
   const budgetMs = Number(process.env.AI_TIMEOUT_MS || 45000);
   const payload = { model: provider.model, messages, temperature, max_tokens: maxTokens, stream: false };
+  // Tool calling is opt-in. A provider that ignores the field simply answers in prose.
+  if (Array.isArray(tools) && tools.length) {
+    payload.tools = tools;
+    if (toolChoice) payload.tool_choice = toolChoice;
+  }
 
   let last = { state: 'no_attempt', error: 'No provider call was attempted.' };
 
@@ -176,8 +181,21 @@ export async function chatCompletion({ messages = [], temperature = 0.3, maxToke
       }
 
       const body = safeJson(raw);
-      const content = body?.choices?.[0]?.message?.content;
-      if (typeof content !== 'string' || !content.trim()) {
+      const message = body?.choices?.[0]?.message;
+      const content = typeof message?.content === 'string' ? message.content : null;
+      const toolCalls = Array.isArray(message?.tool_calls)
+        ? message.tool_calls
+            .map(tc => ({
+              id: tc?.id || randomUUID(),
+              name: tc?.function?.name || '',
+              arguments: tc?.function?.arguments || '{}',
+            }))
+            .filter(tc => tc.name)
+        : [];
+
+      // A tool-call turn legitimately carries no prose — only a wholly empty
+      // turn is malformed.
+      if ((!content || !content.trim()) && toolCalls.length === 0) {
         last = { state: 'malformed_response', error: 'Provider returned no message content.' };
         break;
       }
@@ -187,9 +205,11 @@ export async function chatCompletion({ messages = [], temperature = 0.3, maxToke
         model: body?.model || provider.model,
         correlationId, latencyMs: Date.now() - startedAt,
         content,
+        toolCalls,
+        finishReason: body?.choices?.[0]?.finish_reason || null,
         usage: body?.usage || null,
-        response_sha256: sha256(content),
-        state: 'live_response',
+        response_sha256: content ? sha256(content) : null,
+        state: toolCalls.length ? 'tool_call' : 'live_response',
       };
     } catch (error) {
       const aborted = error?.name === 'AbortError' || error?.name === 'TimeoutError';
