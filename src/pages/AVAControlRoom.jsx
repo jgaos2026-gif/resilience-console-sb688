@@ -6,6 +6,8 @@ import AVAChatPanel from "@/components/ava/AVAChatPanel";
 import AVAMemoryPanel from "@/components/ava/AVAMemoryPanel";
 import AVAProofPanel from "@/components/ava/AVAProofPanel";
 import AVAVoiceControls from "@/components/ava/AVAVoiceControls";
+import MuseAIBridgePanel from "@/components/ava/MuseAIBridgePanel";
+import MuseGroundedChat from "@/components/ava/MuseGroundedChat";
 import { addMemory, addProof, getMemories, getMode, getProofs, setMode, AVA_OWNER, AVA_LAW } from "@/lib/avaLocal";
 import { getSystemHealth, routeSystemCommand, runSystemHealthSweep } from "@/lib/systemBridge";
 import { SYSTEM_COMPONENTS } from "@/lib/systemRegistry";
@@ -110,9 +112,16 @@ export default function AVAControlRoom() {
         </div> : <p className="text-xs text-muted-foreground">No proof loaded. Refresh reads the host-generated proof file; Run executes the source-verified sandbox harness through OASIS.</p>}
       </div>
 
+      <MuseAIBridgePanel />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <MuseGroundedChat />
+        <AVAChatPanel helpers={helpers} />
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2"><AVAChatPanel helpers={helpers} /></div>
-        <div className="space-y-4"><AVAMemoryPanel memories={memories} onRemember={remember} /><AVAProofPanel proofs={proofs} onProof={addLocalProof} /></div>
+        <div className="lg:col-span-2"><AVAMemoryPanel memories={memories} onRemember={remember} /></div>
+        <AVAProofPanel proofs={proofs} onProof={addLocalProof} />
       </div>
     </div>
   );

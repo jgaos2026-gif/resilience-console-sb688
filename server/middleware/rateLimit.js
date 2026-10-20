@@ -30,3 +30,12 @@ export const proofLimiter = rateLimit({
   legacyHeaders: false,
   message: { error: 'Proof rate limit exceeded. Max 20 per minute.' },
 });
+
+/** Strict limiter for AI provider calls (external, billed, expensive) */
+export const aiLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'AI rate limit exceeded. Max 30 provider calls per minute.' },
+});

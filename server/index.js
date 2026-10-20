@@ -13,6 +13,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';
 import path from 'path';
+import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'url';
 
 import { initDb, getDb } from './db/database.js';
@@ -27,6 +28,7 @@ import verifyRoutes     from './routes/verification.js';
 import proofRoutes      from './routes/proof.js';
 import reportsRoutes    from './routes/reports.js';
 import recoveryRoutes   from './routes/recovery.js';
+import aiRoutes         from './routes/ai.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT      = process.env.PORT || 3001;
@@ -51,6 +53,19 @@ if (adminPass) {
 
 // ── Express app ───────────────────────────────────────────────────────────────
 const app = express();
+
+// Behind Docker or a reverse proxy: trust the first hop so req.ip and the rate
+// limiter see the real client address instead of the proxy.
+app.set('trust proxy', 1);
+app.disable('x-powered-by');
+
+// Correlation ID for every request — echoed back and written to the audit log.
+app.use((req, res, next) => {
+  const id = req.headers['x-request-id'] || randomUUID();
+  req.requestId = id;
+  res.setHeader('X-Request-ID', id);
+  next();
+});
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -84,6 +99,7 @@ app.use('/api/verification', verifyRoutes);
 app.use('/api/proof',        proofRoutes);
 app.use('/api/reports',      reportsRoutes);
 app.use('/api/recovery',     recoveryRoutes);
+app.use('/api/ai',           aiRoutes);
 
 // ── 404 + error handlers ──────────────────────────────────────────────────────
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
@@ -96,11 +112,23 @@ app.use((err, req, res, _next) => {
 });
 
 // ── Start ─────────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`[SB688] Resilience Console backend — port ${PORT}`);
   console.log(`[SB688] DB: ${DB_PATH}`);
   console.log(`[SB688] CORS origin: ${ORIGIN}`);
   console.log(`[SB688] Braided topology engine: B₇ (7 strands, SHA-256, Alexander invariant)`);
 });
+
+// ── Graceful shutdown — stop accepting, close the DB cleanly ──────────────────
+function shutdown(signal) {
+  console.log(`[SB688] ${signal} received — shutting down.`);
+  server.close(() => {
+    try { getDb().close(); } catch (_) { /* already closed */ }
+    process.exit(0);
+  });
+  setTimeout(() => process.exit(1), 10000).unref();
+}
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT',  () => shutdown('SIGINT'));
 
 export default app;

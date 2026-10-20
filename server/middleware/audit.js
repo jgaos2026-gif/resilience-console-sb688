@@ -40,8 +40,9 @@ export function auditMiddleware(req, res, next) {
       method:  req.method,
       path:    req.path,
       status:  res.statusCode,
-      ms:      Date.now() - start,
-      ip:      req.ip,
+      ms:        Date.now() - start,
+      ip:        req.ip,
+      requestId: req.requestId || null,
     });
   });
   next();
