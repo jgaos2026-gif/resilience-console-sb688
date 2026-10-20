@@ -29,7 +29,7 @@ export default function MuseGroundedChat() {
         messages: next.slice(-12).map(m => ({ role: m.role, content: m.content })),
       });
       if (!res) { setError("Sign in to the console backend to talk to AVA."); return; }
-      setMessages(prev => [...prev, { role: "ava", content: res.reply, meta: res.evidence }]);
+      setMessages(prev => [...prev, { role: "ava", content: res.reply, meta: res.evidence, actions: res.actions || [] }]);
     } catch (err) {
       setError(err?.message || "The AI bridge did not answer.");
     } finally {
@@ -42,7 +42,7 @@ export default function MuseGroundedChat() {
       <div>
         <h2 className="text-sm font-black font-cinzel" style={{ color: GOLD }}>AVA — Grounded Intelligence</h2>
         <p className="text-[10px] text-muted-foreground">
-          Answers are stamped with provider, model, latency, and a reply hash. Status claims come only from verified state.
+          Answers are stamped with provider, model, latency, and a reply hash. Status claims come only from verified state, and every action taken is listed under the reply.
         </p>
       </div>
 
@@ -61,7 +61,7 @@ export default function MuseGroundedChat() {
       <div className="h-72 overflow-y-auto space-y-3 pr-1">
         {messages.length === 0 && (
           <p className="text-xs text-muted-foreground">
-            Ask about spine health, braid integrity, the trust ledger, verification gates, or Phoenix recovery.
+            Ask about spine health, braid integrity, the trust ledger, or the verification gates — or tell AVA to act. She can read state, contain a node, intake and verify items, record evidence, and configure herself. Phoenix recovery stays owner-only.
           </p>
         )}
         {messages.map((m, i) => (
@@ -73,9 +73,24 @@ export default function MuseGroundedChat() {
                   : { background: "rgba(255,255,255,0.06)", color: "rgba(232,217,176,0.9)", border: `1px solid ${GOLD}16` }}>
                 {m.content}
               </div>
+              {m.actions?.length > 0 && (
+                <div className="rounded-lg border px-2 py-1.5 space-y-0.5"
+                  style={{ borderColor: `${GOLD}22`, background: "rgba(0,0,0,.35)" }}>
+                  <p className="text-[9px] uppercase font-black tracking-widest" style={{ color: `${GOLD}90` }}>
+                    Actions taken
+                  </p>
+                  {m.actions.map((a, k) => (
+                    <p key={k} className="text-[10px]"
+                      style={{ color: a.ok ? "#4ade80" : a.refused ? "#f0b429" : "#f87171" }}>
+                      {a.action} — {a.summary || a.error}
+                    </p>
+                  ))}
+                </div>
+              )}
               {m.meta && (
                 <p className="text-[9px] text-muted-foreground px-1">
                   {m.meta.provider} · {m.meta.model} · {m.meta.latency_ms ?? "—"}ms · {m.meta.state}
+                  {m.meta.tool_steps ? ` · ${m.meta.tool_steps} tool step(s)` : ""}
                   {m.meta.fallback_used ? " · grounded state fallback" : ""}
                 </p>
               )}

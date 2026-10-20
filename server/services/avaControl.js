@@ -9,6 +9,7 @@
  * console does not erase evidence.
  */
 
+import { randomUUID } from 'node:crypto';
 import { getDb } from '../db/database.js';
 import { sha256 } from './braidEngine.js';
 
@@ -100,7 +101,7 @@ export function setDirective({ directive = null, clear_all = false } = {}, actor
 
   const current = getAvaControl().directives;
   const entry = {
-    id: crypto.randomUUID(),
+    id: randomUUID(),
     text,
     set_by: String(actorId),
     created_at: new Date().toISOString(),
@@ -108,10 +109,6 @@ export function setDirective({ directive = null, clear_all = false } = {}, actor
   const next = [...current, entry].slice(-MAX_DIRECTIVES);
   writeKey('directives', next, actorId);
   return { ...getAvaControl(), added: entry };
-}
-
-export function clearDirectives(actorId) {
-  return setDirective({ clear_all: true }, actorId);
 }
 
 /** Store a durable AVA memory. */
@@ -130,14 +127,6 @@ export function listAvaMemory(limit = 20) {
   return getDb().prepare(
     "SELECT id, text, source, actor_id, hash, created_at FROM ava_memory WHERE status = 'active' ORDER BY id DESC LIMIT ?",
   ).all(Math.min(Math.max(Number(limit) || 20, 1), 100));
-}
-
-/** Archive a memory. The row is retained with its hash as evidence. */
-export function archiveAvaMemory(id, actorId = 'owner') {
-  const row = getDb().prepare('SELECT * FROM ava_memory WHERE id = ?').get(id);
-  if (!row) throw new Error(`Memory ${id} not found.`);
-  getDb().prepare("UPDATE ava_memory SET status = 'archived' WHERE id = ?").run(id);
-  return { id: row.id, hash: row.hash, archived_by: String(actorId) };
 }
 
 /** Prompt fragment that makes the current control state bind on AVA. */

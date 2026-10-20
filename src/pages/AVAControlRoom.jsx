@@ -8,6 +8,7 @@ import AVAProofPanel from "@/components/ava/AVAProofPanel";
 import AVAVoiceControls from "@/components/ava/AVAVoiceControls";
 import MuseAIBridgePanel from "@/components/ava/MuseAIBridgePanel";
 import MuseGroundedChat from "@/components/ava/MuseGroundedChat";
+import MuseControlPanel from "@/components/ava/MuseControlPanel";
 import { addMemory, addProof, getMemories, getMode, getProofs, setMode, AVA_OWNER, AVA_LAW } from "@/lib/avaLocal";
 import { getSystemHealth, routeSystemCommand, runSystemHealthSweep } from "@/lib/systemBridge";
 import { SYSTEM_COMPONENTS } from "@/lib/systemRegistry";
@@ -113,6 +114,8 @@ export default function AVAControlRoom() {
       </div>
 
       <MuseAIBridgePanel />
+
+      <MuseControlPanel />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <MuseGroundedChat />
