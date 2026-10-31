@@ -28,6 +28,7 @@ import { verifyChain, sha256 } from '../services/braidEngine.js';
 import { verifyTrustLedger } from '../services/trustLedger.js';
 import { runSystemPulse } from '../services/systemPulse.js';
 import { resolveToken, scopeAllows, SCOPES, ACTOR } from '../services/agentTokens.js';
+import { sealEvent } from '../services/agentAudit.js';
 
 const router = Router();
 
@@ -42,8 +43,15 @@ function ledgerAppend(type, payload, actor = ACTOR) {
     'INSERT INTO spine_events (event_type, data, actor_id, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)',
   ).run(String(type), data, String(actor));
 
-  return db.prepare('SELECT id, event_type, actor_id, created_at FROM spine_events WHERE id = ?')
+  const row = db.prepare('SELECT id, event_type, actor_id, created_at FROM spine_events WHERE id = ?')
     .get(info.lastInsertRowid);
+
+  // Seal at write time, so a later edit breaks the chain and the audit dashboard
+  // reports it — instead of showing an altered entry as trusted.
+  try { sealEvent(row.id, actor); }
+  catch (err) { console.error('[agent-audit] seal failed:', err.message); }
+
+  return row;
 }
 
 function ledgerHead() {

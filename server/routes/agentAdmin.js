@@ -13,6 +13,7 @@ import { Router } from 'express';
 import { requireAuth, requireRole } from '../middleware/auth.js';
 import { writeAudit } from '../middleware/audit.js';
 import { listTokens, generateToken, revokeToken, SCOPE_LABEL } from '../services/agentTokens.js';
+import { readAgentAudit } from '../services/agentAudit.js';
 
 const router = Router();
 
@@ -58,6 +59,19 @@ router.post('/tokens/:id/revoke', (req, res) => {
     res.json({ ok: true, revoked, ts: new Date().toISOString() });
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+});
+
+/**
+ * GET /api/agent-admin/audit — the verifiable record of everything Muse AI did.
+ * Verification covers every sealed entry, not only the page returned.
+ */
+router.get('/audit', (req, res) => {
+  try {
+    const limit = Math.min(Math.max(Number(req.query.limit) || 200, 1), 1000);
+    res.json({ ok: true, ...readAgentAudit({ limit }), ts: new Date().toISOString() });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

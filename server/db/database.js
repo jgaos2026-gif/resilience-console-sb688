@@ -105,6 +105,23 @@ export function initDb(dbPath) {
     CREATE INDEX IF NOT EXISTS agent_tokens_scope_active ON agent_tokens(scope, revoked_at);
     CREATE TRIGGER IF NOT EXISTS agent_tokens_no_delete
       BEFORE DELETE ON agent_tokens BEGIN SELECT RAISE(ABORT, 'agent_tokens is append-only; revoke instead'); END;
+
+    -- Seals for external-agent activity. A seal is computed at the moment the
+    -- event is written, from that event's own stored bytes plus the previous
+    -- seal. Any later edit to a sealed event, or removal of a seal, breaks the
+    -- chain — and the audit dashboard reports it instead of showing it as trusted.
+    CREATE TABLE IF NOT EXISTS ledger_seals (
+      event_id INTEGER PRIMARY KEY,
+      seal TEXT NOT NULL,
+      prev_seal TEXT,
+      actor TEXT NOT NULL,
+      sealed_at TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY(event_id) REFERENCES spine_events(id)
+    );
+    CREATE TRIGGER IF NOT EXISTS ledger_seals_no_update
+      BEFORE UPDATE ON ledger_seals BEGIN SELECT RAISE(ABORT, 'ledger_seals is append-only'); END;
+    CREATE TRIGGER IF NOT EXISTS ledger_seals_no_delete
+      BEFORE DELETE ON ledger_seals BEGIN SELECT RAISE(ABORT, 'ledger_seals is append-only'); END;
   `);
   seed(_db);
   return _db;

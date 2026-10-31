@@ -24,6 +24,7 @@ import AVADigitalOrganism from './pages/jga/AVADigitalOrganism';
 import SB688Console     from './pages/SB688Console';
 import AgentAccess      from './pages/jga/AgentAccess';
 import AgentApiDocs     from './pages/jga/AgentApiDocs';
+import MuseAuditLog     from './pages/jga/MuseAuditLog';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin, isAuthenticated } = useAuth();
@@ -56,6 +57,7 @@ const AuthenticatedApp = () => {
           <Route path="/ava-organism"        element={<AVADigitalOrganism />} />
           <Route path="/agent-access"        element={<AgentAccess />} />
           <Route path="/agent-api"           element={<AgentApiDocs />} />
+          <Route path="/muse-audit"          element={<MuseAuditLog />} />
         </Route>
         <Route path="/sb688" element={<SB688Console />} />
         <Route path="*"      element={<PageNotFound />} />
