@@ -3,7 +3,7 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
 import {
   Shield, Layers, LayoutGrid, CheckSquare, Brain, Archive, FileText, AlertTriangle, Settings, Menu, X,
-  Activity, LogOut, RotateCcw, Sparkles
+  Activity, LogOut, RotateCcw, Sparkles, KeyRound, Terminal
 } from "lucide-react";
 
 const NAV = [
@@ -19,6 +19,8 @@ const NAV = [
   { path: "/ava-organism",       label: "AVA Organism",        icon: Sparkles },
   { path: "/ava",                 label: "AVA Control Room",    icon: Brain },
   { path: "/sb688",               label: "SB688 Console",       icon: Shield },
+  { path: "/agent-access",        label: "Agent Access",        icon: KeyRound },
+  { path: "/agent-api",           label: "Agent API",           icon: Terminal },
   { path: "/jga-settings",        label: "Settings",            icon: Settings },
 ];
 

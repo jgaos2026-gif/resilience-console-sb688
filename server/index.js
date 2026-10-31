@@ -29,6 +29,8 @@ import proofRoutes      from './routes/proof.js';
 import reportsRoutes    from './routes/reports.js';
 import recoveryRoutes   from './routes/recovery.js';
 import aiRoutes         from './routes/ai.js';
+import agentRoutes      from './routes/agent.js';
+import agentAdminRoutes from './routes/agentAdmin.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT      = process.env.PORT || 3001;
@@ -100,6 +102,8 @@ app.use('/api/proof',        proofRoutes);
 app.use('/api/reports',      reportsRoutes);
 app.use('/api/recovery',     recoveryRoutes);
 app.use('/api/ai',           aiRoutes);
+app.use('/api/agent',        agentRoutes);
+app.use('/api/agent-admin',  agentAdminRoutes);
 
 // ── 404 + error handlers ──────────────────────────────────────────────────────
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));

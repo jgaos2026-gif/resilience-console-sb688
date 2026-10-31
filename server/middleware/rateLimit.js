@@ -39,3 +39,12 @@ export const aiLimiter = rateLimit({
   legacyHeaders: false,
   message: { error: 'AI rate limit exceeded. Max 30 provider calls per minute.' },
 });
+
+/** Limiter for the external agent API. Tighter — these are machine callers. */
+export const agentLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Agent API rate limit exceeded. Max 60 requests per minute.' },
+});

@@ -50,7 +50,7 @@ function envToken(scope) {
 /** Which scopes are satisfied by environment variables (no secret values returned). */
 export function envTokenStatus() {
   return {
-    read: envToken(  SCOPES.READ) ? ENV_NAME.read : null,
+    read: envToken(SCOPES.READ) ? ENV_NAME.read : null,
     control: envToken(SCOPES.CONTROL) ? ENV_NAME.control : null,
   };
 }

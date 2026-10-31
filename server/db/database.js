@@ -91,6 +91,20 @@ export function initDb(dbPath) {
       status TEXT NOT NULL DEFAULT 'active', hash TEXT NOT NULL,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    -- External agent API tokens. Only the SHA-256 hash is stored. Rows are
+    -- revoked, never deleted, so token lineage stays auditable.
+    CREATE TABLE IF NOT EXISTS agent_tokens (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      scope TEXT NOT NULL CHECK(scope IN ('read','control')),
+      token_hash TEXT NOT NULL UNIQUE, token_prefix TEXT NOT NULL,
+      created_by TEXT NOT NULL DEFAULT 'owner',
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      last_used_at TEXT, last_used_ip TEXT, revoked_at TEXT, revoked_by TEXT
+    );
+    CREATE INDEX IF NOT EXISTS agent_tokens_scope_active ON agent_tokens(scope, revoked_at);
+    CREATE TRIGGER IF NOT EXISTS agent_tokens_no_delete
+      BEFORE DELETE ON agent_tokens BEGIN SELECT RAISE(ABORT, 'agent_tokens is append-only; revoke instead'); END;
   `);
   seed(_db);
   return _db;
