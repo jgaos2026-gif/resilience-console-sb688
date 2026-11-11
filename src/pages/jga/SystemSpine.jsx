@@ -67,7 +67,7 @@ export default function SystemSpine() {
         <h1 className="text-2xl font-bold font-mono gold-shimmer">THE SPINE</h1>
         <p className="text-xs text-muted-foreground max-w-xl mx-auto">
           Braid group B₇ hash-chain integrity. All state transitions encoded as crossing events σᵢ^±1.
-          Alexander polynomial invariants detect tampered topology.
+          Burau-trace fingerprints detect tampered topology.
         </p>
       </div>
 
@@ -126,9 +126,9 @@ export default function SystemSpine() {
                   </span>
                 </div>
               </div>
-              {n.invariant && (
+              {n.fingerprint && (
                 <div className="text-[9px] font-mono text-muted-foreground">
-                  Alexander tr(0.3)={n.invariant.trace03?.toFixed(4)} tr(0.7)={n.invariant.trace07?.toFixed(4)}
+                  Burau tr(0.3)={n.fingerprint.trace03?.toFixed(4)} tr(0.7)={n.fingerprint.trace07?.toFixed(4)}
                 </div>
               )}
               {n.strands && n.strands.length > 0 && (

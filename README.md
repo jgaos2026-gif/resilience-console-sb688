@@ -2,7 +2,7 @@
 
 **Hardened operational system founded on braided computational topology.**
 
-Braid group B₇ · SHA-256 hash-chains · Alexander polynomial invariants · Triple-mark verification · Append-only audit ledger
+Braid group B₇ · SHA-256 hash-chains · Burau-trace fingerprints · Triple-mark verification · Append-only audit ledger
 
 ---
 
@@ -27,7 +27,7 @@ Braid group B₇ · SHA-256 hash-chains · Alexander polynomial invariants · Tr
 │   Braid group Bₙ generators σᵢ^±1                  │
 │   SHA-256 block hash-chains                         │
 │   Burau representation (reduced)                    │
-│   Alexander polynomial invariant fingerprint        │
+│   Burau-trace fingerprint        │
 │   Append-only SQLite ledger + JSONL audit log       │
 └─────────────────────────────────────────────────────┘
 ```
@@ -94,9 +94,9 @@ Every state transition is encoded as a crossing event in braid group B₇:
 - **σᵢ⁻¹** — strand i crosses under strand i+1 (negative crossing)
 - Each data block derives its generator from `SHA-256(data + prevHash)[0:2]`
 - The braid word (σ₁σ₃⁻¹σ₂σ₅…) is the verifiable proof sequence
-- The **Alexander polynomial** fingerprint (Burau representation at t=0.3, t=0.7)
-  is recomputed on every verification — if topology is tampered, the invariant drifts
-- Integrity = 100% only if all block hashes are valid AND invariant is stable
+- The **Burau-trace** fingerprint (Burau matrix traces at t=0.3, t=0.7 — a repeatable fingerprint, not an Alexander polynomial invariant)
+  is recomputed on every verification — if topology is tampered, the fingerprint drifts
+- Integrity = 100% only if all block hashes are valid AND the fingerprint is stable
 
 ## Audit Log
 

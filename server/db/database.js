@@ -60,7 +60,7 @@ export function initDb(dbPath) {
       id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL,
       category TEXT NOT NULL DEFAULT 'system', status TEXT NOT NULL DEFAULT 'pending',
       hash TEXT NOT NULL, chain_index INTEGER NOT NULL DEFAULT 0,
-      invariant TEXT NOT NULL DEFAULT '{}', visibility TEXT NOT NULL DEFAULT 'internal',
+      fingerprint TEXT NOT NULL DEFAULT '{}', visibility TEXT NOT NULL DEFAULT 'internal',
       notes TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
     CREATE TABLE IF NOT EXISTS daily_reports (
@@ -69,7 +69,7 @@ export function initDb(dbPath) {
       nodes_total INTEGER NOT NULL DEFAULT 0, trusted_states INTEGER NOT NULL DEFAULT 0,
       rejected_states INTEGER NOT NULL DEFAULT 0, recovery_count INTEGER NOT NULL DEFAULT 0,
       chain_length INTEGER NOT NULL DEFAULT 0, integrity_pct REAL NOT NULL DEFAULT 100,
-      invariant TEXT NOT NULL DEFAULT '{}', summary TEXT,
+      fingerprint TEXT NOT NULL DEFAULT '{}', summary TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
     CREATE TABLE IF NOT EXISTS users (

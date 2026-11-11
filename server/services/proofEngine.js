@@ -6,14 +6,14 @@
  */
 
 import { getDb } from '../db/database.js';
-import { sha256, alexanderFingerprint } from './braidEngine.js';
+import { sha256, burauTraceFingerprint } from './braidEngine.js';
 import { verifyTrustLedger } from './trustLedger.js';
 
 /**
  * Weld every node's braid word into one topological fingerprint and store it
  * as an evidence-only proof record.
  *
- * @returns {{id:number,title:string,hash:string,invariant:object,chainIndex:number,status:string,certified:boolean,trustLedger:object}}
+ * @returns {{id:number,title:string,hash:string,fingerprint:object,chainIndex:number,status:string,certified:boolean,trustLedger:object}}
  */
 export function generateEvidenceSnapshot({
   title = null,
@@ -29,12 +29,12 @@ export function generateEvidenceSnapshot({
     catch (_) { return []; }
   });
 
-  const invariant = alexanderFingerprint(combinedWord);
+  const fingerprint = burauTraceFingerprint(combinedWord);
   const chainIndex = combinedWord.length;
   const ledger = verifyTrustLedger();
 
   const proofData = JSON.stringify({
-    invariant, chainIndex, category,
+    fingerprint, chainIndex, category,
     trustLedgerHead: ledger.head,
     trustLedgerValid: ledger.valid,
     ts: new Date().toISOString(),
@@ -44,15 +44,15 @@ export function generateEvidenceSnapshot({
   const proofTitle = title || `Evidence Snapshot - ${new Date().toLocaleDateString()}`;
 
   const info = db.prepare(`
-    INSERT INTO proof_records(title,category,status,hash,chain_index,invariant,visibility,notes)
+    INSERT INTO proof_records(title,category,status,hash,chain_index,fingerprint,visibility,notes)
     VALUES (?,?,'evidence-only',?,?,?,?,?)
-  `).run(proofTitle, category, hash, chainIndex, JSON.stringify(invariant), visibility, notes || null);
+  `).run(proofTitle, category, hash, chainIndex, JSON.stringify(fingerprint), visibility, notes || null);
 
   return {
     id: info.lastInsertRowid,
     title: proofTitle,
     hash,
-    invariant,
+    fingerprint,
     chainIndex,
     status: 'evidence-only',
     certified: false,

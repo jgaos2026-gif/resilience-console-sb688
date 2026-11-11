@@ -162,9 +162,9 @@ export default function MemoryBraid() {
                 {n.integrityPct}%
               </Badge>
             </div>
-            {n.invariant && (
+            {n.fingerprint && (
               <p className="text-[9px] font-mono text-muted-foreground">
-                tr₀.₃={n.invariant.trace03?.toFixed(4)} · tr₀.₇={n.invariant.trace07?.toFixed(4)}
+                tr₀.₃={n.fingerprint.trace03?.toFixed(4)} · tr₀.₇={n.fingerprint.trace07?.toFixed(4)}
               </p>
             )}
             <Button size="sm" disabled={appendMutation.isPending}

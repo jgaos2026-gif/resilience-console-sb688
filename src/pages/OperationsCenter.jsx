@@ -75,7 +75,7 @@ export default function OperationsCenter() {
           </Badge>
         </div>
         <p className="text-[10px] text-muted-foreground font-mono">
-          Braid group B₇ · {health?.strandCount ?? '—'} strands · SHA-256 hash-chains · Alexander polynomial invariants
+          Braid group B₇ · {health?.strandCount ?? '—'} strands · SHA-256 hash-chains · Burau-trace fingerprints
         </p>
       </div>
 
@@ -129,7 +129,7 @@ export default function OperationsCenter() {
       </div>
 
       <p className="text-center text-[9px] text-muted-foreground/40 font-mono pt-2">
-        SB688 · Braid group B₇ · SHA-256 · Alexander polynomial invariants · Append-only audit ledger
+        SB688 · Braid group B₇ · SHA-256 · Burau-trace fingerprints · Append-only audit ledger
       </p>
     </div>
   );

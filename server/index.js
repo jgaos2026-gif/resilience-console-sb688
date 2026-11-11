@@ -3,7 +3,7 @@
  *
  * Founded on braided computational topology:
  *   - All data integrity uses SHA-256 braid hash-chains
- *   - Alexander polynomial invariants detect topology-breaking tampering
+ *   - Burau-trace fingerprints detect topology-breaking tampering
  *   - Braid group Bₙ generators encode every state transition
  */
 
@@ -120,7 +120,7 @@ const server = app.listen(PORT, () => {
   console.log(`[SB688] Resilience Console backend — port ${PORT}`);
   console.log(`[SB688] DB: ${DB_PATH}`);
   console.log(`[SB688] CORS origin: ${ORIGIN}`);
-  console.log(`[SB688] Braided topology engine: B₇ (7 strands, SHA-256, Alexander invariant)`);
+  console.log(`[SB688] Braided topology engine: B₇ (7 strands, SHA-256, Burau-trace fingerprint)`);
 });
 
 // ── Graceful shutdown — stop accepting, close the DB cleanly ──────────────────

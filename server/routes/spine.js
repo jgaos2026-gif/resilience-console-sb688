@@ -29,7 +29,7 @@ router.get('/', requireAuth, (req, res) => {
       chainLength:  chain.length,
       integrityPct: verify.integrityPct,
       valid:        verify.valid,
-      invariant:    verify.invariant,
+      fingerprint:    verify.fingerprint,
       strands:      strandHealth(chain),
       lastVerified: n.last_verified,
     };

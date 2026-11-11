@@ -24,7 +24,7 @@ function runChecks(item) {
   const checks = [
     { check:'structure', passed:structureErrors.length === 0, errors:structureErrors },
     { check:'policy', passed:policyErrors.length === 0, errors:policyErrors },
-    { check:'braid', passed:braidErrors.length === 0, errors:braidErrors, invariant:braid.invariant },
+    { check:'braid', passed:braidErrors.length === 0, errors:braidErrors, fingerprint:braid.fingerprint },
   ];
   return { passed: checks.every(c => c.passed), checks, chain, errors: checks.flatMap(c => c.errors) };
 }

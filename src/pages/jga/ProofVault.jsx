@@ -49,7 +49,7 @@ export default function ProofVault() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-xl font-bold font-mono" style={{ color: GOLD }}>Proof Vault</h1>
-          <p className="text-xs text-muted-foreground">{proofs.length} records — Alexander invariant certified proofs</p>
+          <p className="text-xs text-muted-foreground">{proofs.length} records — Burau-trace fingerprint evidence proofs</p>
         </div>
         <Button onClick={() => generateMutation.mutate()} disabled={generateMutation.isPending}
           className="text-xs font-bold font-mono"
@@ -85,9 +85,9 @@ export default function ProofVault() {
                 </Badge>
               </div>
             </div>
-            {p.invariant && (
+            {p.fingerprint && (
               <p className="text-[9px] font-mono text-muted-foreground">
-                tr₀.₃={p.invariant.trace03?.toFixed(4)} · tr₀.₇={p.invariant.trace07?.toFixed(4)} · blocks={p.chain_index}
+                tr₀.₃={p.fingerprint.trace03?.toFixed(4)} · tr₀.₇={p.fingerprint.trace07?.toFixed(4)} · blocks={p.chain_index}
               </p>
             )}
             <p className="text-[9px] text-muted-foreground">{p.created_at?.slice(0, 19)}</p>

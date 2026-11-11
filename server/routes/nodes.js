@@ -28,7 +28,7 @@ router.get('/', requireAuth, (req, res) => {
       chainLength:  chain.length,
       integrityPct: v.integrityPct,
       valid:        v.valid,
-      invariant:    v.invariant,
+      fingerprint:    v.fingerprint,
       strands:      strandHealth(chain),
       lastVerified: n.last_verified,
       meta:         JSON.parse(n.meta || '{}'),
@@ -52,7 +52,7 @@ router.get('/:id', requireAuth, (req, res) => {
     integrityPct: v.integrityPct,
     valid:        v.valid,
     errors:       v.errors,
-    invariant:    v.invariant,
+    fingerprint:    v.fingerprint,
     strands:      strandHealth(chain),
   });
 });

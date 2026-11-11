@@ -30,7 +30,7 @@ export default function DailyReports() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-xl font-bold font-mono" style={{ color: GOLD }}>Daily Reports</h1>
-          <p className="text-xs text-muted-foreground">Automated system snapshots with braid invariant records</p>
+          <p className="text-xs text-muted-foreground">Automated system snapshots with braid fingerprint records</p>
         </div>
         <Button onClick={() => generateMutation.mutate()} disabled={generateMutation.isPending}
           className="text-xs font-bold font-mono"
@@ -61,7 +61,7 @@ export default function DailyReports() {
                 { label: "Trusted Items",  value: r.trusted_states,         color: "#4ade80" },
                 { label: "Rejected",       value: r.rejected_states,        color: "#f87171" },
                 { label: "Recoveries",     value: r.recovery_count,         color: "#a78bfa" },
-                { label: "tr₀.₃",          value: r.invariant?.trace03?.toFixed(4) ?? "—", color: "#94a3b8" },
+                { label: "tr₀.₃",          value: r.fingerprint?.trace03?.toFixed(4) ?? "—", color: "#94a3b8" },
               ].map(s => (
                 <div key={s.label} className="rounded-lg border border-border/40 p-2" style={{ background: "hsl(220,20%,6%)" }}>
                   <p className="text-[9px] text-muted-foreground uppercase tracking-widest">{s.label}</p>

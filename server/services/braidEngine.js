@@ -7,8 +7,11 @@
  *
  * Each data block is woven into the braid as a crossing event.
  * The braid word (sequence of σᵢ^±1) forms a verifiable proof sequence.
- * Integrity is verified via the Burau representation and the Alexander
- * polynomial invariant — if data is tampered, the invariant changes.
+ * Integrity is checked with a Burau-trace fingerprint — the traces of the
+ * Burau matrix product at t = 0.3 and t = 0.7. That fingerprint is a
+ * repeatable change-detector, NOT an Alexander polynomial invariant: the
+ * Alexander polynomial is det(I − Burau) up to units, which this code does
+ * not compute. Do not call the fingerprint an Alexander invariant anywhere.
  */
 
 import crypto from 'crypto';
@@ -113,11 +116,20 @@ function matTrace(M) {
 }
 
 /**
- * Compute the Alexander polynomial invariant approximation
- * by evaluating trace(Burau(t)) at t = 0.3 and t = 0.7.
+ * Compute a Burau-trace fingerprint of a braid word by evaluating
+ * trace(Burau(t)) at t = 0.3 and t = 0.7.
+ *
+ * WHAT THIS IS: a repeatable two-number fingerprint of the braid word. If the
+ * word changes, the fingerprint changes (up to floating-point rounding), so
+ * it works as a change-detector for stored chains.
+ * WHAT THIS IS NOT: an Alexander polynomial invariant. The Alexander
+ * polynomial is det(I − Burau_reduced(t)) up to multiplication by ±t^k; it is
+ * a Laurent polynomial, not two floating-point traces. Nothing in this file
+ * computes it, and the fingerprint must never be presented as one.
+ *
  * Returns a two-element fingerprint that changes under braid deformation.
  */
-export function alexanderFingerprint(braidWord, n = STRAND_COUNT) {
+export function burauTraceFingerprint(braidWord, n = STRAND_COUNT) {
   const t1 = burauMatrix(braidWord, n, 0.3);
   const t2 = burauMatrix(braidWord, n, 0.7);
   return {
@@ -155,7 +167,7 @@ export function dataToGenerator(data, n = STRAND_COUNT) {
  * @property {number}  generator  σᵢ index
  * @property {number}  sign       +1 / -1
  * @property {number}  timestamp  Unix ms
- * @property {object}  invariant  Alexander fingerprint at this block
+ * @property {object}  fingerprint  Burau-trace fingerprint at this block
  */
 
 /**
@@ -175,15 +187,15 @@ export function genesisBlock(data = 'GENESIS:SB688:BRAIDED_TOPOLOGY') {
   const prevHash = '0'.repeat(64);
   const gen = dataToGenerator(data + prevHash);
   const hash = computeBlockHash(0, data, prevHash, gen.i, gen.sign, timestamp);
-  const invariant = alexanderFingerprint([{ i: gen.i, sign: gen.sign }]);
-  return { index: 0, data, prevHash, hash, generator: gen.i, sign: gen.sign, timestamp, invariant };
+  const fingerprint = burauTraceFingerprint([{ i: gen.i, sign: gen.sign }]);
+  return { index: 0, data, prevHash, hash, generator: gen.i, sign: gen.sign, timestamp, fingerprint };
 }
 
 /**
  * Append a new block to the chain.
  * @param {BraidBlock} prev   previous block
  * @param {string}     data   new block content
- * @param {BraidBlock[]} chain  full chain (for invariant computation)
+ * @param {BraidBlock[]} chain  full chain (for fingerprint computation)
  * @returns {BraidBlock}
  */
 export function appendBlock(prev, data, chain) {
@@ -191,10 +203,10 @@ export function appendBlock(prev, data, chain) {
   const gen = dataToGenerator(data + prev.hash);
   const hash = computeBlockHash(prev.index + 1, data, prev.hash, gen.i, gen.sign, timestamp);
 
-  // Build full braid word from chain + new generator for invariant
+  // Build full braid word from chain + new generator for fingerprint
   const word = chain.map(b => ({ i: b.generator, sign: b.sign }));
   word.push({ i: gen.i, sign: gen.sign });
-  const invariant = alexanderFingerprint(word);
+  const fingerprint = burauTraceFingerprint(word);
 
   return {
     index: prev.index + 1,
@@ -204,7 +216,7 @@ export function appendBlock(prev, data, chain) {
     generator: gen.i,
     sign: gen.sign,
     timestamp,
-    invariant,
+    fingerprint,
   };
 }
 
@@ -215,16 +227,16 @@ export function appendBlock(prev, data, chain) {
  * Checks:
  *   1. Hash continuity (prevHash linkage)
  *   2. Block hash integrity (recompute and compare)
- *   3. Alexander invariant stability (detects topology-breaking tampering)
+ *   3. Burau-trace fingerprint stability (detects topology-breaking tampering)
  *
  * @param {BraidBlock[]} chain
- * @returns {{ valid: boolean, errors: string[], integrityPct: number, invariant: object }}
+ * @returns {{ valid: boolean, errors: string[], integrityPct: number, fingerprint: object }}
  */
 export function verifyChain(chain) {
   const errors = [];
 
   if (!chain || chain.length === 0) {
-    return { valid: false, errors: ['Empty chain'], integrityPct: 0, invariant: null };
+    return { valid: false, errors: ['Empty chain'], integrityPct: 0, fingerprint: null };
   }
 
   let goodBlocks = 0;
@@ -255,19 +267,19 @@ export function verifyChain(chain) {
     goodBlocks++;
   }
 
-  // 3. Alexander invariant of the full braid word
+  // 3. Burau-trace fingerprint of the full braid word
   const word = chain.map(b => ({ i: b.generator, sign: b.sign }));
-  const invariant = alexanderFingerprint(word);
+  const fingerprint = burauTraceFingerprint(word);
 
-  // Compare stored last block invariant with recomputed
-  const stored = chain[chain.length - 1].invariant;
+  // Compare stored last block fingerprint with recomputed
+  const stored = chain[chain.length - 1].fingerprint;
   const drift =
     stored &&
-    (Math.abs(stored.trace03 - invariant.trace03) > 0.001 ||
-      Math.abs(stored.trace07 - invariant.trace07) > 0.001);
+    (Math.abs(stored.trace03 - fingerprint.trace03) > 0.001 ||
+      Math.abs(stored.trace07 - fingerprint.trace07) > 0.001);
 
   if (drift) {
-    errors.push('Braid invariant drift detected — topology tampered');
+    errors.push('Braid fingerprint drift detected — topology tampered');
   }
 
   const integrityPct = parseFloat(((goodBlocks / chain.length) * 100).toFixed(2));
@@ -275,7 +287,7 @@ export function verifyChain(chain) {
     valid: errors.length === 0,
     errors,
     integrityPct,
-    invariant,
+    fingerprint,
     strandCount: STRAND_COUNT,
     chainLength: chain.length,
   };

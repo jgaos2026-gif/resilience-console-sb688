@@ -5,7 +5,7 @@
 import { Router } from 'express';
 import { getDb } from '../db/database.js';
 import { requireAuth } from '../middleware/auth.js';
-import { verifyChain, strandHealth, alexanderFingerprint } from '../services/braidEngine.js';
+import { verifyChain, strandHealth, burauTraceFingerprint } from '../services/braidEngine.js';
 import { writeAudit } from '../middleware/audit.js';
 
 const router = Router();
@@ -14,7 +14,7 @@ const router = Router();
 router.get('/', requireAuth, (req, res) => {
   const db = getDb();
   const reports = db.prepare('SELECT * FROM daily_reports ORDER BY report_date DESC LIMIT 30').all();
-  res.json(reports.map(r => ({ ...r, invariant: JSON.parse(r.invariant || '{}') })));
+  res.json(reports.map(r => ({ ...r, fingerprint: JSON.parse(r.fingerprint || '{}') })));
 });
 
 /** POST /api/reports/generate — snapshot the current system state as a daily report */
@@ -41,7 +41,7 @@ router.post('/generate', requireAuth, (req, res) => {
 
   const integrityPct  = totalBlocks > 0 ? parseFloat(((goodBlocks / totalBlocks) * 100).toFixed(2)) : 100;
   const spineHealth   = parseFloat(((activeNodes / Math.max(totalNodes, 1)) * 100).toFixed(1));
-  const invariant     = alexanderFingerprint(combinedWord);
+  const fingerprint     = burauTraceFingerprint(combinedWord);
 
   const trustedStates  = db.prepare("SELECT COUNT(*) as c FROM verification_gates WHERE current_stage = 'trusted'").get()?.c ?? 0;
   const rejectedStates = db.prepare("SELECT COUNT(*) as c FROM verification_gates WHERE current_stage = 'rejected'").get()?.c ?? 0;
@@ -51,13 +51,13 @@ router.post('/generate', requireAuth, (req, res) => {
   db.prepare(`
     INSERT OR REPLACE INTO daily_reports
       (report_date, spine_health, nodes_active, nodes_total, trusted_states, rejected_states,
-       recovery_count, chain_length, integrity_pct, invariant, summary)
+       recovery_count, chain_length, integrity_pct, fingerprint, summary)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(today, spineHealth, activeNodes, totalNodes, trustedStates, rejectedStates,
-         recoveryCount, totalBlocks, integrityPct, JSON.stringify(invariant), summary);
+         recoveryCount, totalBlocks, integrityPct, JSON.stringify(fingerprint), summary);
 
   writeAudit('report_generated', req.user.id, { date: today });
-  res.json({ ok: true, date: today, spineHealth, integrityPct, summary, invariant });
+  res.json({ ok: true, date: today, spineHealth, integrityPct, summary, fingerprint });
 });
 
 export default router;

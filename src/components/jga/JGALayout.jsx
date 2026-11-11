@@ -100,7 +100,7 @@ export default function JGALayout() {
           <Outlet />
           <footer className="border-t border-border mt-8 py-3 px-6 text-center" style={{ background: "hsl(220,20%,4%)" }}>
             <p className="text-[9px] text-muted-foreground/40 font-mono">
-              SB688 · Braid group B₇ · SHA-256 · Alexander polynomial invariants · Append-only audit ledger
+              SB688 · Braid group B₇ · SHA-256 · Burau-trace fingerprints · Append-only audit ledger
             </p>
           </footer>
         </main>

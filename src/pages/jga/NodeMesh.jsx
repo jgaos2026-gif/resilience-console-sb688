@@ -114,9 +114,9 @@ export default function NodeMesh() {
                 </div>
               </div>
 
-              {n.invariant && (
+              {n.fingerprint && (
                 <p className="text-[9px] font-mono text-muted-foreground">
-                  tr₀.₃={n.invariant.trace03?.toFixed(3)} · tr₀.₇={n.invariant.trace07?.toFixed(3)}
+                  tr₀.₃={n.fingerprint.trace03?.toFixed(3)} · tr₀.₇={n.fingerprint.trace07?.toFixed(3)}
                 </p>
               )}
 
